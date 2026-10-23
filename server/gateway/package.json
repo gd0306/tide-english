@@ -22,12 +22,12 @@
     "node-fetch": "2.7.0",
     "pg": "8.23.0",
     "stripe": "22.6.2",
-    "ws": "8.21.0"
+    "ws": "8.22.0"
   },
   "devDependencies": {
     "@types/node": "^22.19.0",
     "@types/pg": "^8.15.0",
-    "@types/ws": "^8.18.1",
+    "@types/ws": "^8.18.2",
     "tsx": "4.23.13",
     "typescript": "7.0.2"
   }

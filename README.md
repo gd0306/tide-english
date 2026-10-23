@@ -56,63 +56,38 @@ tide-english/
 
 ## Let an AI agent install the app on your phone
 
-Open or attach this project directory in your agent, then send it the entire prompt below. It covers both iPhone and Android. The agent needs access to your local files, terminal and connected device. Complete Apple Account sign-in, system password entry, device trust and permission prompts yourself in the system UI; never send credentials or passwords in chat.
+Paste the prompt below into a coding agent with access to your local files, terminal and phone. It can clone the repository or use an open checkout. Complete account sign-in, device trust and permissions yourself; enter passwords and API keys only in the system or app UI.
 
 ```text
-Help me build, install and launch Tide English on my connected iPhone or
-Android phone.
+Help me build, install and launch Tide English on my iPhone or Android phone
+from https://github.com/gd0306/tide-english.
 
-Use this checkout if it is already open, or clone the Tide English repository
-URL I provide into a new local folder. If neither is accessible, ask for the
-actual source location; do not invent a repository URL. Read AGENTS.md,
-README.md or README-CN.md, docs/development/build-and-test.md, and the matching
-platform guide: docs/guides/iphone.md or docs/guides/android.md. Preserve local
-changes and use pinned dependencies without upgrading them.
+Clone the repository into a new local folder, or use this checkout if already
+open. Read AGENTS.md, README.md, docs/development/build-and-test.md and the
+matching guide: docs/guides/iphone.md or docs/guides/android.md.
 
-Detect my connected physical phone and explicitly target that device. If
-multiple phones make the target unclear, ask me to choose before installing.
-Do not substitute a simulator or emulator for installation on my phone.
+For iPhone, check Xcode and iOS tools, resolve pinned dependencies, run offline
+Swift core tests and build the Simulator target. Guide me through Apple Account
+and signing-team setup when needed. For Android, check JDK/SDK/adb and run the
+Gradle unit tests, lint and debug build described in the guide.
 
-For iPhone, check that macOS, Xcode and its iOS tools are ready, resolve the
-pinned packages, run the offline Swift core tests, and build the iOS Simulator
-target. Use mobile/ios/TideEnglish.xcodeproj and the TideEnglish scheme.
-Guide me through adding my Apple Account and choosing my signing team in
-Xcode when needed. Preserve signing overrides in the ignored
-mobile/ios/Configuration/Local.xcconfig before regenerating the project.
-Build for my iPhone with the configured team, then install and launch it.
+For a first installation, help choose a unique application identifier if needed.
+For updates, preserve the existing identifier, signing identity and Apple team.
+Do not uninstall the app, clear learning data or bypass signing conflicts.
 
-For Android, check JDK 17, Android SDK Platform 36, Build Tools 35.0.0 and adb.
-Use the Gradle Wrapper in mobile/android to resolve dependencies and run
-:app:testDebugUnitTest, :app:lintDebug and :app:assembleDebug. Check the APK's
-identity and signing certificate, install with adb -s TARGET_SERIAL install -r,
-and launch the app on that same phone.
+Detect my connected phone, build for that device, install and launch the app.
+Tell me when to unlock it, trust the computer or developer profile, enable
+Developer Mode or USB debugging, or approve a system prompt. Ask which device
+only if the target is ambiguous.
 
-For a first installation, help me choose a unique application identifier if
-needed. When updating an existing installation, preserve its identifier and
-signing identity, including the Apple team on iPhone. Do not uninstall, clear
-learning data, force a downgrade or silently change identifiers to bypass a
-conflict. Retain any same-name app with a different identifier as a separate
-installation. If signing cannot be matched, preserve the app and explain why.
+I will select my languages and provider, then enter my key in Settings > Model
+& API key. Never ask for the key in chat, read it from device secure storage,
+or put it in source files or logs. Keep managed services, hosted trials and
+purchases disabled. Do not deploy servers or start a live conversation.
 
-Proceed with the normal checks, builds and installation within your permission
-rules. Tell me when I need to connect or unlock the phone, trust this computer
-or developer profile, enable Developer Mode or USB debugging, select a team,
-or approve a system prompt. I will enter passwords and verification codes in
-the system UI; never ask me to send them in chat.
-
-I will choose my learning, explanation and interface languages, then select a
-provider and enter my own API key in Settings > Model & API key. Do not ask me
-to paste the key into chat, read model keys or account tokens from device
-storage, or put credentials in source files or logs. Keep managed/hosted
-services, trials, purchases and learning cloud sync disabled. Email sign-in
-must remain optional. Do not deploy servers, modify production data, send
-verification emails or make live model requests during installation.
-
-Finish by reporting the target phone, application identifier and version,
-which test, build, signing, installation and launch checks passed, artifact
-paths, iOS signing expiry if available, and anything I still need to do on the
-phone. Report blockers accurately; a successful build alone is not a completed
-installation. I will start the first live conversation.
+Report which tests, build, signing, installation and launch checks passed,
+iOS signing expiry if available, and anything I still need to do on the phone.
+I will start the first live conversation.
 ```
 
 ## Run locally

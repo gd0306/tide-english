@@ -6,6 +6,18 @@ A native language-learning app for practising expression, comprehension and voca
 
 Tide English uses your own model API key by default. Learning records stay on your device, and signing in is optional. Hosted voice, trials and purchases are disabled by default. This repository contains the full source and pinned dependencies, without user credentials, personal signing settings or historical build artifacts.
 
+## Screenshots
+
+<p align="center">
+  <a href="docs/assets/screenshots/ios/en/talk.png"><img src="docs/assets/screenshots/ios/en/talk.png" width="24%" alt="Conversation with bilingual captions" /></a>
+  <a href="docs/assets/screenshots/ios/en/themes.png"><img src="docs/assets/screenshots/ios/en/themes.png" width="24%" alt="Conversation themes" /></a>
+  <a href="docs/assets/screenshots/ios/en/vocabulary.png"><img src="docs/assets/screenshots/ios/en/vocabulary.png" width="24%" alt="English vocabulary with Chinese definitions" /></a>
+  <a href="docs/assets/screenshots/ios/en/settings.png"><img src="docs/assets/screenshots/ios/en/settings.png" width="24%" alt="Model, interface language and theme settings" /></a>
+</p>
+<p align="center">Conversation · Themes · Bilingual vocabulary · Settings</p>
+
+Captured from the current iOS app on an iPhone 17 simulator using offline sample data. English interface with the Paper theme; no real conversation, API key or personal learning record is shown. [Chinese interface](README-CN.md#应用截图) · [Capture details](docs/assets/screenshots/README.md).
+
 ## Features
 
 | Feature | Description |

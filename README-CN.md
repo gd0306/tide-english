@@ -47,28 +47,60 @@ tide-english/
 先用 Agent 打开或附加这个工程目录，再把下面整段提示词发给它。两份 README 的 Agent 提示词统一使用英文，内容完全一致。提示词同时适用于 iPhone 和安卓；Agent 需要具备本机文件、终端和设备访问能力。Apple Account 登录、系统密码、手机信任和权限确认仍由你在系统界面完成，无需把任何密钥或密码发到聊天中。
 
 ```text
-Build, install and launch the current Tide English project on my connected phone. Continue until the task is complete; do not stop at instructions or a generated installation package.
+Help me build, install and launch Tide English on my connected iPhone or
+Android phone.
 
-The source is the currently opened or attached tide-english directory. First confirm that README.md, mobile/ios, mobile/android and tools/generate_project.py exist. If this environment cannot access the source or locate the project, ask only for the actual source directory or repository address; do not invent a download URL. Determine whether a remote exists from the actual output of git remote -v.
+Use this checkout if it is already open, or clone the Tide English repository
+URL I provide into a new local folder. If neither is accessible, ask for the
+actual source location; do not invent a repository URL. Read AGENTS.md,
+README.md or README-CN.md, docs/development/build-and-test.md, and the matching
+platform guide: docs/guides/iphone.md or docs/guides/android.md. Preserve local
+changes and use pinned dependencies without upgrading them.
 
-Execution requirements:
-1. Read AGENTS.md, README.md or README-CN.md, docs/development/build-and-test.md, and the target platform's docs/guides/iphone.md or docs/guides/android.md. Inspect and preserve existing changes. Use pinned dependencies; do not reset the repository, upgrade dependencies or refactor unrelated features.
-2. Detect the host OS, development tools and connected physical phones, distinguishing phones from simulators and emulators. Use the phone if exactly one is connected. If none is connected, authorization is missing, or multiple devices make the target ambiguous, tell me exactly what to connect, unlock, authorize or select. Explicitly target every installation command. Do not install on another phone or describe a simulator result as a successful phone installation.
-3. I authorize the normal tool checks, dependency resolution, tests, builds, signing, installation and launch needed for this task; do not repeatedly ask whether to continue. Follow your agent's permission rules. If system approval, account sign-in or essential information is required, explain the blocker and the action I need to take, then resume. Never ask me for a system password, Apple verification code, model API key or email authorization code.
+Detect my connected physical phone and explicitly target that device. If
+multiple phones make the target unclear, ask me to choose before installing.
+Do not substitute a simulator or emulator for installation on my phone.
 
-iPhone workflow:
-4. Build on macOS with Xcode. Check the Xcode version, developer directory, first-launch status, iOS SDK and device support. Read tools/generate_project.py and use mobile/ios/TideEnglish.xcodeproj with the TideEnglish scheme. Prefer building the existing project directly. Run the generator only if the project is missing or its references need updating; first preserve project changes and save existing Team and identifier overrides in the ignored Configuration/Local.xcconfig so regeneration cannot lose signing settings. Resolve pinned packages, run the Swift core tests and build for iOS Simulator. Prefer offline operation when caches are complete, and use normal code signing.
-5. Inspect the current Team, bundle identifier and installation state on the target phone. For a first installation, start with cn.gd306.tideenglish.ios and configure a unique identifier if it is unavailable. Guide me through Apple Account or Team selection in Xcode when needed. For updates to the same app, preserve the existing Team, identifier and signing identity. Store local overrides in the ignored mobile/ios/Configuration/Local.xcconfig; never commit personal signing settings or private keys.
-6. Build for the physical target using the configured Team, then install and launch through Xcode or the local xcrun devicectl. Consult the installed tool's --help for command arguments. Clearly identify where I need to unlock the phone, trust this computer, enable Developer Mode, trust a developer profile or approve a system prompt. Report the provisioning profile expiry from the build artifact. Do not export signing private keys or read model credentials.
+For iPhone, check that macOS, Xcode and its iOS tools are ready, resolve the
+pinned packages, run the offline Swift core tests, and build the iOS Simulator
+target. Use mobile/ios/TideEnglish.xcodeproj and the TideEnglish scheme.
+Guide me through adding my Apple Account and choosing my signing team in
+Xcode when needed. Preserve signing overrides in the ignored
+mobile/ios/Configuration/Local.xcconfig before regenerating the project.
+Build for my iPhone with the configured team, then install and launch it.
 
-Android workflow:
-7. Check JDK 17, Android SDK Platform 36, Build Tools 35.0.0 and adb. Configure local JAVA_HOME, ANDROID_HOME or the ignored local.properties as needed. Detect devices with adb devices -l. If unauthorized, ask me to unlock the phone and approve USB debugging; if offline, restore the connection without clearing phone data.
-8. In mobile/android, resolve pinned dependencies with the repository's Gradle Wrapper and run :app:testDebugUnitTest, :app:lintDebug and :app:assembleDebug. The default application ID is cn.gd306.tideenglish.android. Use local debug signing for a first installation and matching signing credentials when updating an existing installation. Verify the final APK's identifier, signature and personal-build flags, then install with adb -s TARGET_SERIAL install -r and launch the main Activity. Do not uninstall, clear data, force a downgrade or silently change the identifier to resolve a signature or version conflict. If signing cannot be matched, preserve the installed app and report the specific reason.
+For Android, check JDK 17, Android SDK Platform 36, Build Tools 35.0.0 and adb.
+Use the Gradle Wrapper in mobile/android to resolve dependencies and run
+:app:testDebugUnitTest, :app:lintDebug and :app:assembleDebug. Check the APK's
+identity and signing certificate, install with adb -s TARGET_SERIAL install -r,
+and launch the app on that same phone.
 
-Requirements for both platforms:
-9. Preserve installed apps, learning records and credentials. If a same-name older app has a different application identifier, retain it as a separate installation; do not overwrite it or migrate its data automatically. I can manually export and import learning backups. Do not read, export or log model credentials, account tokens or personal learning content from the device.
-10. Keep hosted services, trials, purchases and learning-data cloud sync disabled. Do not deploy backend services, modify production databases, send verification emails or initiate real model requests or voice calls. Optional email sign-in must not be a prerequisite for local learning. After installation, I will choose my learning, explanation and interface languages and enter my own key in Settings → Model & API key.
-11. Confirm installation and launch with device tools. Report the target phone, application identifier and version, which test/build/signing/install/launch checks passed, artifact paths, iOS signing expiry if available, and any actions still needed on the phone. Report failures and blockers accurately; a successful compile alone does not mean the app was installed. I will start the first real conversation myself.
+For a first installation, help me choose a unique application identifier if
+needed. When updating an existing installation, preserve its identifier and
+signing identity, including the Apple team on iPhone. Do not uninstall, clear
+learning data, force a downgrade or silently change identifiers to bypass a
+conflict. Retain any same-name app with a different identifier as a separate
+installation. If signing cannot be matched, preserve the app and explain why.
+
+Proceed with the normal checks, builds and installation within your permission
+rules. Tell me when I need to connect or unlock the phone, trust this computer
+or developer profile, enable Developer Mode or USB debugging, select a team,
+or approve a system prompt. I will enter passwords and verification codes in
+the system UI; never ask me to send them in chat.
+
+I will choose my learning, explanation and interface languages, then select a
+provider and enter my own API key in Settings > Model & API key. Do not ask me
+to paste the key into chat, read model keys or account tokens from device
+storage, or put credentials in source files or logs. Keep managed/hosted
+services, trials, purchases and learning cloud sync disabled. Email sign-in
+must remain optional. Do not deploy servers, modify production data, send
+verification emails or make live model requests during installation.
+
+Finish by reporting the target phone, application identifier and version,
+which test, build, signing, installation and launch checks passed, artifact
+paths, iOS signing expiry if available, and anything I still need to do on the
+phone. Report blockers accurately; a successful build alone is not a completed
+installation. I will start the first live conversation.
 ```
 
 ## 本地运行

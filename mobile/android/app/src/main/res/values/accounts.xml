@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="onboarding_subtitle_language">Subtitle language</string>
+    <string name="account_agreement">By signing in, you agree to the Terms and acknowledge the Privacy Policy.</string>
+    <string name="account_title">Account</string>
+    <string name="account_provider_google">Signed in with Google</string>
+    <string name="account_welcome">Make yourself at home.</string>
+    <string name="account_continue_guest">Continue as guest</string>
+    <string name="account_connected">You’re signed in to Tide English.</string>
+    <string name="account_intro">Sign in to keep eligible Tide English minutes with your account.</string>
+    <string name="account_google">Sign in with Google</string>
+    <string name="account_time_label">Tide English minutes</string>
+    <string name="account_time_unavailable">Couldn’t check your minutes. Tap Refresh.</string>
+    <string name="account_time_remaining_description">conversation time remaining</string>
+    <string name="account_time_updates">Updates after each conversation.</string>
+    <string name="account_time_remaining_format">%1$d min %2$d sec</string>
+    <string name="account_add_minutes">Add minutes</string>
+    <string name="account_tideenglish_minutes">Tide English minutes</string>
+    <string name="account_local_data">Your conversations and learning history stay on this phone.</string>
+    <string name="account_not_ready">Sign-in is not available right now. You can keep using Tide English without an account.</string>
+    <string name="account_sign_out">Sign out on all devices</string>
+    <string name="account_delete_action">Delete account…</string>
+    <string name="account_delete">Delete account</string>
+    <string name="account_refresh">Refresh</string>
+    <string name="account_sign_out_detail">This signs you out of Tide English on all devices. Your learning data and saved API key stay on this device.</string>
+    <string name="account_delete_detail">Delete your Tide English account and forfeit any unused free minutes? Your learning data stays on this device. Records needed for billing or trial eligibility may be retained.</string>
+    <string name="account_request_deletion">Request deletion through support</string>
+    <string name="account_deletion_support_detail">Send a deletion request from your Tide English account email. Support will verify ownership and review any balance or pending payment. Your account stays active until deletion is completed.</string>
+    <string name="account_deletion_draft_detail">Opening your email app prepares a draft. Send it to submit your request. Do not include passwords, API keys or conversation exports.</string>
+    <string name="account_deletion_email">Write email</string>
+    <string name="account_deletion_copy_email">Copy email address</string>
+    <string name="account_deletion_email_copied">Email address copied</string>
+    <string name="account_deletion_web">Deletion details on the web</string>
+    <string name="account_deletion_open_failed">We couldn’t open an app for this link. Copy the email address above and send your deletion request from your preferred email service.</string>
+    <string name="account_error_connection">We couldn’t reach Tide English. Please try again.</string>
+    <string name="account_error_expired">Your sign-in has expired. Sign in again to continue.</string>
+    <string name="account_error_response">We couldn’t load your account. Please try again.</string>
+    <string name="account_error_storage">We couldn’t update your secure sign-in on this device. Unlock it and try again.</string>
+    <string name="account_error_google">Google sign-in didn’t finish. Please try again.</string>
+    <string name="account_error_billing">Automatic deletion couldn’t finish because of an active conversation, a balance or a payment awaiting confirmation. End any conversation and try again, or request deletion through support. Your account and balance are unchanged.</string>
+    <string name="account_error_apple">This account is linked to Apple. Delete it from Tide English on your iPhone, or request deletion through support.</string>
+    <string name="account_signed_out_locally">You’re signed out on this device. We couldn’t reach Tide English to end your other sessions.</string>
+    <string name="account_deleted">Your account has been deleted.</string>
+    <string name="account_same_account_required">Sign in with the same account to finish your previous conversation.</string>
+</resources>

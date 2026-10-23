@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.TideEnglish" parent="Theme.TideEnglish.Base">
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">@color/tideenglish_cream</item>
+    </style>
+</resources>

@@ -1,0 +1,9 @@
+Practise a language through conversation with Tide English.
+
+Choose your learning and explanation languages. Use voice or type a reply, view bilingual captions, look up words in context, and review vocabulary with explanations in both languages. Conversations and learning records stay on your device, with manual backup and import.
+
+Connect your own OpenAI, DeepSeek, GLM, Gemini or compatible provider in one model settings screen. Model access and usage costs depend on your provider account. Native realtime voice uses supported audio models; other models use device recognition and reading where available, with typing available as a fallback. Android device voice needs Android12+ on-device recognition and an offline reading voice.
+
+Choose Paper, Midnight or Grove and a Chinese or English interface. Optional email identity does not synchronize learning records. Hosted trials and purchases are disabled in the personal build.
+
+Keep your model key private and enter it directly in the app. Teaching feedback is AI-generated and can be mistaken; learning progress is not a certified language assessment.

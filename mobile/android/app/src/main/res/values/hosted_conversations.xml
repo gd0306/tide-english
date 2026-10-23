@@ -1,0 +1,17 @@
+<resources>
+    <string name="hosted_checking_previous">Tide English is checking your previous conversation. Please try again shortly.</string>
+    <string name="hosted_typed_start">Start a voice conversation before sending a typed reply with Tide English minutes.</string>
+    <string name="provider_preference_save_failed">Your conversation preference could not be saved.</string>
+    <string name="hosted_sign_in">Sign in to use your Tide English minutes.</string>
+    <string name="hosted_unconfirmed">Tide English could not confirm that request. It will not be sent again automatically.</string>
+    <string name="hosted_unavailable">Tide English minutes are not available for this request right now.</string>
+    <string name="hosted_no_minutes">You have no conversation minutes available.</string>
+    <string name="hosted_extra_help_limit">This conversation has reached its limit for extra explanations.</string>
+    <string name="hosted_window_closed">Start a new conversation for more help. Your saved meanings are still available.</string>
+    <string name="hosted_request_failed">Tide English could not complete that request. Please try again later.</string>
+    <string name="hosted_sign_in_again">Sign in again to continue with your Tide English minutes.</string>
+    <string name="hosted_rate_limit">Tide English has received too many requests. Wait a minute, then try again.</string>
+    <string name="hosted_start_rejected">The voice service could not start this conversation. Please try again shortly.</string>
+    <string name="hosted_error_reference">Error reference: %1$s</string>
+    <string name="hosted_minimum_charge_disclosure">15-second minimum per conversation. Longer conversations use the time you are connected. Your remaining balance caps the charge.</string>
+</resources>

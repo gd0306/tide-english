@@ -1,0 +1,13 @@
+<resources>
+    <string name="error_provider_quota">La facturación de OpenAI requiere atención. Revisa la facturación y los límites, o usa los minutos de Tide English.</string>
+    <string name="error_provider_unavailable">El servicio de voz o de aprendizaje no está disponible temporalmente. Inténtalo de nuevo en unos momentos.</string>
+    <string name="error_provider_request">El servicio no pudo aceptar esta solicitud. Si el problema continúa, contacta con soporte.</string>
+    <string name="error_request_timeout">La solicitud tardó demasiado. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="error_request_connection">Tide English no pudo conectarse. Revisa tu conexión a internet e inténtalo de nuevo.</string>
+    <string name="error_provider_reference">Referencia de OpenAI: %1$s</string>
+    <string name="hosted_help_busy">Todavía se está preparando otra explicación. Espera un momento e inténtalo de nuevo.</string>
+    <string name="hosted_help_funding">No hay suficiente saldo disponible para esta explicación. Revisa tu saldo en Cuenta.</string>
+    <string name="hosted_balance_checking">Tide English todavía está comprobando tu saldo tras una solicitud anterior. Inténtalo de nuevo en unos momentos.</string>
+    <string name="talk_inactivity_warning">Termina en %1$d s\nResponde para continuar</string>
+    <string name="talk_meaning_too_long">Este subtítulo es demasiado largo para traducirlo de una vez. El significado volverá con la siguiente respuesta.</string>
+</resources>

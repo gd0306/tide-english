@@ -1,0 +1,19 @@
+{
+  "name": "@tide-english/accounts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "start": "node src/main.mjs",
+    "migrate": "node src/migrate.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "fastify": "5.12.5",
+    "pg": "8.23.0",
+    "nodemailer": "10.1.1"
+  }
+}

@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.TideEnglish" parent="Theme.TideEnglish.Base">
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">@color/tideenglish_cream</item>
+        <item name="android:windowSplashScreenBackground">@color/tideenglish_cream</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/tideenglish_launch_empty</item>
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+        <item name="android:windowSplashScreenBrandingImage">@null</item>
+    </style>
+</resources>

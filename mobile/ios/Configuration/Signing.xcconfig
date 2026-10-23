@@ -1,0 +1,3 @@
+// The optional file keeps personal signing settings out of the public project.
+#include "ManagedAccounts.xcconfig"
+#include? "Local.xcconfig"

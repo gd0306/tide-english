@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+"""Capture actual offline Play screens from prebuilt isolated test APKs; never build or upload."""
+from pathlib import Path
+import argparse, subprocess, json, hashlib, datetime, os, re, tempfile
+from play_capture_publish import publish_capture_assets
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--serial', required=True)
+parser.add_argument('--app-apk', type=Path, required=True)
+parser.add_argument('--test-apk', type=Path, required=True)
+parser.add_argument('--output', type=Path)
+args = parser.parse_args()
+if not re.fullmatch(r'emulator-[0-9]+', args.serial):
+    parser.error('Use an already running emulator, never a physical-device identifier.')
+sdk = os.environ.get('ANDROID_HOME') or os.environ.get('ANDROID_SDK_ROOT')
+if not sdk:
+    parser.error('Set ANDROID_HOME or ANDROID_SDK_ROOT.')
+
+root = Path(__file__).resolve().parents[1]
+output_root = args.output or root/'distribution/android'
+app_apk, test_apk = args.app_apk.resolve(), args.test_apk.resolve()
+work = Path(tempfile.mkdtemp(prefix='tideenglish-play-capture-'))
+adb = str(Path(sdk)/'platform-tools/adb')
+aapt2 = Path(sdk)/'build-tools/36.0.0/aapt2'
+for apk, expected in [(app_apk, 'cn.gd306.tideenglish.android.uitest'), (test_apk, 'cn.gd306.tideenglish.android.uitest.test')]:
+    if not apk.is_file():
+        parser.error('A supplied APK is missing.')
+    badging = subprocess.check_output([str(aapt2), 'dump', 'badging', str(apk)], text=True)
+    if not badging.startswith("package: name='" + expected + "'"):
+        parser.error('Refusing to install a non-isolated APK.')
+def device(*values, check=True, timeout=30):
+    return subprocess.run([adb, '-s', args.serial, *values], capture_output=True, check=check, timeout=timeout)
+def shell(*args):
+    return device('shell', *args).stdout.decode().strip()
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+original = {'size': shell('wm', 'size'), 'density': shell('wm', 'density'),
+            'user': shell('am', 'get-current-user'),
+            'demoAllowed': shell('settings', 'get', 'global', 'sysui_demo_allowed'),
+            'fontScale': shell('settings', 'get', 'system', 'font_scale')}
+assert original['user'] == '0'
+assert 'Override size:' not in original['size'], 'Preserve any pre-existing display override explicitly.'
+assert 'Override density:' not in original['density']
+evidence = {'recordedAtUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'serial': args.serial, 'originalDeviceSettings': original,
+            'uiTestAPK': {'sha256': digest(app_apk)},
+            'testAPK': {'sha256': digest(test_apk)},
+            'fixtures': [{'path': str(p), 'sha256': digest(root/p)} for p in [
+                Path('mobile/android/app/src/androidTest/java/cn/gd306/tideenglish/PlayStoreCaptureTest.kt'),
+                Path('mobile/android/app/src/androidTest/java/cn/gd306/tideenglish/CaptionParityTest.kt')]],
+            'syntheticConversationAndVocabulary': True, 'providerCalls': False, 'purchaseCalls': False,
+            'sourceBaseline': subprocess.check_output(['git','rev-parse','HEAD'],cwd=root).decode().strip(),
+            'cleanSourceBuildClaimed': False,
+            'sourceSnapshotAfterBuild': [{'path': str(p.relative_to(root)), 'sha256': digest(p)}
+                for p in sorted((root/'mobile/android/app/src/main').rglob('*')) if p.is_file()],
+            'assets': []}
+asset_payloads = []
+try:
+    device('install', '-r', str(app_apk))
+    device('install', '-r', str(test_apk))
+    shell('wm', 'size', '1080x1920')
+    shell('settings', 'put', 'global', 'sysui_demo_allowed', '1')
+    shell('am','broadcast','-a','com.android.systemui.demo','--es','command','enter')
+    shell('am','broadcast','-a','com.android.systemui.demo','--es','command','clock','--es','hhmm','0900')
+    shell('am','broadcast','-a','com.android.systemui.demo','--es','command','battery','--es','level','100','--es','plugged','false')
+    shell('am','broadcast','-a','com.android.systemui.demo','--es','command','notifications','--es','visible','false')
+    # API 36 can show an emulator satellite icon even in SystemUI demo mode.
+    shell('cmd', 'statusbar', 'send-disable-flag', 'system-icons', 'notification-icons')
+    result = device('shell','am','instrument','-w','-e','class',
+        'cn.gd306.tideenglish.PlayStoreCaptureTest,cn.gd306.tideenglish.PlayFeatureGraphicTest,cn.gd306.tideenglish.LargeTypeOnboardingTest,'
+        'cn.gd306.tideenglish.CaptionParityTest#mandarinCaptionToggleAndContextualLookupMatchIOS,'
+        'cn.gd306.tideenglish.CaptionParityTest#spanishCaptionAndContextualLookupMatchIOS',
+        'cn.gd306.tideenglish.android.uitest.test/androidx.test.runner.AndroidJUnitRunner', check=False, timeout=180)
+    (work/'capture-test.log').write_bytes(result.stdout + result.stderr)
+    print(result.stdout.decode(), flush=True)
+    assert b'OK (9 tests)' in result.stdout, 'Capture and layout tests did not all pass.'
+    captures = [
+        ('play-store', '02-conversation.png', '01-conversation.png'),
+        ('caption-parity', 'spanish-lookup.png', '02-word-meaning.png'),
+        ('play-store', 'listing-03-mandarin.png', '03-mandarin.png'),
+        ('play-store', '03-themes.png', '04-themes.png'),
+        ('play-store', '04-words.png', '05-words.png'),
+        ('play-store', 'listing-07-history-detail.png', '06-conversation-history.png'),
+        ('play-store', 'listing-08-italian.png', '07-italian.png'),
+        ('play-store', '05-languages.png', '08-languages.png'),
+    ]
+    for source, name, final_name in captures:
+        png = device('exec-out','run-as','cn.gd306.tideenglish.android.uitest','cat',f'files/{source}/{name}').stdout
+        assert png.startswith(b'\x89PNG\r\n\x1a\n')
+        assert (int.from_bytes(png[16:20], 'big'), int.from_bytes(png[20:24], 'big')) == (1080, 1920)
+        assert png[25] == 2, 'Play phone screenshots must be opaque RGB PNGs.'
+        raw = Path('assets/raw/en-US')/name
+        output = Path('assets/en-US')/final_name
+        asset_payloads.extend([(raw, png), (output, png)])
+        evidence['assets'].append({'path':str(output), 'source':str(raw),
+                                   'sha256':hashlib.sha256(png).hexdigest(),'bytes':len(png)})
+    feature = device('exec-out','run-as','cn.gd306.tideenglish.android.uitest','cat','files/play-store/feature-graphic.png').stdout
+    assert feature.startswith(b'\x89PNG\r\n\x1a\n')
+    assert (int.from_bytes(feature[16:20], 'big'), int.from_bytes(feature[20:24], 'big')) == (1024, 500)
+    assert feature[25] == 2
+    feature_path = Path('assets/feature-graphic.png')
+    asset_payloads.append((feature_path, feature))
+    evidence['assets'].append({'path':str(feature_path),
+                               'sha256':hashlib.sha256(feature).hexdigest(),'bytes':len(feature)})
+finally:
+    device('shell','cmd','statusbar','send-disable-flag','none',check=False)
+    device('shell','am','broadcast','-a','com.android.systemui.demo','--es','command','exit',check=False)
+    if original['demoAllowed']=='null':
+        device('shell','settings','delete','global','sysui_demo_allowed',check=False)
+    else:
+        device('shell','settings','put','global','sysui_demo_allowed',original['demoAllowed'],check=False)
+    device('shell','wm','size','reset',check=False)
+    device('shell','wm','density','reset',check=False)
+    device('shell','am','start','--user','0','-n','cn.gd306.tideenglish.android/cn.gd306.tideenglish.MainActivity',check=False)
+    evidence['restoredDeviceSettings']={'size':shell('wm','size'),'density':shell('wm','density'),
+        'user':shell('am','get-current-user'),'fontScale':shell('settings','get','system','font_scale'),
+        'demoAllowed':shell('settings','get','global','sysui_demo_allowed')}
+    evidence['testLogSHA256'] = digest(work/'capture-test.log') if (work/'capture-test.log').exists() else None
+
+# Publish the images and evidence together after every capture passed and the
+# emulator was restored. A failed run leaves the last successful set intact.
+assert len(evidence['assets']) == 9, 'Incomplete Play capture.'
+assert evidence['restoredDeviceSettings'] == {key: original[key] for key in
+    ('size', 'density', 'user', 'fontScale', 'demoAllowed')}, 'Emulator settings were not restored.'
+evidence_path = output_root/'assets'/'capture-evidence.json'
+asset_payloads.append((Path('assets/capture-evidence.json'), (json.dumps(evidence,indent=2)+'\n').encode()))
+publish_capture_assets(output_root, asset_payloads)
+print('Capture evidence: ' + str(evidence_path), flush=True)

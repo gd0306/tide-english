@@ -1,0 +1,3 @@
+REVOKE ALL ON hosted_voice_final_usage,provider_reconciliation_health FROM tideenglish_runtime;
+GRANT SELECT,INSERT ON hosted_voice_final_usage TO tideenglish_runtime;
+GRANT SELECT,INSERT,UPDATE ON provider_reconciliation_health TO tideenglish_runtime;

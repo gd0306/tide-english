@@ -1,0 +1,9 @@
+Tide English includes MIT-licensed language-learning software originally
+copyright (c) 2026 Hackmamba. Its source foundation is locally customized
+snapshot 2fa9a7c, including personal-provider, presentation, vocabulary and
+account features. This independent project reorganizes and renames that
+implementation; it does not claim exclusive authorship of the foundation.
+
+The original MIT copyright and license remain in LICENSE. Third-party
+notices are retained with native applications and service dependencies.
+Branding changes do not alter those obligations.

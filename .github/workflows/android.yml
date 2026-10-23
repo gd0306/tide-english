@@ -1,0 +1,76 @@
+name: Android
+on:
+  push:
+    branches: [main]
+    paths: ['mobile/android/**', 'packages/**', '.github/workflows/android.yml']
+  pull_request:
+    paths: ['mobile/android/**', 'packages/**', '.github/workflows/android.yml']
+permissions:
+  contents: read
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install pinned SDK components
+        run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - name: Test and build the personal application
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon --max-workers=2 :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleUiTestAndroidTest
+      - name: Compile opt-in voice checks without running calls
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon --max-workers=2 -Ptideenglish.liveDeviceVerification=true -Ptideenglish.apiOrigin=https://verification.invalid -Ptideenglish.minutePurchasesEnabled=false :app:assembleVoiceVerification :app:assembleVoiceVerificationAndroidTest
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tide-english-android-debug
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: tide-english-android-reports
+          path: mobile/android/app/build/reports/
+          retention-days: 14
+  interface:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - run: sudo chmod a+rw /dev/kvm
+      - name: Run isolated interface checks in two processes
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          disable-animations: true
+          emulator-options: -no-window -no-snapshot -no-audio -no-boot-anim -gpu lavapipe
+          working-directory: mobile/android
+          script: |
+            ./gradlew --no-daemon --max-workers=2 :app:connectedUiTestAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=cn.gd306.tideenglish.CaptionParityTest
+            ./gradlew --no-daemon --max-workers=2 :app:connectedUiTestAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=cn.gd306.tideenglish.TidePresentationTest,cn.gd306.tideenglish.TideSettingsFlowTest,cn.gd306.tideenglish.network.ProviderCredentialScopeTest,cn.gd306.tideenglish.TideEnglishOnboardingTest,cn.gd306.tideenglish.SettingsDetailsTest,cn.gd306.tideenglish.SettingsParityTest,cn.gd306.tideenglish.TypedReplySheetTest,cn.gd306.tideenglish.TestIsolationTest,cn.gd306.tideenglish.LearningRepositoryTest,cn.gd306.tideenglish.network.NativeCompatibilityTest,cn.gd306.tideenglish.VoiceBackgroundTest,cn.gd306.tideenglish.ConversationPolicyTest,cn.gd306.tideenglish.CaptionFlashcardExperienceTest,cn.gd306.tideenglish.LargeTypeOnboardingTest,cn.gd306.tideenglish.OpenSourceNoticesTest,cn.gd306.tideenglish.StartupErrorTest,cn.gd306.tideenglish.TideEnglishSplashTest
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: tide-english-interface-reports
+          path: mobile/android/app/build/reports/androidTests/
+          retention-days: 14

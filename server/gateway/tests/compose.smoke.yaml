@@ -1,0 +1,48 @@
+# Isolated local smoke stack. No production environment or public listener.
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: tideenglish_container_test
+      POSTGRES_USER: tideenglish_test
+      POSTGRES_PASSWORD: isolated-smoke-test-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tideenglish_test -d tideenglish_container_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    volumes:
+      - smoke_data:/var/lib/postgresql/data
+  migrate:
+    image: tideenglish-server-smoke:local
+    build: ..
+    environment:
+      DATABASE_URL: postgresql://tideenglish_test:isolated-smoke-test-only@database:5432/tideenglish_container_test
+    command: ["node", "dist/src/migrate.js"]
+    depends_on:
+      database:
+        condition: service_healthy
+  api:
+    image: tideenglish-server-smoke:local
+    build: ..
+    environment:
+      DATABASE_URL: postgresql://tideenglish_test:isolated-smoke-test-only@database:5432/tideenglish_container_test
+      PUBLIC_ORIGIN: http://localhost:8080
+    ports: ["127.0.0.1::8080"]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  tests:
+    image: tideenglish-server-smoke:local
+    environment:
+      TEST_DATABASE_URL: postgresql://tideenglish_test:isolated-smoke-test-only@database:5432/tideenglish_container_test
+    command: ["sh", "-c", "node --test --test-concurrency=1 dist/tests/*.test.js"]
+    depends_on:
+      database:
+        condition: service_healthy
+volumes:
+  smoke_data:

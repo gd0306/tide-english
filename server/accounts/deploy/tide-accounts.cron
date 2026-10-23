@@ -1,0 +1,5 @@
+# Root crontab; helpers suppress raw errors. Fixed dedicated paths only.
+# CentOS has old /usr/bin/openssl; the verified PBKDF2 build is /usr/local/bin.
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+17 3,15 * * * root /usr/bin/flock -n /opt/tide-accounts/renew.lock /usr/bin/python3 /opt/tide-accounts/ops.py renew > /opt/tide-accounts/renew.status 2>&1
+43 2 * * * root /usr/bin/flock -n /opt/tide-accounts/backup.lock /usr/bin/python3 /opt/tide-accounts/ops.py backup > /opt/tide-accounts/backup.status 2>&1

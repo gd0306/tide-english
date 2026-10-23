@@ -1,0 +1,155 @@
+import { Diagnostics } from './diagnostics.js';
+import { ServiceError } from './errors.js';
+import { finalizeDeferredGuestLinks } from './guest-minutes.js';
+import { createApp } from './app.js';
+import { connectDatabase } from './db.js';
+import { catalogFromEnvironment, SandboxPayments } from './payments.js';
+import { hasGoogleSignIn, pruneAuthenticationRecords } from './auth.js';
+import { readFile } from 'node:fs/promises';
+import { AppleTokenRevoker } from './apple-revocation.js';
+import { HostedVoice } from './hosted-voice.js';
+import { OpenAILiveProvider } from './live-provider.js';
+import { AccessRequests, accessRequestConfig, pruneAccessRequests } from './access-requests.js';
+import { AuthAdmission, accountAdmissionConfig } from './auth-admission.js';
+import { AIReports, aiReportConfig, pruneAIReports } from './feedback.js';
+import { configuredMinuteCommerce } from './minute-commerce-config.js';
+import { HostedHelpers } from './hosted-helpers.js';
+import { OpenAIHostedResponses } from './hosted-responses-transport.js';
+import { InstallationGuestMinuteAttestor } from './guest-minutes.js';
+import { webPurchaseConfig } from './web-purchase-config.js';
+import { ResendPurchaseEmails } from './web-purchase-email.js';
+import { WebPurchases } from './web-purchases.js';
+
+const diagnostics = new Diagnostics(record => { console.log(JSON.stringify(record)); });
+const databaseURL = process.env.DATABASE_URL;
+if (!databaseURL) { diagnostics.record('service_failed', { operation: 'startup.database_configuration' }); process.exit(1); }
+const db = connectDatabase(databaseURL);
+let hosted: HostedVoice | undefined;
+let hostedHelpers: HostedHelpers | undefined;
+let minuteCommerce: Awaited<ReturnType<typeof configuredMinuteCommerce>>;
+try {
+  const origin = new URL(process.env.PUBLIC_ORIGIN ?? 'http://localhost:8080');
+  if (origin.username || origin.password || (origin.protocol !== 'https:' && !(origin.protocol === 'http:' && origin.hostname === 'localhost')))
+    throw new Error();
+  const key = process.env.STRIPE_TEST_SECRET_KEY, secret = process.env.STRIPE_TEST_WEBHOOK_SECRET;
+  const payments = key && secret ? new SandboxPayments(key, secret, catalogFromEnvironment(process.env), origin.origin) : undefined;
+  const appleClient = process.env.APPLE_CLIENT_ID, appleTeam = process.env.APPLE_TEAM_ID,
+    appleKey = process.env.APPLE_KEY_ID, appleFile = process.env.APPLE_PRIVATE_KEY_PATH;
+  const appleRevoker = appleClient && appleTeam && appleKey && appleFile ? new AppleTokenRevoker(db,
+    { clientID: appleClient, teamID: appleTeam, keyID: appleKey, privateKeyPEM: await readFile(appleFile, 'utf8') }) : undefined;
+  await appleRevoker?.validateConfiguration();
+  minuteCommerce = await configuredMinuteCommerce(db, process.env, { onFailure: (code, providerStatus, scope) =>
+    diagnostics.record('background_failed', { operation: scope ? `commerce.reconcile.${scope.provider}.${scope.environment}` : 'commerce.reconcile', providerStatus }, new ServiceError(code)),
+    onPlayNotificationHandled: eventType => diagnostics.record('provider_completed', { operation: `play.notification.${eventType}` }) });
+  const deploymentEnvironment=(await db.query('SELECT environment FROM deployment_environment WHERE singleton')).rows[0]?.environment;
+  if (!['live','test'].includes(deploymentEnvironment)) throw new Error('Missing deployment environment.');
+  if (deploymentEnvironment==='test' && (origin.origin!=='https://sandbox-api.tide-english.example' ||
+      new URL(databaseURL).pathname!=='/tideenglish_sandbox' || minuteCommerce?.environment!=='test'))
+    throw new Error('Sandbox funding requires the isolated sandbox database, origin and commerce bindings.');
+  if (deploymentEnvironment==='live' && origin.hostname==='sandbox-api.tide-english.example') throw new Error('Sandbox database was not provisioned.');
+  const accessMode = process.env.HOSTED_VOICE_ACCESS ?? 'restricted-test';
+  if (!['restricted-test','public-minutes'].includes(accessMode)) throw new Error('Invalid hosted access mode.');
+  const publicMinuteAccess = accessMode==='public-minutes';
+  if (process.env.HOSTED_PAID_VALUE_ENABLED && !['true','false'].includes(process.env.HOSTED_PAID_VALUE_ENABLED))
+    throw new Error('Invalid paid AI value gate.');
+  const publicPaidAccess = process.env.HOSTED_PAID_VALUE_ENABLED === 'true';
+  if (publicPaidAccess && (!publicMinuteAccess || process.env.HOSTED_HELPERS_EXPERIMENTAL !== 'true' ||
+      process.env.HOSTED_VOICE_EXPERIMENTAL !== 'true')) throw new Error('Paid AI value requires public hosted voice and teaching.');
+  if (minuteCommerce?.salesEnabled && !publicPaidAccess) throw new Error('AI value sales require a configured paid conversation service.');
+  if (process.env.GUEST_MINUTES_ENABLED && !['true','false'].includes(process.env.GUEST_MINUTES_ENABLED))
+    throw new Error('Invalid guest minute gate.');
+  if (process.env.HOSTED_HELPERS_EXPERIMENTAL && !['true', 'false'].includes(process.env.HOSTED_HELPERS_EXPERIMENTAL))
+    throw new Error('Invalid helper gate.');
+  if (process.env.HOSTED_HELPERS_EXPERIMENTAL === 'true' &&
+    (process.env.HOSTED_VOICE_EXPERIMENTAL !== 'true' || process.env.HOSTED_VOICE_BILLING_UNIT !== 'milliseconds'))
+    throw new Error('Hosted helpers require minute-funded voice.');
+  if (process.env.HOSTED_VOICE_EXPERIMENTAL === 'true') {
+    const billingUnit = process.env.HOSTED_VOICE_BILLING_UNIT ?? 'nanoUSD';
+    if (billingUnit !== 'nanoUSD' && billingUnit !== 'milliseconds') throw new Error('Invalid hosted billing unit.');
+    const accounts = new Set((process.env.HOSTED_VOICE_ACCOUNT_ALLOWLIST ?? '').split(',').filter(Boolean));
+    if ([...accounts].some(account => !/^[a-f0-9-]{36}$/.test(account))) throw new Error();
+    const lifetimeFundingCapNano = BigInt(process.env.HOSTED_VOICE_LIFETIME_CAP_NANO ?? '0');
+    if (process.env.HOSTED_HELPERS_EXPERIMENTAL === 'true') {
+      hostedHelpers = new HostedHelpers(db, new OpenAIHostedResponses(process.env.OPENAI_API_KEY ?? '', fetch, diagnostics), {
+        accountAllowlist: accounts, aggregateFundingCapNano: lifetimeFundingCapNano,publicMinuteAccess,publicPaidAccess,
+        restrictToAllowlist:deploymentEnvironment==='test',
+        helperBudgetNanoPerMinute: BigInt(process.env.HOSTED_HELPER_BUDGET_PER_MINUTE_NANO ?? '50000000'),
+        maxRequestsPerMinute: Number(process.env.HOSTED_HELPER_REQUESTS_PER_MINUTE ?? '24'),
+        maxSearchesPerSession: Number(process.env.HOSTED_HELPER_SEARCHES_PER_SESSION ?? '0'),
+        maxConcurrentPerSession: 2, maxConcurrentGlobal: 10, postSessionMilliseconds: 120_000,
+        inputFramingTokenAllowance: 4096, searchInputTokenAllowance: 1_050_000, timeoutMilliseconds: 30_000,
+      });
+      await hostedHelpers.expireBudgets();
+    }
+    hosted = new HostedVoice(db, new OpenAILiveProvider(process.env.OPENAI_API_KEY ?? '', { diagnostics }),
+      { accountAllowlist: accounts, billingUnit, lifetimeFundingCapNano,publicMinuteAccess,publicPaidAccess, helpers: hostedHelpers,
+        restrictToAllowlist:deploymentEnvironment==='test',
+        maximumSessionMilliseconds:deploymentEnvironment==='test'?60_000:undefined,
+        diagnostics });
+    await hosted.start();
+  }
+  const accessConfig = accessRequestConfig(process.env);
+  const accessRequests = accessConfig ? new AccessRequests(db, accessConfig) : undefined;
+  const accountsConfig = accountAdmissionConfig(process.env);
+  const accounts = accountsConfig ? { admission: new AuthAdmission(db, accountsConfig) } : undefined;
+  const webConfig = await webPurchaseConfig(process.env);
+  if (webConfig && (deploymentEnvironment !== 'live' || !accountsConfig || minuteCommerce?.environment !== 'live' ||
+      !minuteCommerce.salesEnabled || minuteCommerce.stripe?.environment !== 'live' ||
+      !minuteCommerce.aiPurchases.products('stripe','live').length))
+    throw new Error('Website purchases require live Stripe sales and trusted account admission.');
+  const webPurchases = webConfig && accountsConfig ? new WebPurchases(db,webConfig,accountsConfig,
+    new ResendPurchaseEmails(webConfig),retryable => diagnostics.record('background_failed',
+      { operation:retryable?'web_purchase.email_retry':'web_purchase.email_rejected' })) : undefined;
+  if (process.env.GUEST_MINUTES_ENABLED==='true' && (!accounts || !hosted?.publicMinuteAccess || !hostedHelpers))
+    throw new Error('Guest minutes require public minute voice, teaching and trusted admission.');
+  const guestMinuteAttestor = process.env.GUEST_MINUTES_ENABLED==='true' ? new InstallationGuestMinuteAttestor() : undefined;
+  const reportConfig = aiReportConfig(process.env);
+  const aiReports = reportConfig ? new AIReports(db, reportConfig) : undefined;
+  await pruneAccessRequests(db);
+  await pruneAuthenticationRecords(db);
+  await pruneAIReports(db);
+  await webPurchases?.prune();
+  const googleAndroidClientIDs = (process.env.GOOGLE_ANDROID_CLIENT_IDS ?? '').split(',').map(id => id.trim()).filter(Boolean);
+  const googleIOSClientIDs = (process.env.GOOGLE_IOS_CLIENT_IDS ?? '').split(',').map(id => id.trim()).filter(Boolean);
+  const googleAndroidServerClientID = process.env.GOOGLE_ANDROID_SERVER_CLIENT_ID;
+  if (Boolean(googleAndroidServerClientID) !== Boolean(googleAndroidClientIDs.length) || googleAndroidClientIDs.length > 10 ||
+    [googleAndroidServerClientID, ...googleAndroidClientIDs].filter(Boolean).some(id => !/^[A-Za-z0-9-]+\.apps\.googleusercontent\.com$/.test(id!)))
+    throw new Error('Android Google identity configuration is incomplete.');
+  if (googleIOSClientIDs.length > 5 || googleIOSClientIDs.some(id => !/^[A-Za-z0-9-]+\.apps\.googleusercontent\.com$/.test(id)))
+    throw new Error('iOS Google identity configuration is invalid.');
+  if (accounts && !hasGoogleSignIn({ googleClientID: process.env.GOOGLE_CLIENT_ID, googleIOSClientIDs, googleAndroidServerClientID, googleAndroidClientIDs }) &&
+    !(appleClient && appleRevoker)) throw new Error('No account identity provider configured.');
+  const app = createApp({ db, auth: { googleClientID: process.env.GOOGLE_CLIENT_ID, googleIOSClientIDs, appleClientID: appleClient,
+    googleAndroidServerClientID, googleAndroidClientIDs }, payments, appleRevoker, hosted, hostedHelpers,
+    minuteCommerce, accessRequests, accounts, aiReports,guestMinuteAttestor,webPurchases,
+    diagnostics });
+  const cleanup = setInterval(() => {
+    void pruneAuthenticationRecords(db).catch(error => { diagnostics.record('background_failed', { operation: 'retention.accounts' }, error); });
+    void pruneAccessRequests(db).catch(error => { diagnostics.record('background_failed', { operation: 'retention.access_requests' }, error); });
+    void pruneAIReports(db).catch(error => { diagnostics.record('background_failed', { operation: 'retention.reports' }, error); });
+    void webPurchases?.prune().catch(error => { diagnostics.record('background_failed', { operation: 'retention.web_purchases' }, error); });
+  }, 15 * 60_000);
+  cleanup.unref();
+  const helperExpiry=setInterval(()=>{
+    void hostedHelpers?.expireBudgets().catch(error=>{diagnostics.record('background_failed',{operation:'helpers.expire'},error);});
+  },15_000);helperExpiry.unref();
+  let guestLinkFlight:Promise<unknown>|undefined;
+  const retryGuestLinks=()=>{if(!guestLinkFlight)guestLinkFlight=finalizeDeferredGuestLinks(db)
+    .catch(error=>{diagnostics.record('background_failed', { operation: 'guest.transfer' }, error);}).finally(()=>{guestLinkFlight=undefined;});};
+  const guestLinkCleanup=setInterval(retryGuestLinks,60_000);guestLinkCleanup.unref();retryGuestLinks();
+  const emailDelivery = setInterval(() => {
+    void webPurchases?.drainDeliveries().catch(error => { diagnostics.record('background_failed',{operation:'web_purchase.email_delivery'},error); });
+  },1000); emailDelivery.unref();
+  const close = async () => {
+    clearInterval(cleanup);clearInterval(helperExpiry);clearInterval(guestLinkCleanup);clearInterval(emailDelivery);
+    await guestLinkFlight; await app.close(); await webPurchases?.drainDeliveries(); await hosted?.stop(); await minuteCommerce?.runner.stop();
+    await db.end(); process.exit(0);
+  };
+  process.on('SIGTERM', close); process.on('SIGINT', close);
+  await app.listen({ port: Number(process.env.PORT ?? 8080), host: '0.0.0.0' });
+  minuteCommerce?.runner.start();
+  diagnostics.record('service_started', { operation: 'startup' });
+} catch (error) {
+  diagnostics.record('service_failed', { operation: 'startup' }, error);
+  await hosted?.stop(); await minuteCommerce?.runner.stop(); await db.end(); process.exitCode = 1;
+}

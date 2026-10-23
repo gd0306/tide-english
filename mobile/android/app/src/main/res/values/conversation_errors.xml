@@ -1,0 +1,13 @@
+<resources>
+    <string name="error_provider_quota">OpenAI billing needs attention. Check your billing and limits, or use Tide English minutes.</string>
+    <string name="error_provider_unavailable">The voice or teaching service is temporarily unavailable. Please try again shortly.</string>
+    <string name="error_provider_request">The service could not accept this request. If this continues, contact support.</string>
+    <string name="error_request_timeout">The request took too long. Check your connection and try again.</string>
+    <string name="error_request_connection">Tide English could not connect. Check your internet connection and try again.</string>
+    <string name="error_provider_reference">OpenAI reference: %1$s</string>
+    <string name="hosted_help_busy">Another explanation is still being prepared. Wait a moment, then try again.</string>
+    <string name="hosted_help_funding">There is not enough available balance for this explanation. Check your balance in Account.</string>
+    <string name="hosted_balance_checking">Tide English is still checking your balance after an earlier request. Please try again shortly.</string>
+    <string name="talk_inactivity_warning">Ending in %1$ds\nReply to continue</string>
+    <string name="talk_meaning_too_long">This caption is too long to translate in one request. Meaning will resume with the next reply.</string>
+</resources>

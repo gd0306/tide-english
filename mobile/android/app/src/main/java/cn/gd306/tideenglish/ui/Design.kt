@@ -1,0 +1,279 @@
+package cn.gd306.tideenglish.ui
+
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import cn.gd306.tideenglish.ui.tideStringResource as stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import cn.gd306.tideenglish.R
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
+
+val LocalInterfaceTheme = androidx.compose.runtime.staticCompositionLocalOf { InterfaceTheme.PAPER }
+
+object TideEnglishColors {
+    private val paperPalette = listOf(0xFFF5F1E8,0xFF262820,0xFF62665A,0xFF445548,0xFFFFFCF5,0xFFE8E6DA,0xFFEBE5D8,0xFFE3E7DB,0xFFEEE8D9).map { Color(it) }
+    private val midnightPalette = listOf(0xFF20221F,0xFFEEEADF,0xFFBCBBAF,0xFFD6B77A,0xFF2C2F29,0xFF353A31,0xFF36352E,0xFF30392F,0xFF3A352A).map { Color(it) }
+    private val grovePalette = listOf(0xFFEDF2E9,0xFF263D31,0xFF566B5B,0xFF4F715A,0xFFF8FAF4,0xFFDFE8D9,0xFFE3EADA,0xFFDCE7D8,0xFFE7ECDB).map { Color(it) }
+    private val palette: List<Color> @Composable get() = when (LocalInterfaceTheme.current) {
+        InterfaceTheme.PAPER -> paperPalette
+        InterfaceTheme.MIDNIGHT -> midnightPalette
+        InterfaceTheme.GROVE -> grovePalette
+    }
+    val Cream: Color @Composable get() = palette[0]
+    val CreamRaised: Color @Composable get() = palette[4]
+    val Surface: Color @Composable get() = palette[4]
+    val SurfaceBright: Color @Composable get() = palette[5]
+    val Ink: Color @Composable get() = palette[1]
+    val Secondary: Color @Composable get() = palette[2]
+    val Orange: Color @Composable get() = palette[3]
+    val Peach: Color @Composable get() = palette[5]
+    val Lilac: Color @Composable get() = palette[6]
+    val Sage: Color @Composable get() = palette[7]
+    val Butter: Color @Composable get() = palette[8]
+    val Red: Color @Composable get() = if (LocalInterfaceTheme.current == InterfaceTheme.MIDNIGHT) Color(0xFFFFB4A8) else Color(0xFFB34B3F)
+    val Panels: List<Color> @Composable get() = listOf(Peach, Lilac, Sage, Butter)
+}
+
+@Composable
+private fun tideenglishScheme() = (if (LocalInterfaceTheme.current == InterfaceTheme.MIDNIGHT) androidx.compose.material3.darkColorScheme() else lightColorScheme()).copy(
+    primary = TideEnglishColors.Orange, onPrimary = if (LocalInterfaceTheme.current == InterfaceTheme.MIDNIGHT) TideEnglishColors.Cream else Color.White,
+    primaryContainer = TideEnglishColors.Peach, onPrimaryContainer = TideEnglishColors.Ink,
+    secondary = TideEnglishColors.Secondary, background = TideEnglishColors.Cream, onBackground = TideEnglishColors.Ink,
+    surface = TideEnglishColors.Surface, onSurface = TideEnglishColors.Ink, surfaceVariant = TideEnglishColors.SurfaceBright,
+    onSurfaceVariant = TideEnglishColors.Secondary, error = TideEnglishColors.Red,
+)
+
+@OptIn(androidx.compose.ui.text.ExperimentalTextApi::class)
+val TideEnglishRounded = FontFamily(
+    *listOf(400, 500, 600, 700, 800).map { weight ->
+        androidx.compose.ui.text.font.Font(R.font.nunito, FontWeight(weight),
+            variationSettings = androidx.compose.ui.text.font.FontVariation.Settings(
+                androidx.compose.ui.text.font.FontVariation.weight(weight)))
+    }.toTypedArray(),
+)
+
+private fun rounded(size: Int, height: Int, weight: FontWeight = FontWeight.Normal, tracking: Float = 0f) =
+    TextStyle(fontFamily = TideEnglishRounded, fontSize = size.sp, lineHeight = height.sp, fontWeight = weight, letterSpacing = tracking.sp)
+
+private val TideEnglishTypography = Typography(
+    displayLarge = rounded(60, 72, FontWeight.Medium, -2f),
+    displayMedium = rounded(48, 56, FontWeight.Medium, -1.5f),
+    displaySmall = rounded(38, 44, FontWeight.Medium, -1f),
+    headlineLarge = rounded(34, 39, FontWeight.SemiBold, -1f),
+    headlineMedium = rounded(27, 33, FontWeight.Medium, -.5f),
+    headlineSmall = rounded(24, 30, FontWeight.SemiBold, -.4f),
+    titleLarge = rounded(22, 28, FontWeight.SemiBold, -.35f),
+    titleMedium = rounded(17, 23, FontWeight.SemiBold),
+    titleSmall = rounded(15, 21, FontWeight.SemiBold),
+    bodyLarge = rounded(17, 25),
+    bodyMedium = rounded(15, 22),
+    bodySmall = rounded(13, 18),
+    labelLarge = rounded(16, 22, FontWeight.SemiBold),
+    labelMedium = rounded(13, 18, FontWeight.SemiBold),
+    labelSmall = rounded(11, 15, FontWeight.Medium),
+)
+
+@Composable
+fun TideEnglishTheme(content: @Composable () -> Unit) {
+    MaterialTheme(colorScheme = tideenglishScheme(), typography = TideEnglishTypography,
+        shapes = androidx.compose.material3.Shapes(
+            extraSmall = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+            small = androidx.compose.foundation.shape.RoundedCornerShape(18.dp),
+            medium = androidx.compose.foundation.shape.RoundedCornerShape(22.dp),
+            large = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
+            extraLarge = androidx.compose.foundation.shape.RoundedCornerShape(36.dp)), content = content)
+}
+
+@Composable
+fun Brand(modifier: Modifier = Modifier) {
+    Row(modifier = modifier.semantics(mergeDescendants = true) { contentDescription = "Tide English" },
+        horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(17.dp).background(Brush.radialGradient(
+            listOf(TideEnglishColors.Butter, TideEnglishColors.Orange), center = Offset.Zero, radius = 48f), CircleShape))
+        Text("Tide English", style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 24.sp, fontWeight = FontWeight.Medium, letterSpacing = (-.6).sp), color = TideEnglishColors.Ink)
+    }
+}
+
+@Composable
+fun PageHeading(eyebrow: String, title: String, subtitle: String = "", modifier: Modifier = Modifier) {
+    androidx.compose.foundation.layout.Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(eyebrow.uppercase(), style = MaterialTheme.typography.labelSmall, color = TideEnglishColors.Secondary, letterSpacing = 1.5.sp)
+        Text(title, style = MaterialTheme.typography.headlineLarge)
+        if (subtitle.isNotBlank()) Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = TideEnglishColors.Secondary)
+    }
+}
+
+/** Motion follows the app lifecycle and Android's system animation setting. */
+@Composable
+internal fun tideenglishPhase(active: Boolean = true, slow: Boolean = false): Float {
+    val owner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    var foreground by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(
+        owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) }
+    var animations by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(android.animation.ValueAnimator.areAnimatorsEnabled()) }
+    androidx.compose.runtime.DisposableEffect(owner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, _ ->
+            foreground = owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
+            animations = android.animation.ValueAnimator.areAnimatorsEnabled()
+        }
+        owner.lifecycle.addObserver(observer)
+        onDispose { owner.lifecycle.removeObserver(observer) }
+    }
+    if (!active || !foreground || !animations || cn.gd306.tideenglish.BuildConfig.BUILD_TYPE == "uiTest") return 0f
+    val phase by rememberInfiniteTransition(label = "TideEnglish motion").animateFloat(
+        initialValue = 0f, targetValue = (PI * 40).toFloat(),
+        animationSpec = infiniteRepeatable(tween(if (slow) 897_597 else 174_533,
+            easing = androidx.compose.animation.core.LinearEasing), RepeatMode.Restart), label = "TideEnglish phase")
+    return phase
+}
+
+@Composable
+fun SoftAnimatedBackground(modifier: Modifier = Modifier) {
+    val phase = tideenglishPhase(slow = true)
+    val colors = listOf(TideEnglishColors.Cream, TideEnglishColors.Butter, TideEnglishColors.Peach, TideEnglishColors.Lilac, TideEnglishColors.Orange)
+    Canvas(modifier) {
+        drawRect(colors[0])
+        drawRect(Brush.radialGradient(listOf(colors[1].copy(alpha = .55f), colors[1].copy(alpha = 0f)),
+            Offset(size.width * (.32f + sin(phase) * .10f), size.height * .22f), size.width * .85f))
+        drawRect(Brush.radialGradient(listOf(colors[2].copy(alpha = .70f), colors[2].copy(alpha = 0f)),
+            Offset(size.width * (.52f + cos(phase) * .12f), size.height * (.47f + sin(phase) * .04f)), size.width * .9f))
+        drawRect(Brush.radialGradient(listOf(colors[3].copy(alpha = .45f), colors[3].copy(alpha = 0f)),
+            Offset(size.width * .95f, size.height * (.56f + cos(phase) * .06f)), size.width * .8f))
+    }
+}
+
+@Composable
+fun TideEnglishOrb(energy: Float = 0f, listening: Boolean = false, active: Boolean = true, modifier: Modifier = Modifier) {
+    val phase = tideenglishPhase(active)
+    val power = if (android.animation.ValueAnimator.areAnimatorsEnabled()) energy.coerceIn(0f, 1f) else 0f
+    val shader = androidx.compose.runtime.remember {
+        if (android.os.Build.VERSION.SDK_INT >= 33) OrbMesh() else null
+    }
+    val colors = listOf(TideEnglishColors.Cream, TideEnglishColors.Butter, TideEnglishColors.Peach, TideEnglishColors.Lilac, TideEnglishColors.Orange)
+    Canvas(modifier) {
+        // Reserve room for the moving outline and satellites at every rendered size.
+        val side = minOf(size.width, size.height) * .84f
+        val center = Offset(size.width / 2, size.height / 2 - side * .015f + sin(phase * 1.25f) * side * .008f)
+        // A broad feathered shadow, with no hard ellipse underneath the orb.
+        withTransform({
+            translate(size.width / 2, size.height * .94f); scale(1f, .17f, Offset.Zero)
+        }) {
+            drawCircle(Brush.radialGradient(listOf(colors[4].copy(alpha = .18f), colors[4].copy(alpha = 0f)),
+                center = Offset.Zero, radius = side * .40f), side * .40f, Offset.Zero)
+        }
+        if (listening) {
+            drawCircle(colors[4].copy(alpha = .15f), side * .50f, center, style = Stroke(1.dp.toPx()))
+            drawCircle(colors[4].copy(alpha = .08f), side * .54f, center, style = Stroke(1.dp.toPx()))
+        }
+        val points = (0 until 12).map { index ->
+            val a = index / 12f * PI.toFloat() * 2
+            val wave = sin(a * 3 + phase) * .021f + cos(a * 2 - phase * .7f) * (.012f + power * .025f)
+            val r = side * (.47f + wave) * (1 + power * .045f)
+            Offset(center.x + cos(a) * r, center.y + sin(a) * r)
+        }
+        val path = Path().apply {
+            val start = (points.last() + points.first()) / 2f
+            moveTo(start.x, start.y)
+            points.forEachIndexed { index, p ->
+                val next = (p + points[(index + 1) % 12]) / 2f
+                quadraticTo(p.x, p.y, next.x, next.y)
+            }
+            close()
+        }
+        if (android.os.Build.VERSION.SDK_INT >= 33 && shader != null) {
+            drawPath(path, shader.brush(size, phase))
+        } else {
+            clipPath(path) {
+                drawRect(Brush.linearGradient(listOf(colors[1], colors[4], Color(0xFFFDA079)), Offset.Zero, Offset(size.width * .45f, size.height)))
+                drawRect(Brush.radialGradient(listOf(Color(0xFFCDADEB), Color(0x00CDADEB)), Offset(size.width, size.height * .6f), side * .85f))
+                drawRect(Brush.radialGradient(listOf(Color(0x99FFF5D6), Color(0x00FFF5D6)), Offset(side * .22f, side * .2f), side * .5f))
+            }
+        }
+        val satelliteRadius = minOf(6.dp.toPx(), side * .025f)
+        drawCircle(Brush.radialGradient(listOf(Color.White, colors[2], colors[4].copy(alpha = .5f)),
+            Offset(center.x + side * .55f - satelliteRadius / 2, center.y - side * .24f - satelliteRadius / 2), satelliteRadius * 2),
+            satelliteRadius, Offset(center.x + side * .55f, center.y - side * .24f))
+        drawCircle(colors[2], satelliteRadius * .58f, Offset(center.x - side * .54f, center.y + side * .26f))
+    }
+}
+
+@androidx.annotation.RequiresApi(33)
+private class OrbMesh {
+    private val shader = android.graphics.RuntimeShader("""
+        uniform float2 resolution;
+        uniform float phase;
+        float3 row(float u, float3 a, float3 b, float3 c) {
+            return u < .5 ? mix(a,b,smoothstep(0.,.5,u)) : mix(b,c,smoothstep(.5,1.,u));
+        }
+        half4 main(float2 point) {
+            float2 uv = point / resolution;
+            uv.x += sin(phase) * .055 * sin(uv.y * 3.14159);
+            uv.y += cos(phase) * .035 * sin(uv.x * 3.14159);
+            float3 top = row(uv.x, float3(1.,.97,.82), float3(1.,.944,.78), float3(1.,.89,.81));
+            float3 middle = row(uv.x, float3(1.,.70,.42), float3(1.,.54,.30), float3(.80,.68,.93));
+            float3 bottom = row(uv.x, float3(.96,.42,.35), float3(.99,.62,.46), float3(.86,.75,.95));
+            float3 color = uv.y < .5 ? mix(top,middle,smoothstep(0.,.5,uv.y)) : mix(middle,bottom,smoothstep(.5,1.,uv.y));
+            float2 glow = (uv - float2(.28,.21)) / float2(.27,.12);
+            color = mix(color,float3(1.,1.,1.), .25 * exp(-dot(glow,glow)*1.5));
+            return half4(color,1.);
+        }
+    """.trimIndent())
+    private val cachedBrush = androidx.compose.ui.graphics.ShaderBrush(shader)
+    fun brush(size: Size, phase: Float): Brush {
+        shader.setFloatUniform("resolution", size.width, size.height)
+        shader.setFloatUniform("phase", phase)
+        return cachedBrush
+    }
+}
+
+@Composable
+fun RecallBars(count: Int, modifier: Modifier = Modifier) {
+    val desc = stringResource(R.string.words_recall_bars_desc, count)
+    Row(
+        modifier.semantics { contentDescription = desc },
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        repeat(3) { index ->
+            Spacer(
+                Modifier
+                    .size(width = 18.dp, height = 6.dp)
+                    .background(if (index < count) TideEnglishColors.Orange else TideEnglishColors.Peach, CircleShape),
+            )
+        }
+    }
+}

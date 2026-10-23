@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "scope": "internal-byok-preview",
+  "packageName": "cn.gd306.tideenglish.android",
+  "versionCode": 1,
+  "versionName": "1.0",
+  "candidate": {
+    "track": "internal",
+    "purchaseChannel": "disabled",
+    "purchaseEnvironment": "test",
+    "apiOrigin": "",
+    "productionEligible": false
+  },
+  "minSdk": 26,
+  "targetSdk": 36,
+  "metadataLocale": "en-US",
+  "branding": {
+    "iosIconSet": "mobile/ios/Application/Assets.xcassets/AppIcon.appiconset",
+    "iosIconFile": "TideEnglishIcon.png",
+    "androidIconFile": "mobile/android/app/src/main/res/drawable-nodpi/tideenglish_icon.png",
+    "androidManifest": "mobile/android/app/src/main/AndroidManifest.xml",
+    "androidAdaptiveIcon": "mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_tideenglish.xml",
+    "androidForeground": "mobile/android/app/src/main/res/drawable/ic_tideenglish_foreground.xml",
+    "iosDesignSource": "mobile/ios/Application/Design.swift",
+    "androidDesignSource": "mobile/android/app/src/main/java/cn/gd306/tideenglish/ui/Design.kt"
+  },
+  "requiredLicenses": [
+    "TideEnglish-LICENSE.txt",
+    "Apache-2.0.txt",
+    "Nunito-OFL.txt",
+    "THIRD-PARTY-NOTICES.txt",
+    "WebRTC-SDK-LICENSE.txt",
+    "WebRTC-THIRD-PARTY-NOTICES.md"
+  ],
+  "assets": {
+    "icon": "assets/icon.png",
+    "featureGraphic": "assets/feature-graphic.png",
+    "phoneScreenshots": [
+      "assets/screenshots/01-talk.png",
+      "assets/screenshots/02-vocabulary.png"
+    ]
+  }
+}

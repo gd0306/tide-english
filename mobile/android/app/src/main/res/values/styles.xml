@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.TideEnglish.Base" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/tideenglish_cream</item>
+        <item name="android:navigationBarColor">#362A22</item>
+        <item name="android:windowBackground">@color/tideenglish_cream</item>
+        <item name="android:colorAccent">#FF8A4D</item>
+    </style>
+    <style name="Theme.TideEnglish" parent="Theme.TideEnglish.Base" />
+</resources>

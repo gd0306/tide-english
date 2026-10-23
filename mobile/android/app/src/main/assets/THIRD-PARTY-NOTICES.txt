@@ -1,0 +1,46 @@
+Tide English for Android
+
+Tide English: MIT; see TideEnglish-LICENSE.txt.
+Nunito font: SIL Open Font License 1.1; see Nunito-OFL.txt.
+https://github.com/google/fonts/tree/main/ofl/nunito
+Google sign-in button artwork: Google branding guidelines and trademark rights apply.
+https://developers.google.com/identity/branding-guidelines
+AndroidX / Jetpack Compose (Google), Kotlin and kotlinx.coroutines/serialization (JetBrains),
+OkHttp and Okio (Square): Apache License 2.0; see Apache-2.0.txt and each upstream project.
+WebRTC Android package io.github.webrtc-sdk:android:150.7871.01:
+see WebRTC-SDK-LICENSE.txt and WebRTC-THIRD-PARTY-NOTICES.md for WebRTC and its included components.
+
+https://android.googlesource.com/platform/frameworks/support/
+https://github.com/JetBrains/kotlin
+https://github.com/Kotlin/kotlinx.coroutines
+https://github.com/Kotlin/kotlinx.serialization
+https://github.com/square/okhttp
+https://github.com/square/okio
+https://github.com/webrtc-sdk/android
+
+
+Mandarin phrase readings — phrase-pinyin-data
+https://github.com/mozillazg/phrase-pinyin-data
+Revision cee0ed6e6e4898580cafd2bd5e3723e20b214aa0; pinyin.txt (unmodified).
+
+MIT License
+
+Copyright (c) 2017 mozillazg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

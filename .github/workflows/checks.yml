@@ -1,0 +1,79 @@
+name: Native core and services
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  swift:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: swift test --package-path mobile/ios
+  gateway:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: server/gateway
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: tide_test
+          POSTGRES_PASSWORD: synthetic_ci_only
+          POSTGRES_DB: tide_gateway_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U tide_test -d tide_gateway_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://tide_test:synthetic_ci_only@localhost:5432/tide_gateway_test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run build
+      - run: npm test
+  accounts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: server/accounts
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: tide_test
+          POSTGRES_PASSWORD: synthetic_ci_only
+          POSTGRES_DB: tide_accounts_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U tide_test -d tide_accounts_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      ACCOUNTS_TEST_DATABASE_URL: postgresql://tide_test:synthetic_ci_only@localhost:5432/tide_accounts_test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm test

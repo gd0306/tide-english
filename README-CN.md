@@ -44,31 +44,31 @@ tide-english/
 
 ## 让 AI Agent 帮你安装到手机
 
-先用 Agent 打开或附加这个工程目录，再把下面整段提示词发给它。提示词同时适用于 iPhone 和安卓；Agent 需要具备本机文件、终端和设备访问能力。Apple Account 登录、系统密码、手机信任和权限确认仍由你在系统界面完成，无需把任何密钥或密码发到聊天中。
+先用 Agent 打开或附加这个工程目录，再把下面整段提示词发给它。两份 README 的 Agent 提示词统一使用英文，内容完全一致。提示词同时适用于 iPhone 和安卓；Agent 需要具备本机文件、终端和设备访问能力。Apple Account 登录、系统密码、手机信任和权限确认仍由你在系统界面完成，无需把任何密钥或密码发到聊天中。
 
 ```text
-请将当前 Tide English 工程构建、安装并启动在我连接的手机上，持续执行到完成，不能只给我安装教程或停在生成安装包。
+Build, install and launch the current Tide English project on my connected phone. Continue until the task is complete; do not stop at instructions or a generated installation package.
 
-工程位置是当前打开或附加的 tide-english 目录。先确认 README.md、mobile/ios、mobile/android 和 tools/generate_project.py 存在；若当前环境没有源码访问权限或找不到工程，只向我索取实际源码目录或仓库地址，不要猜测下载地址。本工程是否已有远程地址，以 git remote -v 的实际结果为准。
+The source is the currently opened or attached tide-english directory. First confirm that README.md, mobile/ios, mobile/android and tools/generate_project.py exist. If this environment cannot access the source or locate the project, ask only for the actual source directory or repository address; do not invent a download URL. Determine whether a remote exists from the actual output of git remote -v.
 
-执行要求：
-1. 先阅读 AGENTS.md、README.md 或 README-CN.md、docs/development/build-and-test.md，以及目标平台的 docs/guides/iphone.md 或 docs/guides/android.md。检查现有改动并保留它们，沿用锁定依赖，不重置仓库、不升级依赖、不顺带重构功能。
-2. 自动检测本机操作系统、开发工具和已连接的真实手机，区分真机与模拟器。只有一台真机时使用它；没有连接、尚未授权或有多台无法确定目标时，明确告诉我需要连接、解锁、授权或选择哪台。所有安装命令必须指定目标设备，不能安装到其他手机；不能把模拟器成功当成手机安装成功。
-3. 我授权你完成本次安装所需的正常工具检查、依赖解析、测试、构建、签名、安装和启动，不必反复询问是否继续。遵守当前 Agent 的权限规则；系统授权、账户登录或缺少必要信息时，说明具体阻碍和我需要完成的动作，完成后接着执行。不要索取系统密码、Apple 验证码、模型 API Key 或邮箱授权码。
+Execution requirements:
+1. Read AGENTS.md, README.md or README-CN.md, docs/development/build-and-test.md, and the target platform's docs/guides/iphone.md or docs/guides/android.md. Inspect and preserve existing changes. Use pinned dependencies; do not reset the repository, upgrade dependencies or refactor unrelated features.
+2. Detect the host OS, development tools and connected physical phones, distinguishing phones from simulators and emulators. Use the phone if exactly one is connected. If none is connected, authorization is missing, or multiple devices make the target ambiguous, tell me exactly what to connect, unlock, authorize or select. Explicitly target every installation command. Do not install on another phone or describe a simulator result as a successful phone installation.
+3. I authorize the normal tool checks, dependency resolution, tests, builds, signing, installation and launch needed for this task; do not repeatedly ask whether to continue. Follow your agent's permission rules. If system approval, account sign-in or essential information is required, explain the blocker and the action I need to take, then resume. Never ask me for a system password, Apple verification code, model API key or email authorization code.
 
-iPhone 路径：
-4. 必须在具备 Xcode 的 macOS 上构建。检查 Xcode 版本、开发者目录、首次启动状态、iOS SDK 和设备支持。读取 tools/generate_project.py，使用 mobile/ios/TideEnglish.xcodeproj 和 TideEnglish scheme。已有工程优先直接构建；仅在工程缺失或确需同步引用时运行生成器，并先保留现有工程修改、将已有 Team 和标识覆盖保存到被忽略的 Configuration/Local.xcconfig，避免重新生成时丢失签名设置。解析固定版本的包依赖，运行 Swift 核心测试和 iOS Simulator 构建；缓存齐全时优先离线，不绕过正常代码签名。
-5. 检查当前 Team、bundle identifier 和目标手机上的安装状态。首次安装默认使用 cn.gd306.tideenglish.ios，若标识不可用，配置自己的唯一标识；如需 Apple Account 或 Team，指导我在 Xcode 界面完成。更新同一应用时保留已有 Team、标识和签名。本机覆盖写入被忽略的 mobile/ios/Configuration/Local.xcconfig，不将个人签名配置或私钥提交到 Git。
-6. 使用配置好的 Team 为目标真机构建，通过 Xcode 或本机 xcrun devicectl 安装并启动。命令参数先以本机 --help 为准。遇到锁屏、信任此电脑、Developer Mode、开发者描述文件信任或系统授权时，明确提示我在什么界面操作。读取构建产物的 provisioning profile 到期日期并报告；不要导出签名私钥或读取模型密钥。
+iPhone workflow:
+4. Build on macOS with Xcode. Check the Xcode version, developer directory, first-launch status, iOS SDK and device support. Read tools/generate_project.py and use mobile/ios/TideEnglish.xcodeproj with the TideEnglish scheme. Prefer building the existing project directly. Run the generator only if the project is missing or its references need updating; first preserve project changes and save existing Team and identifier overrides in the ignored Configuration/Local.xcconfig so regeneration cannot lose signing settings. Resolve pinned packages, run the Swift core tests and build for iOS Simulator. Prefer offline operation when caches are complete, and use normal code signing.
+5. Inspect the current Team, bundle identifier and installation state on the target phone. For a first installation, start with cn.gd306.tideenglish.ios and configure a unique identifier if it is unavailable. Guide me through Apple Account or Team selection in Xcode when needed. For updates to the same app, preserve the existing Team, identifier and signing identity. Store local overrides in the ignored mobile/ios/Configuration/Local.xcconfig; never commit personal signing settings or private keys.
+6. Build for the physical target using the configured Team, then install and launch through Xcode or the local xcrun devicectl. Consult the installed tool's --help for command arguments. Clearly identify where I need to unlock the phone, trust this computer, enable Developer Mode, trust a developer profile or approve a system prompt. Report the provisioning profile expiry from the build artifact. Do not export signing private keys or read model credentials.
 
-Android 路径：
-7. 检查 JDK 17、Android SDK Platform 36、Build Tools 35.0.0 和 adb；按需要配置本机 JAVA_HOME、ANDROID_HOME 或被忽略的 local.properties。用 adb devices -l 检测设备；unauthorized 时提示我解锁并确认 USB 调试，offline 时先恢复连接，不清除手机数据。
-8. 在 mobile/android 使用仓库 Gradle Wrapper 解析锁定依赖，运行 :app:testDebugUnitTest、:app:lintDebug 和 :app:assembleDebug。默认应用标识为 cn.gd306.tideenglish.android；首次安装使用本机调试签名，更新时使用与已有安装相匹配的签名。核对最终 APK 的标识、签名和个人版开关，再用 adb -s 目标序列号 install -r 安装并启动主 Activity。不得为解决签名或版本冲突而卸载、清除数据、强行降级或擅自换标识；无法匹配时保留原安装并报告具体原因。
+Android workflow:
+7. Check JDK 17, Android SDK Platform 36, Build Tools 35.0.0 and adb. Configure local JAVA_HOME, ANDROID_HOME or the ignored local.properties as needed. Detect devices with adb devices -l. If unauthorized, ask me to unlock the phone and approve USB debugging; if offline, restore the connection without clearing phone data.
+8. In mobile/android, resolve pinned dependencies with the repository's Gradle Wrapper and run :app:testDebugUnitTest, :app:lintDebug and :app:assembleDebug. The default application ID is cn.gd306.tideenglish.android. Use local debug signing for a first installation and matching signing credentials when updating an existing installation. Verify the final APK's identifier, signature and personal-build flags, then install with adb -s TARGET_SERIAL install -r and launch the main Activity. Do not uninstall, clear data, force a downgrade or silently change the identifier to resolve a signature or version conflict. If signing cannot be matched, preserve the installed app and report the specific reason.
 
-两个平台共同要求：
-9. 保留现有应用、学习记录和密钥。发现不同应用标识的同名旧应用时，作为独立安装保留它，不擅自覆盖或自动迁移；学习记录可由我手动备份导入。不得读取、导出或记录设备中的模型密钥、账户令牌及个人学习内容。
-10. 保持托管、试用、购买和学习云同步关闭，不部署服务端、不修改线上数据库、不发送验证码邮件、不发起真实模型请求或语音通话。可选邮箱登录不应成为本地学习的前置条件。安装后由我自己选择学习、释义和界面语言，并在“设置 → 模型与 API 密钥”填写密钥。
-11. 用设备工具实际确认安装与启动结果。最后报告：目标手机、应用标识与版本、哪些测试/构建/签名/安装/启动检查通过、产物路径、iOS 签名到期时间（若可取得），以及还需要我在手机上完成什么。失败或受阻的步骤如实说明，不能将仅编译成功表述为已安装。第一次真实对话由我自己发起。
+Requirements for both platforms:
+9. Preserve installed apps, learning records and credentials. If a same-name older app has a different application identifier, retain it as a separate installation; do not overwrite it or migrate its data automatically. I can manually export and import learning backups. Do not read, export or log model credentials, account tokens or personal learning content from the device.
+10. Keep hosted services, trials, purchases and learning-data cloud sync disabled. Do not deploy backend services, modify production databases, send verification emails or initiate real model requests or voice calls. Optional email sign-in must not be a prerequisite for local learning. After installation, I will choose my learning, explanation and interface languages and enter my own key in Settings → Model & API key.
+11. Confirm installation and launch with device tools. Report the target phone, application identifier and version, which test/build/signing/install/launch checks passed, artifact paths, iOS signing expiry if available, and any actions still needed on the phone. Report failures and blockers accurately; a successful compile alone does not mean the app was installed. I will start the first real conversation myself.
 ```
 
 ## 本地运行

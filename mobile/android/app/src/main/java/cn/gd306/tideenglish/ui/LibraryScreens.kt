@@ -207,6 +207,7 @@ private fun CurrentTopicDialog(
 
 @Composable
 fun WordsScreen(vm: TideEnglishViewModel) {
+    val translation = rememberQuickTranslationState(vm)
     val definitionContext = androidx.compose.ui.platform.LocalContext.current
     val definitions = remember(definitionContext.applicationContext, vm.learningDataGeneration) { DefinitionStore.shared(definitionContext.applicationContext, vm.learningDataGeneration.toLong()) }
     androidx.compose.runtime.LaunchedEffect(definitions) { definitions.initialize() }
@@ -230,6 +231,7 @@ fun WordsScreen(vm: TideEnglishViewModel) {
                 Text(stringResource(R.string.words_subtitle), style = MaterialTheme.typography.bodyMedium, color = TideEnglishColors.Secondary)
             }
         }
+        item { QuickTranslation(vm, translation) }
         item {
             TideEnglishSearchField(search, { search = it.take(80) }, stringResource(R.string.words_search_placeholder))
         }

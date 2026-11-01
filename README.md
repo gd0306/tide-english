@@ -22,6 +22,7 @@ Captured from the current iOS app on an iPhone 17 simulator using offline sample
 
 | Feature | Description |
 | --- | --- |
+| Quick translation | Translate text at the top of the vocabulary page with source/target selectors, language swap, copy and retry. Translates after a typing pause using your own selected model and API key; up to 2,000 characters, without changing learning evidence |
 | Multiple providers | OpenAI, DeepSeek, GLM, Gemini and compatible custom endpoints; one settings screen for provider, model, endpoint and key |
 | Voice conversations | Native realtime voice where supported; other models use device recognition, the selected model and system speech, with typing available when device voice is unsupported |
 | Bilingual learning | Independent learning and explanation languages, bilingual captions, contextual word lookup, vocabulary definitions and review |

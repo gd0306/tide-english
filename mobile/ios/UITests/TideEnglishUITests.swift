@@ -214,7 +214,8 @@ final class TideEnglishUITests: XCTestCase {
     private func bilingualVocabularyPreview(extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--preview", "--preview-provider=deepSeek", "--screenshot=words",
-                               "--preview-vocabulary", "--preview-interface-language=english"] + extra
+                               "--preview-vocabulary"] + (extra.contains(where: { $0.hasPrefix("--preview-interface-language=") })
+                                   ? [] : ["--preview-interface-language=english"]) + extra
         app.launch()
         return app
     }
@@ -224,6 +225,40 @@ final class TideEnglishUITests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    func testQuickTranslationTranslatesSwapsAndClears() {
+        let app = bilingualVocabularyPreview()
+        let input = app.textViews["translation-input"]
+        XCTAssertTrue(input.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["translation-submit"].isEnabled)
+        input.tap(); input.typeText("Hello!")
+        let output = app.staticTexts["translation-output"]
+        expectation(for: NSPredicate(format: "label == %@", "你好！"), evaluatedWith: output)
+        waitForExpectations(timeout: 10)
+        XCTAssertTrue(app.buttons["translation-copy"].exists)
+        // Dismiss the keyboard without submitting a second request.
+        app.swipeDown()
+        app.buttons["translation-swap"].tap()
+        expectation(for: NSPredicate(format: "label == %@", "Hello!"), evaluatedWith: output)
+        waitForExpectations(timeout: 10)
+        XCTAssertEqual(input.value as? String, "你好！")
+        app.buttons["translation-clear"].tap()
+        XCTAssertEqual(input.value as? String, "")
+        XCTAssertEqual(output.label, "Your translation appears here.")
+        XCTAssertFalse(app.buttons["translation-submit"].isEnabled)
+        keepVocabularyScreenshot(app, name: "quick-translation-english")
+    }
+
+    func testQuickTranslationChineseLabelsAndLanguagePicker() {
+        let app = bilingualVocabularyPreview(extra: ["--preview-interface-language=chinese", "--preview-interface-theme=midnight"])
+        XCTAssertTrue(app.textViews["translation-input"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons["translation-clear"].label, "清空")
+        XCTAssertEqual(app.buttons["translation-submit"].label, "翻译")
+        app.buttons["translation-target"].tap()
+        app.buttons["法语"].tap()
+        XCTAssertTrue(app.buttons["translation-target"].label.contains("法语"))
+        keepVocabularyScreenshot(app, name: "quick-translation-chinese")
     }
 
     func testVocabularyShowsLearningAndChineseDefinitions() {

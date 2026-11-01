@@ -7,6 +7,24 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
 class ProviderTeachingClientTest {
+ @Test fun translationOutputBudgetDoesNotChangeOtherHelpers()=runBlocking {
+  for(provider in listOf(ModelProvider.OPENAI,ModelProvider.DEEPSEEK,ModelProvider.GLM,ModelProvider.GEMINI)) {
+   val bodies=mutableListOf<JsonObject>()
+   val http=OkHttpClient.Builder().addInterceptor { chain ->
+    val buffer=okio.Buffer();chain.request().body!!.writeTo(buffer)
+    bodies+=Json.parseToJsonElement(buffer.readUtf8()).jsonObject
+    val response=if(provider==ModelProvider.OPENAI) """{"status":"completed","output":[{"content":[{"type":"output_text","text":"hello"}]}]}"""
+     else """{"choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"hello"}}]}"""
+    Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(200).message("OK").body(response.toResponseBody()).build()
+   }.build()
+   val client=ProviderTeachingClient({ProviderConfiguration(provider)},{"synthetic-key"},http)
+   client.quickTranslate(QuickTranslationRequest("你好","Chinese (Simplified)","English"))
+   client.respond("Explain","Hello")
+   val field=if(provider==ModelProvider.OPENAI) "max_output_tokens" else "max_tokens"
+   assertEquals(4096,bodies[0][field]!!.jsonPrimitive.int)
+   assertEquals(1400,bodies[1][field]!!.jsonPrimitive.int)
+  }
+ }
  @Test fun selectedProviderAndModelAreSentWithoutRedirects()=runBlocking {
   var request: Request?=null
   val http=OkHttpClient.Builder().addInterceptor { chain -> request=chain.request(); Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(200).message("OK").body("""{"choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"hello"}}]}""".toResponseBody()).build() }.build()

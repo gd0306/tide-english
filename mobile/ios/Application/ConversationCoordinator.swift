@@ -1142,6 +1142,24 @@ import TideEnglishCore
         #endif
         return try await api.respond(instructions: instructions, input: input, purpose: "typed_reply")
     }
+    func quickTranslate(_ request: QuickTranslationRequest) async throws -> String {
+        guard hasAIConsent else { throw AIProcessingConsent.ConsentError.required }
+        guard request.isValid, !isRunning else { throw CancellationError() }
+        guard conversationProvider == .personalKey else { throw HostedError.personalKeyRequired }
+        let generation = languageGeneration, configuration = modelConfiguration
+        #if DEBUG && targetEnvironment(simulator)
+        if isPreview {
+            // Preview content is synthetic and never reads credentials or calls a provider.
+            try await Task.sleep(for: .milliseconds(100))
+            return request.targetLanguage == "Chinese (Simplified)" ? "你好！" : "Hello!"
+        }
+        #endif
+        let result = try await api.respond(instructions: request.instructions, input: request.text, purpose: "meaning", outputTokenLimit: 4096)
+        try Task.checkCancellation()
+        guard generation == languageGeneration, configuration == modelConfiguration, hasAIConsent,
+              conversationProvider == .personalKey, !isRunning else { throw CancellationError() }
+        return result.text
+    }
     func lookup(word: String, sentence: String) async throws -> String {
         guard hasAIConsent else { throw AIProcessingConsent.ConsentError.required }
         let generation = languageGeneration, sessionID = session?.id

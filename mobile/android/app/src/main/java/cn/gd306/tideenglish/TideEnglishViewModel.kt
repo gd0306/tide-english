@@ -207,7 +207,7 @@ class TideEnglishViewModel(application: Application) : AndroidViewModel(applicat
     private val providerConsent = application.getSharedPreferences("tide_provider_consent", android.content.Context.MODE_PRIVATE)
     private val credentials get() = CredentialStore(getApplication(), modelConfiguration)
     private val openAI = APIClient(CredentialStore(application))
-    private val api: TeachingClient = ProviderTeachingClient({ modelConfiguration }, { configuration -> CredentialStore(application, configuration).read() })
+    private val api = ProviderTeachingClient({ modelConfiguration }, { configuration -> CredentialStore(application, configuration).read() })
     private val transport = LiveTransport(application, viewModelScope)
     private val localVoice = LocalVoiceTransport(application, viewModelScope, api)
     private val nativeVoice = NativeProviderVoiceTransport(application, viewModelScope, { modelConfiguration },
@@ -1315,6 +1315,16 @@ class TideEnglishViewModel(application: Application) : AndroidViewModel(applicat
             }
             finally { if (request == lookupGeneration) lookupLoading = false }
         }
+    }
+    suspend fun quickTranslate(request: QuickTranslationRequest): String {
+        check(cloudReady() && !isRunning && conversationProvider == ConversationProvider.PERSONAL_KEY)
+        require(request.isValid)
+        val selected = modelConfiguration
+        val token = generation
+        val result = api.quickTranslate(request)
+        if (token != generation || modelConfiguration != selected || archive.preferences.aiConsentVersion != 1 ||
+            conversationProvider != ConversationProvider.PERSONAL_KEY || isRunning) throw CancellationException("Translation context changed")
+        return result.text
     }
     suspend fun fetchVocabularyDefinition(word: String, learningLanguage: String, meaningLanguage: String): VocabularyDefinition {
         check(cloudReady() && !isRunning)

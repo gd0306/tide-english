@@ -1,5 +1,6 @@
 package cn.gd306.tideenglish.network
 
+import cn.gd306.tideenglish.core.QuickTranslationRequest
 import cn.gd306.tideenglish.core.ModelProvider
 import cn.gd306.tideenglish.core.ProviderFailureKind
 import cn.gd306.tideenglish.core.ProviderConfiguration
@@ -22,11 +23,17 @@ class ProviderTeachingClient(
  client: OkHttpClient = OkHttpClient.Builder().connectTimeout(45,TimeUnit.SECONDS).readTimeout(60,TimeUnit.SECONDS).callTimeout(60,TimeUnit.SECONDS).build(),
 ):TeachingClient {
  private val client=client.newBuilder().followRedirects(false).followSslRedirects(false).cookieJar(CookieJar.NO_COOKIES).cache(null).build()
- override suspend fun respond(instructions:String,input:String,schema:JsonObject?,search:Boolean,purpose:HelperPurpose?):APIResult {
+ override suspend fun respond(instructions:String,input:String,schema:JsonObject?,search:Boolean,purpose:HelperPurpose?):APIResult =
+  response(instructions,input,schema,search,null)
+ suspend fun quickTranslate(request:QuickTranslationRequest):APIResult {
+  require(request.isValid)
+  return response(request.instructions,request.text,null,false,4096)
+ }
+ private suspend fun response(instructions:String,input:String,schema:JsonObject?,search:Boolean,outputTokenLimit:Int?):APIResult {
   val config=configuration().validated()
   if(search && config.provider !in listOf(ModelProvider.OPENAI,ModelProvider.GLM)) throw ProviderException("This provider does not support current-topic search. Select OpenAI or GLM to search.")
   val key=credential(config)?.let { ProviderConfiguration.validatedCredential(it) } ?: throw APIClient.APIException.MissingKey
-  val body=payload(config,instructions,input,schema,search)
+  val body=payload(config,instructions,input,schema,search,outputTokenLimit)
   val request=Request.Builder().url((config.baseURL+if(config.provider==ModelProvider.OPENAI) "/responses" else "/chat/completions").toHttpUrl()).header("Authorization","Bearer $key").post(body.toString().toRequestBody("application/json; charset=utf-8".toMediaType())).build()
   val value=execute(request)
   if(configuration().validated()!=config) throw kotlinx.coroutines.CancellationException("Provider selection changed.")
@@ -52,11 +59,11 @@ class ProviderTeachingClient(
   }.distinctBy { it.url }
   return APIResult(text,sources,APIUsage((usage?.get("prompt_tokens") as? JsonPrimitive)?.intOrNull?.coerceIn(0,1_000_000_000) ?: 0,(usage?.get("completion_tokens") as? JsonPrimitive)?.intOrNull?.coerceIn(0,1_000_000_000) ?: 0,if(sources.isEmpty()) 0 else 1))
  }
- private fun payload(config:ProviderConfiguration,instructions:String,input:String,schema:JsonObject?,search:Boolean):JsonObject {
+ private fun payload(config:ProviderConfiguration,instructions:String,input:String,schema:JsonObject?,search:Boolean,outputTokenLimit:Int?=null):JsonObject {
   return if(config.provider==ModelProvider.OPENAI) buildJsonObject {
    put("model",config.model);put("store",false);put("instructions",instructions)
    put("input",buildJsonArray { add(buildJsonObject { put("role","user");put("content",input) }) })
-   put("max_output_tokens",if(schema==null) 1400 else 2200)
+   put("max_output_tokens",outputTokenLimit ?: (if(schema==null) 1400 else 2200))
    put("reasoning",buildJsonObject { put("effort","low") })
    if(schema!=null) put("text",buildJsonObject { put("format",buildJsonObject { put("type","json_schema");put("name","tideenglish_result");put("strict",true);put("schema",schema) }) })
    if(search) { put("tools",buildJsonArray { add(buildJsonObject { put("type","web_search") }) });put("tool_choice","auto");put("max_tool_calls",1) }
@@ -66,7 +73,7 @@ class ProviderTeachingClient(
     add(buildJsonObject { put("role","system"); put("content",instructions + if(schema!=null) "\nReturn only JSON matching this schema: $schema" else "") })
     add(buildJsonObject { put("role","user"); put("content",input) })
    })
-   if(config.provider!=ModelProvider.OPENAI) put("max_tokens",if(schema==null) 1400 else 2200)
+   if(config.provider!=ModelProvider.OPENAI) put("max_tokens",outputTokenLimit ?: (if(schema==null) 1400 else 2200))
    if(schema!=null) put("response_format",buildJsonObject { put("type","json_object") })
    if(config.provider==ModelProvider.DEEPSEEK || (config.provider==ModelProvider.GLM && listOf("glm-4.5","glm-4.6","glm-4.7","glm-5","glm-5.1","glm-5.2").any { config.model==it || config.model.startsWith("$it-") })) put("thinking",buildJsonObject { put("type","disabled") })
    if(search) { put("tools",buildJsonArray { add(buildJsonObject { put("type","web_search");put("web_search",buildJsonObject { put("enable",true);put("search_engine","search_pro");put("search_result",true) }) }) });put("tool_choice","auto") }

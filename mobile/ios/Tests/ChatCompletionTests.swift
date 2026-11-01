@@ -2,6 +2,15 @@ import XCTest
 import TideEnglishCore
 
 final class ChatCompletionTests: XCTestCase {
+    func testTranslationOutputBudgetDoesNotChangeOtherHelpers() throws {
+        for provider in [ModelProvider.deepSeek, .glm, .gemini] {
+            let config = ProviderConfiguration(provider: provider)
+            let translation = try ChatCompletion.payload(configuration: config, instructions: "Translate", input: "你好", outputTokenLimit: 4096)
+            XCTAssertEqual(translation["max_tokens"] as? Int, 4096)
+            let ordinary = try ChatCompletion.payload(configuration: config, instructions: "Explain", input: "Hello")
+            XCTAssertEqual(ordinary["max_tokens"] as? Int, 1400)
+        }
+    }
     private let schema: [String: Any] = ["type": "object", "properties": ["outcome": ["type": "string", "enum": ["success", "partial"]], "level": ["type": "integer", "minimum": 0, "maximum": 5]], "required": ["outcome", "level"], "additionalProperties": false]
     func testGeminiPayloadUsesEditedModelJSONSchemaAndStreamingUsage() throws {
         var selected = ProviderConfiguration(provider: .gemini)

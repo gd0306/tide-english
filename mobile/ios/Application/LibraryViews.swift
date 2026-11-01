@@ -134,6 +134,7 @@ struct WordsView: View {
                         ForEach(MeaningLanguages.all, id: \.self) { Text(UI($0)).tag($0) }
                     }.pickerStyle(.menu).accessibilityIdentifier("vocabulary-meaning-language")
                 }
+                QuickTranslationView(coordinator: coordinator).id(coordinator.language.id)
                 if let error = coordinator.store.vocabularyCacheError {
                     Text(UI(error)).font(.footnote).foregroundStyle(TideEnglishColor.secondary)
                 }

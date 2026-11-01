@@ -22,7 +22,7 @@ public enum ChatCompletion {
         }
     }
     public static func payload(configuration: ProviderConfiguration, instructions: String, input: String,
-                               schema: [String: Any]? = nil, search: Bool = false, stream: Bool = false) throws -> [String: Any] {
+                               schema: [String: Any]? = nil, search: Bool = false, stream: Bool = false, outputTokenLimit: Int? = nil) throws -> [String: Any] {
         let config = try configuration.validated()
         guard config.provider != .openAI else { throw Failure.malformed }
         guard !search || config.provider == .glm else { throw Failure.searchUnavailable }
@@ -31,7 +31,7 @@ public enum ChatCompletion {
             let encoded = try JSONSerialization.data(withJSONObject: schema, options: [.sortedKeys])
             system += "\nReturn only a complete JSON object matching this JSON schema, including every required field. Do not include markdown or commentary.\n" + String(decoding: encoded, as: UTF8.self)
         }
-        var body: [String: Any] = ["model": config.model, "messages": [["role": "system", "content": system], ["role": "user", "content": input]], "max_tokens": schema == nil ? 1400 : 2200, "stream": stream]
+        var body: [String: Any] = ["model": config.model, "messages": [["role": "system", "content": system], ["role": "user", "content": input]], "max_tokens": outputTokenLimit ?? (schema == nil ? 1400 : 2200), "stream": stream]
         if let _ = schema { body["response_format"] = ["type": "json_object"] }
         if stream { body["stream_options"] = ["include_usage": true] }
         // Do not send thinking parameters to older models or newer thinking-only families.

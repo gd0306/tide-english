@@ -115,7 +115,7 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
         return json
     }
     func respond(instructions: String, input: String, schema: [String: Any]? = nil, search: Bool = false,
-                 purpose: String = "meaning", onText: (@MainActor (String) -> Void)? = nil) async throws -> APIResult {
+                 purpose: String = "meaning", outputTokenLimit: Int? = nil, onText: (@MainActor (String) -> Void)? = nil) async throws -> APIResult {
         guard canProcessAI() else { throw AIProcessingConsent.ConsentError.required }
         try Task.checkCancellation()
         let captured = try configuration.validated()
@@ -124,7 +124,7 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
             try Task.checkCancellation()
             guard self.canProcessAI() else { throw AIProcessingConsent.ConsentError.required }
             let result = try await self.performResponse(instructions: instructions, input: input, schema: schema,
-                                                       search: search, purpose: purpose, onText: onText, configuration: captured)
+                                                       search: search, purpose: purpose, outputTokenLimit: outputTokenLimit, onText: onText, configuration: captured)
             try Task.checkCancellation()
             guard self.canProcessAI() else { throw AIProcessingConsent.ConsentError.required }
             return result
@@ -134,7 +134,7 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
         return try await withTaskCancellationHandler(operation: { try await task.value }, onCancel: { task.cancel() })
     }
     private func performResponse(instructions: String, input: String, schema: [String: Any]?, search: Bool,
-                                 purpose: String, onText: (@MainActor (String) -> Void)?, configuration: ProviderConfiguration) async throws -> APIResult {
+                                 purpose: String, outputTokenLimit: Int?, onText: (@MainActor (String) -> Void)?, configuration: ProviderConfiguration) async throws -> APIResult {
         if conversationProvider == .hosted {
             guard let hostedLease, let client = HostedClient.shared else { throw HostedError.unavailable }
             let result = try await client.helper(hostedLease, purpose: purpose, instructions: instructions, input: input,
@@ -144,10 +144,10 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
         }
         if configuration.provider != .openAI {
             return try await compatibleResponse(instructions: instructions, input: input, schema: schema,
-                                                search: search, onText: onText, configuration: configuration)
+                                                search: search, outputTokenLimit: outputTokenLimit, onText: onText, configuration: configuration)
         }
         var body: [String: Any] = ["model": configuration.model, "store": false, "instructions": instructions,
-                                  "input": [["role": "user", "content": input]], "max_output_tokens": schema == nil ? 1400 : 2200,
+                                  "input": [["role": "user", "content": input]], "max_output_tokens": outputTokenLimit ?? (schema == nil ? 1400 : 2200),
                                   "reasoning": ["effort": "low"]]
         if let schema { body["text"] = ["format": ["type": "json_schema", "name": "tideenglish_result", "strict": true, "schema": schema]] }
         if search { body["tools"] = [["type": "web_search"]]; body["tool_choice"] = "auto"; body["max_tool_calls"] = 1 }
@@ -174,10 +174,10 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
         guard !text.isEmpty else { throw APIError.incomplete }
         return APIResult(text: text, sources: sources, usage: usage)
     }
-    private func compatibleResponse(instructions: String, input: String, schema: [String: Any]?, search: Bool,
+    private func compatibleResponse(instructions: String, input: String, schema: [String: Any]?, search: Bool, outputTokenLimit: Int?,
                                     onText: (@MainActor (String) -> Void)?, configuration: ProviderConfiguration) async throws -> APIResult {
         let body = try ChatCompletion.payload(configuration: configuration, instructions: instructions, input: input,
-                                              schema: schema, search: search, stream: onText != nil)
+                                              schema: schema, search: search, stream: onText != nil, outputTokenLimit: outputTokenLimit)
         let result: ChatCompletionResult
         if let onText {
             let request = try request("chat/completions", body: body, configuration: configuration, stream: true)

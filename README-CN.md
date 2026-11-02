@@ -11,10 +11,10 @@ Tide English 默认使用你自己的模型 API Key。学习记录保存在设�
 <p align="center">
   <a href="docs/assets/screenshots/ios/zh-CN/talk.png"><img src="docs/assets/screenshots/ios/zh-CN/talk.png" width="24%" alt="带双语字幕的对话界面" /></a>
   <a href="docs/assets/screenshots/ios/zh-CN/themes.png"><img src="docs/assets/screenshots/ios/zh-CN/themes.png" width="24%" alt="对话主题选择" /></a>
-  <a href="docs/assets/screenshots/ios/zh-CN/vocabulary.png"><img src="docs/assets/screenshots/ios/zh-CN/vocabulary.png" width="24%" alt="含中文释义的英语词汇" /></a>
+  <a href="docs/assets/screenshots/ios/zh-CN/vocabulary.png"><img src="docs/assets/screenshots/ios/zh-CN/vocabulary.png" width="24%" alt="带便捷翻译功能的词汇页" /></a>
   <a href="docs/assets/screenshots/ios/zh-CN/settings.png"><img src="docs/assets/screenshots/ios/zh-CN/settings.png" width="24%" alt="模型、界面语言与主题设置" /></a>
 </p>
-<p align="center">对话 · 主题 · 双语词汇 · 设置</p>
+<p align="center">对话 · 主题 · 词汇与翻译 · 设置</p>
 
 使用当前 iOS 应用在 iPhone 17 模拟器中实拍，展示中文界面与 Midnight 深色主题。内容来自离线示例，不含真实对话、API Key 或个人学习记录。[英文界面](README.md#screenshots) · [截图说明](docs/assets/screenshots/README.md)。
 

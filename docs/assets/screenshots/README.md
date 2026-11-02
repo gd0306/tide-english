@@ -1,11 +1,11 @@
 # README screenshots
 
-Captured on 23 October 2026 from the current Tide English iOS simulator build, version 1.0 (1), using a dedicated iPhone 17 simulator running iOS 27.0.
+Captured from Tide English iOS simulator builds, version 1.0 (1), using dedicated iPhone 17 simulators running iOS 27.0. The English and Chinese vocabulary screenshots were refreshed on 2 November 2026 to show quick translation above saved words. The other screenshots were captured on 23 October 2026; individual capture dates are recorded in the manifest.
 
 | Directory | Interface | Theme | Screens |
 | --- | --- | --- | --- |
-| `ios/en/` | English | Paper | Conversation, themes, bilingual vocabulary, settings |
-| `ios/zh-CN/` | Chinese | Midnight | Conversation, themes, bilingual vocabulary, settings |
+| `ios/en/` | English | Paper | Conversation, themes, vocabulary with quick translation, settings |
+| `ios/zh-CN/` | Chinese | Midnight | Conversation, themes, vocabulary with quick translation, settings |
 
 These are unedited captures of the native application. Conversation and theme examples use Spanish learning with English explanations. Vocabulary examples use English learning with Simplified Chinese definitions. All content comes from the app's existing offline preview fixtures, with an in-memory learning store and preview account state. The speaking indicator is a simulated UI state; no microphone recording, live model call, real credential or personal learning record was used.
 

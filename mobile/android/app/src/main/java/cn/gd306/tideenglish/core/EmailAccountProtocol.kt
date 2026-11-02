@@ -18,7 +18,11 @@ object EmailAccountValidation {
  fun code(v: String)=Regex("[0-9]{6}").matches(v)
  fun identity(v: String)=Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}").matches(v)
 }
-class EmailAccountConfiguration(apiURL: String = "https://api.gd306.cn") {
+class EmailAccountConfiguration(apiURL: String) {
+ companion object {
+  fun configured(enabled: Boolean = false, apiURL: String = ""): EmailAccountConfiguration? =
+   if (enabled) runCatching { EmailAccountConfiguration(apiURL) }.getOrNull() else null
+ }
  val origin: String
  val storageScope: String get()="tide.email-account.v1|$origin"
  init { val u=try { URI(apiURL) } catch (_: Exception) { fail(EmailAccountFailure.Unavailable) }; if(u.scheme?.lowercase()!="https" || u.host.isNullOrEmpty() || u.rawUserInfo!=null || u.rawQuery!=null || u.rawFragment!=null || u.rawPath !in listOf("","/") || u.port !in listOf(-1,443)) fail(EmailAccountFailure.Unavailable); origin="https://${u.host.lowercase(java.util.Locale.ROOT)}" }

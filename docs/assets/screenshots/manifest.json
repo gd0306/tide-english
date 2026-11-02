@@ -11,9 +11,9 @@
       "path": "ios/en/settings.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 262920,
-      "sha256": "ee057417e0e04ad5bc7a0a568cffc6031e805bc0839491c9edc605ba269fd314",
-      "capturedOn": "2026-10-23"
+      "bytes": 266039,
+      "sha256": "17d6f2a6339044e722b05125f6fa0b7549e6510853580ed5eb467f13f0ac0176",
+      "capturedOn": "2026-11-02"
     },
     {
       "path": "ios/en/talk.png",
@@ -43,9 +43,9 @@
       "path": "ios/zh-CN/settings.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 252312,
-      "sha256": "160d15780d5245a58f1de3458d66b56134e4877d2c674375cc85c6e2c3e3ac6d",
-      "capturedOn": "2026-10-23"
+      "bytes": 256136,
+      "sha256": "744d37a27804c09c1e3624e8ef6f63cd2e74579a4e0a0584e4eff5e1f8d88acd",
+      "capturedOn": "2026-11-02"
     },
     {
       "path": "ios/zh-CN/talk.png",

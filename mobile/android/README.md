@@ -12,7 +12,7 @@ Word taps in all eleven languages open a contextual meaning sheet, matching the 
 
 Choose **English / 中文** and **Paper / Midnight / Grove** in Settings. Learning and meaning languages stay independent. Word cards and details show definitions in both selected languages. Missing definitions have an explicit load/retry action; downloaded definitions remain available offline. The original English sense is labelled as a reference when bilingual definitions are absent.
 
-Optional email-code sign-in uses `https://api.gd306.cn`. It does not sync conversations or vocabulary and does not unlock hosted AI, trials or purchases. Signing out or deleting the email identity preserves learning data and model keys. No matching backend deployment is needed: Android uses the already deployed iOS email-account contract unchanged.
+Email-code sign-in is disabled by default: no account entry is shown and no account session is restored. To enable it, configure your own compatible account service and set both `TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED=true` and `TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL=https://accounts.example.test` in ignored `local.properties` (replace the example URL with your service). Google/Apple sign-in, hosted AI, trials and purchases remain separate opt-ins. Email identity does not sync learning records; signing out or deleting it preserves learning data and model keys.
 
 See the root [development guide](../../docs/development/build-and-test.md).
 

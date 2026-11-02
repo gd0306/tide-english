@@ -212,10 +212,8 @@ extension EmailAccountConfiguration {
         }
         #endif
         let flag = bundle.object(forInfoDictionaryKey: "TideEnglishEmailAccountsEnabled")
-        guard flag as? Bool == true || (flag as? String)?.uppercased() == "YES",
-              let api = bundle.object(forInfoDictionaryKey: "TideEnglishEmailAccountAPIURL") as? String
-        else { return nil }
-        return try? Self(apiURL: api)
+        return configured(enabled: flag as? Bool == true || (flag as? String)?.uppercased() == "YES",
+                          apiURL: bundle.object(forInfoDictionaryKey: "TideEnglishEmailAccountAPIURL") as? String ?? "")
     }
 }
 

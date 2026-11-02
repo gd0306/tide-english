@@ -170,9 +170,7 @@ fun TideEnglishApp(
                     Column(Modifier.fillMaxHeight(.94f)) {
                         SettingsScreen(vm, onExport, onImport, onReviewConsent = {
                             vm.pendingCloudAction = null; showConsent = true
-                        }, onAccount = {
-                            onEmailAccount?.invoke()
-                        }, accountSummary = emailAccountSummary, focusAdvanced = focusAdvanced,
+                        }, onAccount = onEmailAccount, accountSummary = emailAccountSummary, focusAdvanced = focusAdvanced,
                             onDismiss = { showSettings = false; focusAdvanced = false })
                     }
                 }

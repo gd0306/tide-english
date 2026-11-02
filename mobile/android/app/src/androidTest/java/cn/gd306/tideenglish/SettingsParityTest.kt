@@ -41,14 +41,15 @@ class SettingsParityTest {
         File(directory, "$name.png").outputStream().use { image.compress(Bitmap.CompressFormat.PNG, 100, it) }
     }
 
-    @Test fun optionalEmailAccountOpensWithoutCommercialControls() {
-        compose.onNodeWithTag("settings-screen").performScrollToNode(hasTestTag("email-account-settings"))
-        compose.onNodeWithTag("email-account-settings").performClick()
-        compose.onNodeWithText("Tide English account").assertIsDisplayed()
+    @Test fun defaultInstallHidesAccountsAndKeepsPersonalLearningSettings() {
+        assertFalse(BuildConfig.TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED)
+        compose.onNodeWithTag("email-account-settings").assertDoesNotExist()
+        compose.onNodeWithTag("model-api-settings").assertIsDisplayed()
         compose.onNodeWithTag("account-minute-balance").assertDoesNotExist()
         compose.onNodeWithTag("account-conversation-source").assertDoesNotExist()
-        capture("08-guest-account")
-        compose.onNodeWithTag("email-account-done").performClick()
+        capture("08-personal-defaults")
+        compose.onNodeWithTag("settings-screen").performScrollToNode(hasTestTag("settings-learning-language"))
+        compose.onNodeWithTag("settings-learning-language").assertIsDisplayed()
         compose.onNodeWithTag("settings-screen").assertIsDisplayed()
     }
 

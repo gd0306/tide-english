@@ -4,7 +4,7 @@
 
 原生语言学习应用，通过自然对话练习表达、理解和词汇。包含 SwiftUI iOS 客户端、Jetpack Compose 安卓客户端，以及独立邮箱账户服务。
 
-Tide English 默认使用你自己的模型 API Key。学习记录保存在设备上，注册登录为可选功能；托管语音、试用和购买默认关闭。仓库包含完整源码和锁定依赖，不包含用户密钥、个人签名或历史构建产物。
+Tide English 默认使用你自己的模型 API Key。学习记录保存在设备上，App 内账户登录、托管语音、试用和购买默认关闭。仓库包含完整源码和锁定依赖，不包含用户密钥、个人签名或历史构建产物。
 
 ## 应用截图
 
@@ -29,7 +29,7 @@ Tide English 默认使用你自己的模型 API Key。学习记录保存在设�
 | 个性化教学 | 对话纠错、主题、学习目标与能力证据，各语言独立记录 |
 | 外观 | Paper、Midnight、Grove 主题；中文或英文界面，独立于学习语言 |
 | 本地数据 | 对话、词汇、学习进度，支持手动备份与导入 |
-| 可选账户 | 邮箱验证码登录、退出和删除；不启用学习云同步 |
+| 可选账户 | 默认关闭；另行配置账户服务并显式启用后支持邮箱登录，不启用学习云同步 |
 
 实时音频模型受服务商能力限制，可能与设置中的文本模型不同。Android 设备语音需要 Android 12+ 可用本地识别与离线朗读语音；否则使用文字。Gemini 实时连接到期后需重连。模拟器测试不能证明真机麦克风、蓝牙或某个账户的模型访问权限。
 
@@ -57,7 +57,7 @@ tide-english/
 
 ## 让 AI Agent 帮你安装到手机
 
-把下面整段提示词发给能够访问本机文件、终端和手机的 Agent。它可以克隆仓库或使用已打开的工程，完成 iPhone 或安卓安装。两份 README 共用同一份英文提示词；账户登录、手机信任和权限由你在系统界面确认，密钥在 App 内填写。
+把下面整段提示词发给能够访问本机文件、终端和手机的 Agent。它可以克隆仓库或使用已打开的工程，完成 iPhone 或安卓安装。两份 README 共用同一份英文提示词；Xcode 等构建工具的账号登录、手机信任和权限由你在系统界面确认，密钥在 App 内填写；默认关闭 App 内的账户登录功能。
 
 ```text
 Help me build, install and launch Tide English on my iPhone or Android phone
@@ -83,8 +83,12 @@ only if the target is ambiguous.
 
 I will select my languages and provider, then enter my key in Settings > Model
 & API key. Never ask for the key in chat, read it from device secure storage,
-or put it in source files or logs. Keep managed services, hosted trials and
-purchases disabled. Do not deploy servers or start a live conversation.
+or put it in source files or logs. Keep all in-app account sign-in (email,
+Google and Apple), managed services, hosted trials and purchases disabled.
+Do not configure account-service URLs, SMTP or OAuth unless I explicitly ask
+for account functionality. App sign-in must not be required for learning or
+translation. Apple Account sign-in in Xcode is only for building/signing.
+Do not deploy servers or start a live conversation.
 
 Report which tests, build, signing, installation and launch checks passed,
 iOS signing expiry if available, and anything I still need to do on the phone.
@@ -119,7 +123,7 @@ APK 输出到 `mobile/android/app/build/outputs/apk/debug/app-debug.apk`，应�
 
 进入应用选择学习和释义语言，在 **设置 → 模型与 API 密钥** 填入自己的密钥。不要把密钥写进源码、日志或聊天。不同服务商与自定义地址分别保存凭据；改变发送对象后需要重新确认权限。详见 [模型与语音](docs/guides/models-and-voice.md)。
 
-邮箱为可选组件。客户端沿用 `https://api.gd306.cn` 的邮箱账户合同，本次重建没有部署或修改该线上服务。自建实例见 [账户服务指南](docs/operations/accounts.md)。邮箱账户与托管网关是独立组件。
+App 内账户登录默认关闭，学习和翻译不需要登录。只有明确需要账户功能并另行配置自己的兼容账户服务后才启用，详见 [账户服务指南](docs/operations/accounts.md)。邮箱账户与托管网关是独立组件；客户端构建不会部署或修改服务器。
 
 ## 验证与开发
 

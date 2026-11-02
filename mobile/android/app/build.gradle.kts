@@ -20,6 +20,9 @@ require(tideenglishMinuteEnvironment in listOf("test", "live")) { "tideenglish.m
 val tideenglishVersionCode = tideenglishConfiguration("tideenglish.versionCode").ifBlank { "1" }.toIntOrNull()
 require(tideenglishVersionCode != null && tideenglishVersionCode in 1..2_100_000_000) { "tideenglish.versionCode must be a supported positive Android version code" }
 val tideenglishApiOrigin = tideenglishConfiguration("tideenglish.apiOrigin")
+val tideenglishEmailAccounts = tideenglishConfiguration("TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED").ifBlank { "false" }
+require(tideenglishEmailAccounts in listOf("false", "true")) { "TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED must be false or true" }
+val tideenglishEmailAccountApiOrigin = tideenglishConfiguration("TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL")
 android {
     namespace = "cn.gd306.tideenglish"
     compileSdk = 36
@@ -31,6 +34,8 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "MANAGED_API_ORIGIN", buildString(tideenglishApiOrigin))
+        buildConfigField("boolean", "TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED", tideenglishEmailAccounts)
+        buildConfigField("String", "TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL", buildString(tideenglishEmailAccountApiOrigin))
         buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", buildString(tideenglishConfiguration("tideenglish.googleServerClientID")))
         buildConfigField("boolean", "MINUTE_PURCHASES_ENABLED", tideenglishMinutePurchases)
         buildConfigField("String", "PURCHASE_CHANNEL", buildString(tideenglishPurchaseChannel))
@@ -48,6 +53,8 @@ android {
             matchingFallbacks += "debug"
             buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", "\"\"")
             buildConfigField("boolean", "MINUTE_PURCHASES_ENABLED", "false")
+            buildConfigField("boolean", "TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED", "false")
+            buildConfigField("String", "TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL", "\"\"")
         }
         create("uiTest") {
             initWith(getByName("debug"))
@@ -56,6 +63,8 @@ android {
             buildConfigField("String", "MANAGED_API_ORIGIN", "\"\"")
             buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", "\"\"")
             buildConfigField("boolean", "MINUTE_PURCHASES_ENABLED", "false")
+            buildConfigField("boolean", "TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED", "false")
+            buildConfigField("String", "TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL", "\"\"")
             buildConfigField("String", "MINUTE_PURCHASE_ENVIRONMENT", "\"test\"")
         }
     }

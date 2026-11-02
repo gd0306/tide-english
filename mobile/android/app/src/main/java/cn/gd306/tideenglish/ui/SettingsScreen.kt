@@ -131,7 +131,7 @@ fun SettingsScreen(vm: TideEnglishViewModel, onExport: () -> Unit, onImport: () 
                             }
                         }
                     }
-                    item {
+                    if (onAccount != null) item {
                         SettingsGroup {
                             Row(Modifier.fillMaxWidth().heightIn(min = 68.dp)
                                 .testTag("email-account-settings")

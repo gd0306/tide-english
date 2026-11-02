@@ -1084,6 +1084,17 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(app.buttons["start-conversation"].exists)
     }
 
+    func testPersonalInstallDoesNotOfferAccountSignIn() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--preview", "--preview-provider=deepSeek", "--screenshot=words", "--preview-interface-language=english"]
+        app.launch()
+        app.buttons["settings-button"].tap()
+        XCTAssertTrue(app.buttons["settings-model-provider"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["email-account-settings"].exists)
+        XCTAssertFalse(app.buttons["managed-account-settings"].exists)
+        XCTAssertFalse(app.buttons["settings-conversation-access"].exists)
+    }
+
     func testPersonalPreviewOpensModelProviderSettings() {
         let app = XCUIApplication()
         app.launchArguments = ["--preview", "--preview-personal"]

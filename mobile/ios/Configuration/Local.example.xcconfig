@@ -1,2 +1,5 @@
 // Copy to Local.xcconfig and supply your own signing team when needed.
 // DEVELOPMENT_TEAM = YOUR_TEAM_ID
+// Optional email sign-in requires your own deployed account service.
+// TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED = YES
+// TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL = https:/$()/accounts.example.test

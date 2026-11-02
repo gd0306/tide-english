@@ -5,15 +5,18 @@ import androidx.lifecycle.viewModelScope
 import cn.gd306.tideenglish.core.*
 import cn.gd306.tideenglish.network.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 class EmailAccountViewModel(application:Application):AndroidViewModel(application) {
- private val configuration=EmailAccountConfiguration()
- private val controller=EmailAccountController(EmailAccountClient(configuration),EmailAccountSessionStore(application,configuration.storageScope),configuration.storageScope)
- val state=controller.state
- init {viewModelScope.launch {controller.restore()} }
- fun restore(){viewModelScope.launch {controller.restore()} }
- fun sendCode(email:String,deleting:Boolean=false){viewModelScope.launch {controller.sendCode(email,deleting)} }
- fun verify(code:String){viewModelScope.launch {controller.verify(code)} }
- fun signOut(){viewModelScope.launch {controller.signOut()} }
- fun invalidateChallenge()=controller.invalidateChallenge()
- fun cancelDeletion()=controller.cancelDeletion()
+ private val configuration=EmailAccountConfiguration.configured(BuildConfig.TIDE_ENGLISH_EMAIL_ACCOUNTS_ENABLED,BuildConfig.TIDE_ENGLISH_EMAIL_ACCOUNT_API_URL)
+ private val controller=configuration?.let { EmailAccountController(EmailAccountClient(it),EmailAccountSessionStore(application,it.storageScope),it.storageScope) }
+ val enabled=configuration!=null
+ val state=controller?.state?:MutableStateFlow(EmailAccountState()).asStateFlow()
+ init {restore()}
+ fun restore(){controller?.let { viewModelScope.launch {it.restore()} } }
+ fun sendCode(email:String,deleting:Boolean=false){controller?.let { viewModelScope.launch {it.sendCode(email,deleting)} } }
+ fun verify(code:String){controller?.let { viewModelScope.launch {it.verify(code)} } }
+ fun signOut(){controller?.let { viewModelScope.launch {it.signOut()} } }
+ fun invalidateChallenge()=controller?.invalidateChallenge()
+ fun cancelDeletion()=controller?.cancelDeletion()
 }

@@ -2,6 +2,14 @@ import XCTest
 @testable import TideEnglishCore
 
 final class EmailAccountTests: XCTestCase {
+    func testEmailAccountsRequireAnExplicitFlagAndService() {
+        XCTAssertNil(EmailAccountConfiguration.configured())
+        XCTAssertNil(EmailAccountConfiguration.configured(apiURL: "https://accounts.example.test"))
+        XCTAssertNil(EmailAccountConfiguration.configured(enabled: true))
+        XCTAssertNil(EmailAccountConfiguration.configured(enabled: true, apiURL: "http://accounts.example.test"))
+        XCTAssertEqual(EmailAccountConfiguration.configured(enabled: true, apiURL: "https://accounts.example.test")?.origin.absoluteString,
+                       "https://accounts.example.test")
+    }
     private let now = Date(timeIntervalSince1970: 1_000)
     private func exchange(_ changes: [String: Any] = [:]) throws -> EmailAccountExchange {
         var body: [String: Any] = ["accountID":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "email":"preview@example.test", "accessToken":String(repeating:"a", count:43), "refreshToken":String(repeating:"b", count:43), "expiresInSeconds":900, "refreshExpiresInSeconds":2592000]

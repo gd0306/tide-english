@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
             TideEnglishStartup(loading = vm.loadingHistory) {
             TideEnglishApp(
                 vm = vm,
-                onEmailAccount = { if (!vm.isRunning) showEmailAccount = true },
+                onEmailAccount = if (emailAccount.enabled) ({ if (!vm.isRunning) showEmailAccount = true }) else null,
                 emailAccountSummary = emailState.email,
                 microphoneMessage = microphoneMessage,
                 onRequestMicrophone = {
@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                 onBuyMinutes = { sku, quantity -> if (!changingAccount) purchases.launch(this@MainActivity, sku, quantity) },
             )
             }
-            if (showEmailAccount) cn.gd306.tideenglish.ui.TidePresentation {
+            if (showEmailAccount && emailAccount.enabled) cn.gd306.tideenglish.ui.TidePresentation {
                 cn.gd306.tideenglish.ui.TideEnglishTheme {
                     cn.gd306.tideenglish.ui.EmailAccountSheet(viewModel = emailAccount,
                         chinese = cn.gd306.tideenglish.ui.LocalInterfaceLanguage.current == cn.gd306.tideenglish.ui.InterfaceLanguage.CHINESE,

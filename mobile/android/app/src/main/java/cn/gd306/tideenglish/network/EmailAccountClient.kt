@@ -12,7 +12,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class EmailAccountClient internal constructor(private val configuration:EmailAccountConfiguration, transport:OkHttpClient):EmailAccountService {
- constructor(configuration:EmailAccountConfiguration=EmailAccountConfiguration()):this(configuration,OkHttpClient())
+ constructor(configuration:EmailAccountConfiguration):this(configuration,OkHttpClient())
  private val client=transport.newBuilder().followRedirects(false).followSslRedirects(false).cookieJar(CookieJar.NO_COOKIES).cache(null).authenticator(Authenticator.NONE).proxyAuthenticator(Authenticator.NONE).retryOnConnectionFailure(false).callTimeout(25,TimeUnit.SECONDS).build()
  private val json=Json { ignoreUnknownKeys=false; coerceInputValues=false }
  override suspend fun challenge(email:String):EmailAccountChallenge = decode<EmailAccountChallenge>(request("POST","email-auth/challenge",buildJsonObject { put("email",EmailAccountValidation.email(email)) },expected=202)).also { it.validate() }

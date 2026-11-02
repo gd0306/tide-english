@@ -31,6 +31,10 @@ public enum EmailAccountError: Error, Equatable, Sendable {
 }
 
 public struct EmailAccountConfiguration: Equatable, Sendable {
+    public static func configured(enabled: Bool = false, apiURL: String = "") -> Self? {
+        guard enabled else { return nil }
+        return try? Self(apiURL: apiURL)
+    }
     public let origin: URL
     public var storageScope: String { "tideenglish.email-account.v1|" + origin.absoluteString }
     public init(apiURL: String) throws {

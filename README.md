@@ -4,7 +4,7 @@
 
 A native language-learning app for practising expression, comprehension and vocabulary through natural conversation. The project includes a SwiftUI iOS client, a Jetpack Compose Android client and a separate email account service.
 
-Tide English uses your own model API key by default. Learning records stay on your device, and signing in is optional. Hosted voice, trials and purchases are disabled by default. This repository contains the full source and pinned dependencies, without user credentials, personal signing settings or historical build artifacts.
+Tide English uses your own model API key by default. Learning records stay on your device, and in-app account sign-in, hosted voice, trials and purchases are disabled by default. This repository contains the full source and pinned dependencies, without user credentials, personal signing settings or historical build artifacts.
 
 ## Screenshots
 
@@ -29,7 +29,7 @@ Captured from the current iOS app on an iPhone 17 simulator using offline sample
 | Personalized teaching | Corrections, topics, learning goals and capability evidence, recorded separately for each language |
 | Appearance | Paper, Midnight and Grove themes; Chinese or English interface, independent of the learning language |
 | Local data | Conversations, vocabulary and learning progress, with manual backup and import |
-| Optional accounts | Email-code sign-in, sign-out and account deletion; no learning-data cloud sync |
+| Optional accounts | Disabled by default; email sign-in requires an explicitly configured account service. No learning-data cloud sync |
 
 Realtime audio models depend on provider capabilities and may differ from the selected text model. Android device voice requires Android 12+ with available on-device recognition and an offline reading voice; otherwise, use typing. Gemini realtime connections require reconnection after expiry. Simulator tests do not establish physical microphone quality, Bluetooth behavior or model access for a particular account.
 
@@ -57,7 +57,7 @@ tide-english/
 
 ## Let an AI agent install the app on your phone
 
-Paste the prompt below into a coding agent with access to your local files, terminal and phone. It can clone the repository or use an open checkout. Complete account sign-in, device trust and permissions yourself; enter passwords and API keys only in the system or app UI.
+Paste the prompt below into a coding agent with access to your local files, terminal and phone. It can clone the repository or use an open checkout. Complete build-tool sign-in (such as an Apple Account in Xcode), device trust and permissions yourself; enter passwords and API keys only in the system or app UI.
 
 ```text
 Help me build, install and launch Tide English on my iPhone or Android phone
@@ -83,8 +83,12 @@ only if the target is ambiguous.
 
 I will select my languages and provider, then enter my key in Settings > Model
 & API key. Never ask for the key in chat, read it from device secure storage,
-or put it in source files or logs. Keep managed services, hosted trials and
-purchases disabled. Do not deploy servers or start a live conversation.
+or put it in source files or logs. Keep all in-app account sign-in (email,
+Google and Apple), managed services, hosted trials and purchases disabled.
+Do not configure account-service URLs, SMTP or OAuth unless I explicitly ask
+for account functionality. App sign-in must not be required for learning or
+translation. Apple Account sign-in in Xcode is only for building/signing.
+Do not deploy servers or start a live conversation.
 
 Report which tests, build, signing, installation and launch checks passed,
 iOS signing expiry if available, and anything I still need to do on the phone.
@@ -119,7 +123,7 @@ The APK is written to `mobile/android/app/build/outputs/apk/debug/app-debug.apk`
 
 Choose your learning and explanation languages in the app, then enter your own key in **Settings → Model & API key**. Never put keys in source files, logs or chat. Credentials are stored separately for each provider and custom endpoint; changing the recipient requires renewed consent. See [Models and voice](docs/guides/models-and-voice.md).
 
-Email identity is optional. Clients retain the email-account contract at `https://api.gd306.cn`; this project rebuild did not deploy or modify that live service. See the [account service guide](docs/operations/accounts.md) for self-hosting. Email identity and the hosted gateway are separate components.
+App account sign-in is disabled by default and is not needed for learning or translation. Enable it only after explicitly configuring your own compatible account service; see the [account service guide](docs/operations/accounts.md). Email identity and the hosted gateway are separate components. Client builds do not deploy or modify any server.
 
 ## Verification and development
 

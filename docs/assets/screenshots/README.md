@@ -1,13 +1,13 @@
 # README screenshots
 
-Captured from Tide English iOS simulator builds, version 1.0 (1), using dedicated iPhone 17 simulators running iOS 27.0. The English and Chinese vocabulary screenshots were refreshed on 2 November 2026 to show quick translation above saved words. The other screenshots were captured on 23 October 2026; individual capture dates are recorded in the manifest.
+Captured from Tide English iOS simulator builds, version 1.0 (1), using dedicated iPhone 17 simulators running iOS 27.0. The English and Chinese vocabulary and settings screenshots were refreshed on 2 November 2026 to show quick translation and default settings with account sign-in disabled. The other screenshots were captured on 23 October 2026; individual capture dates are recorded in the manifest.
 
 | Directory | Interface | Theme | Screens |
 | --- | --- | --- | --- |
 | `ios/en/` | English | Paper | Conversation, themes, vocabulary with quick translation, settings |
 | `ios/zh-CN/` | Chinese | Midnight | Conversation, themes, vocabulary with quick translation, settings |
 
-These are unedited captures of the native application. Conversation and theme examples use Spanish learning with English explanations. Vocabulary examples use English learning with Simplified Chinese definitions. All content comes from the app's existing offline preview fixtures, with an in-memory learning store and preview account state. The speaking indicator is a simulated UI state; no microphone recording, live model call, real credential or personal learning record was used.
+These are unedited captures of the native application. Conversation and theme examples use Spanish learning with English explanations. Vocabulary examples use English learning with Simplified Chinese definitions. All content comes from the app's existing offline preview fixtures, with an in-memory learning store. Account sign-in is disabled in the default settings captures. The speaking indicator is a simulated UI state; no microphone recording, live model call, real credential or personal learning record was used.
 
 The images demonstrate the iOS interface. They do not represent Android screenshots or a new live voice verification.
 
@@ -20,7 +20,6 @@ Launch `cn.gd306.tideenglish.ios` with these arguments:
 ```text
 --preview
 --preview-provider=deepSeek
---preview-email-account
 --preview-interface-language=english
 --preview-interface-theme=paper
 --screenshot=conversation

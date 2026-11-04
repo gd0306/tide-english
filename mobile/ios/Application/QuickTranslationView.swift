@@ -86,7 +86,7 @@ struct QuickTranslationView: View {
                     Spacer()
                     Button(UI(translator.error == nil ? "Translate" : "Retry")) {
                         editing = false; translator.update(request, immediately: true)
-                    }.buttonStyle(.borderedProminent).tint(TideEnglishColor.accent)
+                    }.buttonStyle(.borderedProminent).tint(TideEnglishColor.accent).foregroundStyle(TideEnglishColor.onAccent)
                         .disabled(!allowed || !request.isValid || translator.isLoading).accessibilityIdentifier("translation-submit")
                 }.font(.subheadline)
                 if !coordinator.hasAIConsent {

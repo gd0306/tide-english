@@ -15,16 +15,17 @@ struct ThemesView: View {
     private var categories: [String] { coordinator.language.themes.map(\.category).reduce(into: ["All"]) { if !$0.contains($1) { $0.append($1) } } }
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                PageHeading(eyebrow: "A place to begin", title: "What’s on\nyour mind?", subtitle: "Same friend. Somewhere new.")
+            VStack(alignment: .leading, spacing: 16) {
+                Text(UI("Themes")).font(.system(.title2, design: .serif, weight: .semibold))
+                    .accessibilityAddTraits(.isHeader)
                 Button { choose(nil) } label: {
                     HStack { Image(systemName: "waveform"); Text(UI("Just talk")); Spacer(); Image(systemName: "arrow.up.right") }
-                        .font(.headline).padding(22).background(TideEnglishColor.surface.opacity(0.8), in: RoundedRectangle(cornerRadius: 14))
+                        .font(.headline).padding(16).frame(minHeight: 44).background(TideEnglishColor.surface.opacity(0.8), in: RoundedRectangle(cornerRadius: 14))
                 }
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(categories, id: \.self) { c in
-                            Button(UI(c)) { category = c }.font(.caption).padding(.horizontal, 15).padding(.vertical, 11)
+                            Button(UI(c)) { category = c }.font(.caption).padding(.horizontal, 15).frame(minHeight: 44)
                                 .background(category == c ? TideEnglishColor.peach : TideEnglishColor.surface, in: Capsule())
                                 .accessibilityAddTraits(category == c ? .isSelected : [])
                         }
@@ -33,20 +34,20 @@ struct ThemesView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: typeSize.isAccessibilitySize ? 260 : 150), spacing: 12)], spacing: 12) {
                     ForEach(themes) { theme in
                         Button { if theme.id == "today" { current = true } else { choose(theme) } } label: {
-                            VStack(alignment: .leading, spacing: 28) {
-                                Image(systemName: theme.symbol).font(.system(size: 28, weight: .light)).foregroundStyle(TideEnglishColor.secondary)
+                            VStack(alignment: .leading, spacing: 16) {
+                                Image(systemName: theme.symbol).font(.system(size: 23, weight: .light)).foregroundStyle(TideEnglishColor.secondary)
                                 VStack(alignment: .leading, spacing: 5) {
                                     Text(UI(theme.title)).font(.system(.headline, design: .serif))
                                     Text(UI(theme.subtitle)).font(.caption).foregroundStyle(TideEnglishColor.secondary)
                                 }
-                            }.frame(maxWidth: .infinity, minHeight: 142, alignment: .leading).padding(19)
-                                .background(TideEnglishColor.panels[theme.colorIndex], in: RoundedRectangle(cornerRadius: 14))
+                            }.frame(maxWidth: .infinity, minHeight: 104, alignment: .leading).padding(16)
+                                .background(TideEnglishColor.surface, in: RoundedRectangle(cornerRadius: 14))
                                 .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(TideEnglishColor.ocean.opacity(0.12), lineWidth: 1) }
-                        }.buttonStyle(.plain)
+                        }.buttonStyle(.plain).accessibilityIdentifier("theme-\(theme.id)")
                     }
                 }
                 if themes.isEmpty { ContentUnavailableView.search(text: search) }
-            }.padding(24)
+            }.padding(.horizontal, 24).padding(.vertical, 16)
         }.foregroundStyle(TideEnglishColor.ink)
             .searchable(text: $search, prompt: UI("Find a conversation"))
             .sheet(isPresented: $current) { CurrentTopicView(coordinator: coordinator) { choose(coordinator.selectedTheme) } }
@@ -98,6 +99,7 @@ struct CurrentTopicView: View {
 
 struct WordsView: View {
     let coordinator: ConversationCoordinator
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var search = ""
     @State private var selected: WordState?
     @State private var sessions = false
@@ -113,12 +115,10 @@ struct WordsView: View {
     }
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(UI("Little by little · \(coordinator.language.name)"))
-                        .font(.system(.caption, weight: .medium)).foregroundStyle(TideEnglishColor.secondary)
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 16) {
-                        Text(UI("Your words.")).font(.system(.largeTitle, design: .serif, weight: .semibold)).tracking(-0.8)
+                        Text(UI("Your words.")).font(.system(.title2, design: .serif, weight: .semibold))
                             .accessibilityAddTraits(.isHeader)
                         Spacer(minLength: 0)
                         Button {
@@ -128,13 +128,19 @@ struct WordsView: View {
                         }.buttonStyle(.plain).accessibilityLabel(UI("Practice flashcards")).accessibilityIdentifier("open-flashcards")
                             .disabled(learner.words.isEmpty)
                     }
-                    Text(UI("Familiar words, ready for another conversation.")).font(.subheadline).foregroundStyle(TideEnglishColor.secondary)
+                }
+                QuickTranslationView(coordinator: coordinator).id(coordinator.language.id)
+                let meaningLayout = typeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+                    : AnyLayout(HStackLayout(spacing: 4))
+                meaningLayout {
+                    Text(UI("Meaning language")).foregroundStyle(TideEnglishColor.secondary)
+                    if !typeSize.isAccessibilitySize { Spacer(minLength: 4) }
                     Picker(UI("Meaning language"), selection: Binding(get: { coordinator.store.preferences.meaningLanguage },
                         set: { coordinator.selectMeaningLanguage($0) })) {
                         ForEach(MeaningLanguages.all, id: \.self) { Text(UI($0)).tag($0) }
-                    }.pickerStyle(.menu).accessibilityIdentifier("vocabulary-meaning-language")
-                }
-                QuickTranslationView(coordinator: coordinator).id(coordinator.language.id)
+                    }.pickerStyle(.menu).labelsHidden().accessibilityIdentifier("vocabulary-meaning-language")
+                }.font(.subheadline)
                 if let error = coordinator.store.vocabularyCacheError {
                     Text(UI(error)).font(.footnote).foregroundStyle(TideEnglishColor.secondary)
                 }
@@ -174,7 +180,7 @@ struct WordsView: View {
                     }.padding(22).background(TideEnglishColor.butter, in: RoundedRectangle(cornerRadius: 24))
                 }
                 Button(UI("Past conversations"), systemImage: "clock.arrow.circlepath") { sessions = true }.font(.subheadline).padding(.vertical, 8)
-            }.padding(26)
+            }.padding(.horizontal, 24).padding(.vertical, 16)
         }.foregroundStyle(TideEnglishColor.ink).searchable(text: $search, prompt: UI("Find a word"))
             .sheet(item: $selected) { word in WordDetailView(word: word, coordinator: coordinator) }
             .sheet(isPresented: $sessions) { SessionHistoryView(store: coordinator.store) }

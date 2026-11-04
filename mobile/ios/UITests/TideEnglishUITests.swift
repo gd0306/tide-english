@@ -231,6 +231,7 @@ final class TideEnglishUITests: XCTestCase {
         let app = bilingualVocabularyPreview()
         let input = app.textViews["translation-input"]
         XCTAssertTrue(input.waitForExistence(timeout: 5))
+        app.buttons["translation-toggle"].tap()
         XCTAssertFalse(app.buttons["translation-submit"].isEnabled)
         input.tap(); input.typeText("Hello!")
         let output = app.staticTexts["translation-output"]
@@ -245,7 +246,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertEqual(input.value as? String, "你好！")
         app.buttons["translation-clear"].tap()
         XCTAssertEqual(input.value as? String, "")
-        XCTAssertEqual(output.label, "Your translation appears here.")
+        XCTAssertFalse(output.exists, "Empty translation results should not occupy vocabulary space")
         XCTAssertFalse(app.buttons["translation-submit"].isEnabled)
         keepVocabularyScreenshot(app, name: "quick-translation-english")
     }
@@ -253,12 +254,45 @@ final class TideEnglishUITests: XCTestCase {
     func testQuickTranslationChineseLabelsAndLanguagePicker() {
         let app = bilingualVocabularyPreview(extra: ["--preview-interface-language=chinese", "--preview-interface-theme=midnight"])
         XCTAssertTrue(app.textViews["translation-input"].waitForExistence(timeout: 5))
+        app.buttons["translation-toggle"].tap()
         XCTAssertEqual(app.buttons["translation-clear"].label, "清空")
         XCTAssertEqual(app.buttons["translation-submit"].label, "翻译")
         app.buttons["translation-target"].tap()
         app.buttons["法语"].tap()
         XCTAssertTrue(app.buttons["translation-target"].label.contains("法语"))
         keepVocabularyScreenshot(app, name: "quick-translation-chinese")
+    }
+
+    func testCompactTranslationKeepsVocabularyVisibleAndPreservesDraftWhenCollapsed() {
+        let app = bilingualVocabularyPreview()
+        let input = app.textViews["translation-input"]
+        XCTAssertTrue(input.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["translation-submit"].exists)
+        XCTAssertFalse(app.staticTexts["translation-output"].exists)
+        let firstWord = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "vocabulary-word-")).firstMatch
+        XCTAssertTrue(firstWord.waitForExistence(timeout: 5))
+        XCTAssertTrue(firstWord.isHittable, "Saved words must be reachable in the initial viewport")
+        input.tap()
+        input.typeText("Hello!")
+        XCTAssertTrue(app.buttons["translation-submit"].exists, "Editing reveals translation tools")
+        app.buttons["translation-toggle"].tap()
+        XCTAssertFalse(app.buttons["translation-submit"].exists)
+        XCTAssertEqual(input.value as? String, "Hello!")
+        app.buttons["translation-toggle"].tap()
+        XCTAssertEqual(input.value as? String, "Hello!")
+        keepVocabularyScreenshot(app, name: "compact-translation-expanded")
+    }
+
+    func testCompactThemesKeepFourChoicesVisibleAndAllowSelection() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--preview", "--preview-provider=deepSeek", "--screenshot=themes", "--preview-interface-language=english"]
+        app.launch()
+        let themes = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "theme-"))
+        XCTAssertTrue(themes.element(boundBy: 3).waitForExistence(timeout: 5))
+        for index in 0..<4 { XCTAssertTrue(themes.element(boundBy: index).isHittable) }
+        keepVocabularyScreenshot(app, name: "compact-themes")
+        themes.element(boundBy: 0).tap()
+        XCTAssertTrue(app.staticTexts["Daily practice"].waitForExistence(timeout: 5))
     }
 
     func testVocabularyShowsLearningAndChineseDefinitions() {

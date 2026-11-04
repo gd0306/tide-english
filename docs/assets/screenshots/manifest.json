@@ -1,6 +1,6 @@
 {
   "capturedOn": "2026-10-23",
-  "updatedOn": "2026-11-02",
+  "updatedOn": "2026-11-04",
   "platform": "iOS Simulator",
   "device": "iPhone 17",
   "runtime": "iOS 27.0",
@@ -27,17 +27,17 @@
       "path": "ios/en/themes.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 243422,
-      "sha256": "083f4263a259eb39c87fdf2b97cc2dbb04bc7e0aa09ca5d24ec3f277bebe301f",
-      "capturedOn": "2026-10-23"
+      "bytes": 260340,
+      "sha256": "d93a1be98eb596c5e872efbab763d7661fbbcd8bff49dbe2d2a4f9f16bb365ab",
+      "capturedOn": "2026-11-04"
     },
     {
       "path": "ios/en/vocabulary.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 239909,
-      "sha256": "566d837ae7bbd8847be83af5efdb7d2eafc40c52cc519021f3fd91d01df31cc1",
-      "capturedOn": "2026-11-02"
+      "bytes": 276905,
+      "sha256": "0082ea76508ddfd5d8710b5db32dcbfd619fef3b85e4891a33e486917730784a",
+      "capturedOn": "2026-11-04"
     },
     {
       "path": "ios/zh-CN/settings.png",
@@ -59,17 +59,17 @@
       "path": "ios/zh-CN/themes.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 236228,
-      "sha256": "c39c5976c5d1df2db30b49dbe9044cc2986621cc15b17a875591856694e8e9b9",
-      "capturedOn": "2026-10-23"
+      "bytes": 269384,
+      "sha256": "002507cc8f3d36108a18ee10d16cb4e16c6c6d7d9e17827cb525dd5658b836a3",
+      "capturedOn": "2026-11-04"
     },
     {
       "path": "ios/zh-CN/vocabulary.png",
       "width": 1206,
       "height": 2622,
-      "bytes": 238808,
-      "sha256": "2fba8ff4b08100e66601f5a2e91ef8fbb9b6b59fd79a8023cdd604b20d4c6110",
-      "capturedOn": "2026-11-02"
+      "bytes": 264903,
+      "sha256": "8b64783ca91484ef46b7f24f5635df6ec83cd0cb396944add191986a62e4adfd",
+      "capturedOn": "2026-11-04"
     }
   ]
 }

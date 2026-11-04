@@ -68,6 +68,20 @@ class CaptionFlashcardExperienceTest {
     private fun position(value: String) {
         compose.onNodeWithTag("flashcard-pager").assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, value))
     }
+    @Test fun compactTranslationKeepsWordsVisibleAndRetainsDraft() {
+        seedWords()
+        compose.onNodeWithText("книга").assertIsDisplayed()
+        compose.onNodeWithTag("translation-submit").assertDoesNotExist()
+        compose.onNodeWithTag("translation-output").assertDoesNotExist()
+        compose.onNodeWithTag("translation-input").performTextInput("Hello!")
+        compose.onNodeWithTag("translation-submit").assertExists()
+        compose.onNodeWithTag("translation-toggle").revealPageViewport().performClick()
+        compose.onNodeWithTag("translation-submit").assertDoesNotExist()
+        compose.onNodeWithTag("translation-input").assertTextContains("Hello!")
+        capture("compact-words")
+        compose.onNodeWithTag("translation-toggle").performClick()
+        compose.onNodeWithTag("translation-input").assertTextContains("Hello!")
+    }
     private fun accessibleMove(label: String) {
         val action = compose.onNodeWithTag("flashcard-pager").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsActions.CustomActions].first { it.label == label }
         compose.runOnIdle { assertTrue(action.action()) }

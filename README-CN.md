@@ -10,8 +10,8 @@ Tide English 默认使用你自己的模型 API Key。学习记录保存在设�
 
 <p align="center">
   <a href="docs/assets/screenshots/ios/zh-CN/talk.png"><img src="docs/assets/screenshots/ios/zh-CN/talk.png" width="24%" alt="带双语字幕的对话界面" /></a>
-  <a href="docs/assets/screenshots/ios/zh-CN/themes.png"><img src="docs/assets/screenshots/ios/zh-CN/themes.png" width="24%" alt="对话主题选择" /></a>
-  <a href="docs/assets/screenshots/ios/zh-CN/vocabulary.png"><img src="docs/assets/screenshots/ios/zh-CN/vocabulary.png" width="24%" alt="带便捷翻译功能的词汇页" /></a>
+  <a href="docs/assets/screenshots/ios/zh-CN/themes.png"><img src="docs/assets/screenshots/ios/zh-CN/themes.png" width="24%" alt="紧凑的练习话题网格" /></a>
+  <a href="docs/assets/screenshots/ios/zh-CN/vocabulary.png"><img src="docs/assets/screenshots/ios/zh-CN/vocabulary.png" width="24%" alt="词条与顶部紧凑翻译输入栏" /></a>
   <a href="docs/assets/screenshots/ios/zh-CN/settings.png"><img src="docs/assets/screenshots/ios/zh-CN/settings.png" width="24%" alt="模型、界面语言与主题设置" /></a>
 </p>
 <p align="center">对话 · 主题 · 词汇与翻译 · 设置</p>
@@ -22,7 +22,7 @@ Tide English 默认使用你自己的模型 API Key。学习记录保存在设�
 
 | 功能 | 说明 |
 | --- | --- |
-| 便捷翻译 | 词汇页顶部输入文字，选择源语言与目标语言，停顿后自动翻译；支持交换语言、复制与重试，复用自己的模型与 API Key。每次最多 2,000 字符，不计入词汇掌握记录 |
+| 便捷翻译 | 词汇页顶部保留紧凑输入栏，编辑时展开语言选择、交换、复制与重试工具，停顿后自动翻译，收起后保留草稿。复用自己的模型与 API Key，每次最多 2,000 字符，不计入词汇掌握记录 |
 | 多模型 | OpenAI、DeepSeek、GLM、Gemini 和自定义兼容接口；统一设置入口管理模型、地址与密钥 |
 | 语音 | 支持原生实时语音；其他模型降级为设备识别、所选模型生成和系统朗读，设备不支持时保留打字 |
 | 双语学习 | 独立学习语言和释义语言，双语字幕、词语查询、词汇释义和复习 |

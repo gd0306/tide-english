@@ -93,13 +93,13 @@ fun TopicsScreen(vm: TideEnglishViewModel, onChoose: () -> Unit, onCurrentTopic:
             TideEnglishSearchField(search, { search = it.take(80) }, stringResource(R.string.topics_search_placeholder))
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
-            PageHeading(stringResource(R.string.topics_eyebrow), stringResource(R.string.topics_title),
-                stringResource(R.string.topics_subtitle), Modifier.padding(top = 20.dp, bottom = 10.dp))
+            Text(stringResource(R.string.topics_tab_title), style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.semantics { heading() })
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             Surface(Modifier.fillMaxWidth().clickable(role = Role.Button) { vm.chooseTheme(null); onChoose() },
-                shape = RoundedCornerShape(26.dp), color = TideEnglishColors.Surface.copy(alpha = .85f)) {
-                Row(Modifier.padding(22.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                shape = RoundedCornerShape(14.dp), color = TideEnglishColors.Surface) {
+                Row(Modifier.heightIn(min = 48.dp).padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     TideEnglishIcon(TideEnglishSymbol.Wave)
                     Text(stringResource(R.string.topics_just_talk), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                     TideEnglishIcon(TideEnglishSymbol.ChevronRight, Modifier.size(19.dp))
@@ -117,8 +117,8 @@ fun TopicsScreen(vm: TideEnglishViewModel, onChoose: () -> Unit, onCurrentTopic:
                 }
             }
         }
-        itemsIndexed(themes, key = { _, theme -> theme.id }) { index, theme ->
-            ThemeCard(theme, index) {
+        itemsIndexed(themes, key = { _, theme -> theme.id }) { _, theme ->
+            ThemeCard(theme) {
                 if (theme.id == "today") current = true
                 else { vm.chooseTheme(theme); onChoose() }
             }
@@ -133,14 +133,14 @@ fun TopicsScreen(vm: TideEnglishViewModel, onChoose: () -> Unit, onCurrentTopic:
 }
 
 @Composable
-private fun ThemeCard(theme: ConversationTheme, index: Int, onClick: () -> Unit) {
+private fun ThemeCard(theme: ConversationTheme, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(role = Role.Button, onClick = onClick),
-        shape = RoundedCornerShape(26.dp),
-        color = TideEnglishColors.Panels.getOrElse(theme.colorIndex) { TideEnglishColors.Panels[index % TideEnglishColors.Panels.size] },
+        shape = RoundedCornerShape(14.dp),
+        color = TideEnglishColors.Surface,
     ) {
-        Column(Modifier.fillMaxWidth().heightIn(min = 180.dp).padding(19.dp), verticalArrangement = Arrangement.spacedBy(28.dp)) {
-            TideEnglishIcon(themeSymbol(theme.id), Modifier.size(31.dp), color = TideEnglishColors.Secondary)
+        Column(Modifier.fillMaxWidth().heightIn(min = 136.dp).padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            TideEnglishIcon(themeSymbol(theme.id), Modifier.size(24.dp), color = TideEnglishColors.Secondary)
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text(theme.title, style = MaterialTheme.typography.titleMedium)
                 Text(theme.subtitle, color = TideEnglishColors.Secondary, style = MaterialTheme.typography.bodySmall)
@@ -220,15 +220,13 @@ fun WordsScreen(vm: TideEnglishViewModel) {
         verticalArrangement = Arrangement.spacedBy(14.dp), contentPadding = PaddingValues(bottom = 120.dp),
     ) {
         item {
-            Column(Modifier.padding(top = 20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(stringResource(R.string.words_eyebrow, vm.language.name).uppercase(), style = MaterialTheme.typography.labelSmall, color = TideEnglishColors.Secondary)
+            Column(Modifier.padding(top = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.words_title), style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f).semantics { heading() })
+                    Text(stringResource(R.string.words_title), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f).semantics { heading() })
                     SoftRoundButton(TideEnglishSymbol.Flashcards, stringResource(R.string.flashcards_open), onClick = {
                         flashcards = cn.gd306.tideenglish.core.FlashcardDeck(vm.learner.words, vm.language.id)
                     }, enabled = vm.learner.words.isNotEmpty(), modifier = Modifier.testTag("open-flashcards"))
                 }
-                Text(stringResource(R.string.words_subtitle), style = MaterialTheme.typography.bodyMedium, color = TideEnglishColors.Secondary)
             }
         }
         item { QuickTranslation(vm, translation) }

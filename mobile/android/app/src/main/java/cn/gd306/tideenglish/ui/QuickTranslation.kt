@@ -8,12 +8,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import android.content.ClipData
 import cn.gd306.tideenglish.TideEnglishViewModel
@@ -30,6 +34,7 @@ internal class QuickTranslationState(
     var target by target
     var input by input
     var revision by mutableIntStateOf(0)
+    var expanded by mutableStateOf(false)
 }
 
 /** Owned by WordsScreen, so scrolling the lazy list never cancels or resends a translation. */
@@ -68,26 +73,44 @@ internal fun QuickTranslation(vm: TideEnglishViewModel, state: QuickTranslationS
     val request = QuickTranslationRequest(state.input, state.source, state.target)
     val scope = rememberCoroutineScope()
     val clipboard = LocalClipboard.current
+    val focus = LocalFocusManager.current
     val swapLabel = uiText("Swap languages", "交换语言")
     val copyLabel = uiText("Copy translation", "复制译文")
-    Surface(shape = RoundedCornerShape(20.dp), color = TideEnglishColors.Surface) {
-        Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(uiText("Quick translation", "便捷翻译"), style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() })
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                TranslationLanguageMenu(state.source, uiText("Source language", "源语言"), "translation-source", Modifier.weight(1f)) { state.source = it }
-                TextButton(onClick = {
-                    val output = translator.text
-                    val previous = state.source; state.source = state.target; state.target = previous
-                    if (output.isNotEmpty()) state.input = output
-                    translator.reset()
-                }, modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp).testTag("translation-swap").semantics { contentDescription = swapLabel },
-                    contentPadding = PaddingValues(4.dp)) { Text("⇄", style = MaterialTheme.typography.titleLarge) }
-                TranslationLanguageMenu(state.target, uiText("Target language", "目标语言"), "translation-target", Modifier.weight(1f)) { state.target = it }
+    val expansionLabel = if (state.expanded) uiText("Expanded", "已展开") else uiText("Collapsed", "已收起")
+    Surface(shape = RoundedCornerShape(14.dp), color = TideEnglishColors.Surface) {
+        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            TextButton(onClick = {
+                if (state.expanded) focus.clearFocus()
+                state.expanded = !state.expanded
+            }, contentPadding = PaddingValues(0.dp), modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                .testTag("translation-toggle").semantics { stateDescription = expansionLabel }) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(uiText("Quick translation", "便捷翻译"), color = TideEnglishColors.Ink,
+                        style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() })
+                    if (!state.expanded) Text(translationLanguageName(state.source) + " → " + translationLanguageName(state.target),
+                        style = MaterialTheme.typography.labelSmall, color = TideEnglishColors.Secondary)
+                }
+                if (!state.expanded && translator.isLoading) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
+                TideEnglishIcon(TideEnglishSymbol.ChevronDown, Modifier.size(20.dp).rotate(if (state.expanded) 180f else 0f))
+            }
+            if (state.expanded) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    TranslationLanguageMenu(state.source, uiText("Source language", "源语言"), "translation-source", Modifier.weight(1f)) { state.source = it }
+                    TextButton(onClick = {
+                        val output = translator.text
+                        val previous = state.source; state.source = state.target; state.target = previous
+                        if (output.isNotEmpty()) state.input = output
+                        translator.reset()
+                    }, modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp).testTag("translation-swap").semantics { contentDescription = swapLabel },
+                        contentPadding = PaddingValues(4.dp)) { Text("⇄", style = MaterialTheme.typography.titleLarge) }
+                    TranslationLanguageMenu(state.target, uiText("Target language", "目标语言"), "translation-target", Modifier.weight(1f)) { state.target = it }
+                }
             }
             OutlinedTextField(state.input, { state.input = it }, label = { Text(uiText("Enter text", "输入文字")) },
-                minLines = 3, maxLines = 5, isError = state.input.length > 2000, modifier = Modifier.fillMaxWidth().testTag("translation-input"))
-            Surface(color = TideEnglishColors.Sage.copy(alpha = .6f), shape = RoundedCornerShape(12.dp)) {
-                Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                minLines = if (state.expanded) 3 else 1, maxLines = if (state.expanded) 5 else 1, isError = state.input.length > 2000,
+                modifier = Modifier.fillMaxWidth().onFocusChanged { if (it.isFocused) state.expanded = true }.testTag("translation-input"))
+            if (state.expanded && (translator.isLoading || translator.text.isNotEmpty())) {
+                Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(uiText("Translation", "译文"), style = MaterialTheme.typography.labelSmall, modifier = Modifier.weight(1f))
                         if (translator.isLoading) CircularProgressIndicator(Modifier.size(22.dp), strokeWidth = 2.dp)
@@ -96,9 +119,8 @@ internal fun QuickTranslation(vm: TideEnglishViewModel, state: QuickTranslationS
                         }, modifier = Modifier.testTag("translation-copy")) { Text(uiText("Copy", "复制")) }
                     }
                     SelectionContainer {
-                        Text(translator.text.ifEmpty { uiText("Your translation appears here.", "译文将显示在这里。") },
-                            color = if (translator.text.isEmpty()) TideEnglishColors.Secondary else TideEnglishColors.Ink,
-                            modifier = Modifier.fillMaxWidth().heightIn(min = 42.dp).testTag("translation-output"))
+                        Text(translator.text, color = TideEnglishColors.Ink,
+                            modifier = Modifier.fillMaxWidth().testTag("translation-output"))
                     }
                 }
             }
@@ -108,36 +130,39 @@ internal fun QuickTranslation(vm: TideEnglishViewModel, state: QuickTranslationS
                 Text(if (resource != 0) tideStringResource(resource) else uiText("Couldn’t translate. Check your connection and try again.", "翻译失败，请检查网络后重试。"),
                     style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("translation-error"))
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { state.input = ""; translator.reset() }, enabled = state.input.isNotEmpty(), modifier = Modifier.testTag("translation-clear")) { Text(uiText("Clear", "清空")) }
-                Button(onClick = { translator.update(request, immediately = true) }, enabled = allowed && request.isValid && !translator.isLoading,
-                    modifier = Modifier.testTag("translation-submit")) { Text(if (translator.error != null) uiText("Retry", "重试") else uiText("Translate", "翻译")) }
+            if (state.expanded) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    TextButton(onClick = { state.input = ""; translator.reset() }, enabled = state.input.isNotEmpty(), modifier = Modifier.testTag("translation-clear")) { Text(uiText("Clear", "清空")) }
+                    Button(onClick = { focus.clearFocus(); translator.update(request, immediately = true) }, enabled = allowed && request.isValid && !translator.isLoading,
+                        modifier = Modifier.testTag("translation-submit")) { Text(if (translator.error != null) uiText("Retry", "重试") else uiText("Translate", "翻译")) }
+                }
+                Text(when {
+                    vm.isRunning -> uiText("End the conversation to use quick translation.", "结束对话后即可使用便捷翻译。")
+                    !allowed -> uiText("Add your API key and allow AI in Settings to translate.", "请在设置中选择自己的 API 密钥并允许 AI 翻译。")
+                    else -> uiText("Uses your selected model and API key.", "使用你已选择的模型和 API 密钥。")
+                }, style = MaterialTheme.typography.bodySmall, color = TideEnglishColors.Secondary)
             }
-            Text(when {
-                vm.isRunning -> uiText("End the conversation to use quick translation.", "结束对话后即可使用便捷翻译。")
-                !allowed -> uiText("Add your API key and allow AI in Settings to translate.", "请在设置中选择自己的 API 密钥并允许 AI 翻译。")
-                else -> uiText("Uses your selected model and API key.", "使用你已选择的模型和 API 密钥。")
-            }, style = MaterialTheme.typography.bodySmall, color = TideEnglishColors.Secondary)
         }
     }
 }
 
 @Composable
+private fun translationLanguageName(language: String): String = when (language) {
+    "English" -> uiText("English", "英语")
+    "Chinese (Simplified)" -> uiText("Chinese (Simplified)", "简体中文")
+    else -> language
+}
+
+@Composable
 private fun TranslationLanguageMenu(value: String, label: String, tag: String, modifier: Modifier, select: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
-    // Keep the language names consistent with Settings; localize the two default choices.
-    @Composable fun name(language: String): String = when (language) {
-        "English" -> uiText("English", "英语")
-        "Chinese (Simplified)" -> uiText("Chinese (Simplified)", "简体中文")
-        else -> language
-    }
     Box(modifier) {
         OutlinedButton(onClick = { expanded = true }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(tag).semantics { contentDescription = label },
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp), shape = RoundedCornerShape(10.dp)) {
-            Text(name(value), modifier = Modifier.weight(1f)); Text("⌄")
+            Text(translationLanguageName(value), modifier = Modifier.weight(1f)); TideEnglishIcon(TideEnglishSymbol.ChevronDown, Modifier.size(16.dp))
         }
         DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
-            MeaningLanguages.all.forEach { language -> DropdownMenuItem(text = { Text(name(language)) }, onClick = { expanded = false; select(language) }) }
+            MeaningLanguages.all.forEach { language -> DropdownMenuItem(text = { Text(translationLanguageName(language)) }, onClick = { expanded = false; select(language) }) }
         }
     }
 }

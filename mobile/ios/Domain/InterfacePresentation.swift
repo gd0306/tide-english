@@ -349,6 +349,8 @@ public enum InterfaceText {
         "Talk about this": "聊聊这个",
         "Current topics use your selected provider outside a conversation. Sources stay attached to the topic.": "时事话题会在对话之外使用你选择的提供方。来源会随话题保留。",
         "Quick translation": "便捷翻译",
+        "Expanded": "已展开",
+        "Collapsed": "已收起",
         "Source language": "源语言",
         "Target language": "目标语言",
         "Swap languages": "交换语言",

@@ -4,6 +4,20 @@
 
 2026-11-02 更新：App 内账户登录现已默认关闭，账户服务地址默认留空；需要时按安装指南显式配置和启用。下文保留 10 月 23 日的验收结果。
 
+## 2026-11-04 词汇与主题页布局
+
+保留 Paper/Midnight/Grove 主题，将词汇页顶部翻译改为紧凑输入、编辑时展开，收起保留草稿；空译文不占位。词汇页缩小标题并将释义语言放到词条前；辅助功能字号下释义语言纵排，输入区随字号缩放。主题页去除展示型引导区，保留场景图标与纸面卡片，缩小卡片留白。
+
+| 验证 | 本轮结果与证据 |
+| --- | --- |
+| 离线核心与工具 | Swift 389 项、Android JVM 460 项、根工具 92 项通过；语言导出、跨端契约检查通过。日志：`.build/layout-swift.log`、`.build/layout-android-final.log`、`.build/layout-tools.log` |
+| 构建 | iOS arm64 模拟器应用与 UI 测试构建通过；Android Debug、隔离 UI 测试 APK 和 Lint 通过（零错误，100 个警告、6 个提示）。未进行本轮发行签名构建 |
+| iOS UI | 专用 iPhone 17 / iOS 27 模拟器；翻译、换向、清空、中文选择器、首屏词条与草稿保留、四个首屏话题及选择、三主题跨页切换，共 5 项针对性用例通过。证据：`.build/layout-green.xcresult`、`.build/layout-themes.xcresult`；字号调整后的翻译复验见 `.build/layout-final.xcresult` |
+| Android UI | 专用 API 35 arm64 模拟器，仅安装 `.uitest` 与测试包；紧凑翻译草稿及核心页面验证共 2 项通过。证据：`.build/layout-android-ui.log`；原始截图：`.build/layout-android-screens/` |
+| 文档截图 | README 中英文主题页与词汇页使用离线 fixture 重新拍摄；保留原始原生分辨率，日期、文件大小和 SHA-256 同步到截图清单 |
+
+这轮没有连接真机、在线调用模型、实测 VoiceOver/TalkBack 或测量启动时间/帧率。未更改账户默认值、学习档案、模型协议或服务器配置，不需要服务端部署。此前审查中全局导航字号限制、跨端品牌统一及完整语言名称本地化仍属于后续范围。
+
 ## 工程身份
 
 - 独立本地 Git 仓库，未配置远程或推送。

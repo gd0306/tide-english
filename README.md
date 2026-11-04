@@ -10,8 +10,8 @@ Tide English uses your own model API key by default. Learning records stay on yo
 
 <p align="center">
   <a href="docs/assets/screenshots/ios/en/talk.png"><img src="docs/assets/screenshots/ios/en/talk.png" width="24%" alt="Conversation with bilingual captions" /></a>
-  <a href="docs/assets/screenshots/ios/en/themes.png"><img src="docs/assets/screenshots/ios/en/themes.png" width="24%" alt="Conversation themes" /></a>
-  <a href="docs/assets/screenshots/ios/en/vocabulary.png"><img src="docs/assets/screenshots/ios/en/vocabulary.png" width="24%" alt="Vocabulary page with quick translation" /></a>
+  <a href="docs/assets/screenshots/ios/en/themes.png"><img src="docs/assets/screenshots/ios/en/themes.png" width="24%" alt="Compact conversation theme grid" /></a>
+  <a href="docs/assets/screenshots/ios/en/vocabulary.png"><img src="docs/assets/screenshots/ios/en/vocabulary.png" width="24%" alt="Saved vocabulary with a compact translation input" /></a>
   <a href="docs/assets/screenshots/ios/en/settings.png"><img src="docs/assets/screenshots/ios/en/settings.png" width="24%" alt="Model, interface language and theme settings" /></a>
 </p>
 <p align="center">Conversation · Themes · Words &amp; translation · Settings</p>
@@ -22,7 +22,7 @@ Captured from the current iOS app on an iPhone 17 simulator using offline sample
 
 | Feature | Description |
 | --- | --- |
-| Quick translation | Translate text at the top of the vocabulary page with source/target selectors, language swap, copy and retry. Translates after a typing pause using your own selected model and API key; up to 2,000 characters, without changing learning evidence |
+| Quick translation | A compact input at the top of vocabulary expands when editing to show language selectors, swap, copy and retry. Translates after a typing pause using your own selected model and API key; up to 2,000 characters, without changing learning evidence |
 | Multiple providers | OpenAI, DeepSeek, GLM, Gemini and compatible custom endpoints; one settings screen for provider, model, endpoint and key |
 | Voice conversations | Native realtime voice where supported; other models use device recognition, the selected model and system speech, with typing available when device voice is unsupported |
 | Bilingual learning | Independent learning and explanation languages, bilingual captions, contextual word lookup, vocabulary definitions and review |

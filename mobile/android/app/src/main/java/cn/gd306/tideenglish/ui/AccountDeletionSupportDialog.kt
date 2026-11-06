@@ -22,7 +22,7 @@ import cn.gd306.tideenglish.R
 internal const val DELETION_SUPPORT_EMAIL = "1215742191@qq.com"
 internal const val DELETION_SUPPORT_URL = "https://tide-english.example/support/#delete-account"
 // The draft intentionally includes no account identifiers, credentials or learning data.
-internal const val DELETION_SUPPORT_MAILTO = "mailto:1215742191@qq.com?subject=Tide%20English%20account%20deletion%20request"
+internal const val DELETION_SUPPORT_MAILTO = "mailto:1215742191@qq.com?subject=Tide%20account%20deletion%20request"
 
 @Composable
 internal fun AccountDeletionSupportDialog(onDismiss: () -> Unit) {

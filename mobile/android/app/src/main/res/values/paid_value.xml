@@ -6,7 +6,7 @@
     <string name="paid_balance_free_first">Your free minutes are used first.</string>
     <string name="paid_pack_estimate">About %1$s minutes</string>
     <string name="paid_ai_allocation">For AI usage</string>
-    <string name="paid_tideenglish_fee">Tide English fee (%1$s%%)</string>
+    <string name="paid_tideenglish_fee">Tide fee (%1$s%%)</string>
     <string name="paid_processing_fee">Estimated payment fee</string>
     <string name="paid_processing_buffer">Payment cost buffer</string>
     <string name="minute_balance_updating">Updating your minutes…</string>

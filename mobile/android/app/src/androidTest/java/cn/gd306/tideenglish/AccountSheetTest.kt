@@ -41,7 +41,7 @@ class AccountSheetTest {
         compose.onNodeWithTag("account-google").assertIsNotEnabled()
         assertEquals(0, signIns)
         compose.onNodeWithText("Make yourself at home.").assertIsDisplayed()
-        compose.onNodeWithText("You can keep using Tide English without an account.", substring = true).assertExists()
+        compose.onNodeWithText("You can keep using Tide without an account.", substring = true).assertExists()
     }
     @Test fun accountShowsMinutesAndDeletionRequiresConfirmation() {
         var deletions = 0
@@ -54,7 +54,7 @@ class AccountSheetTest {
         capture("09-member-account")
         compose.onNodeWithText(context.getString(R.string.account_delete_action)).performScrollTo().performClick()
         assertEquals(0, deletions)
-        compose.onNodeWithText("Delete your Tide English account", substring = true).assertIsDisplayed()
+        compose.onNodeWithText("Delete your Tide account", substring = true).assertIsDisplayed()
         compose.onNodeWithTag("account-confirm-delete").performClick()
         compose.runOnIdle { assertEquals(1, deletions) }
     }
@@ -112,7 +112,7 @@ class AccountSheetTest {
         compose.runOnIdle { assertTrue(opened.isEmpty()); assertEquals(0, deletions) }
         compose.onNodeWithTag("account-deletion-email").performClick()
         compose.runOnIdle {
-            assertEquals(listOf("mailto:1215742191@qq.com?subject=Tide%20English%20account%20deletion%20request"), opened)
+            assertEquals(listOf("mailto:1215742191@qq.com?subject=Tide%20account%20deletion%20request"), opened)
             assertEquals(0, deletions)
         }
         compose.onNodeWithTag("account-deletion-request").assertExists()

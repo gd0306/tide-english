@@ -67,14 +67,14 @@ import TideEnglishCore
     static var panels: [Color] { [peach, lilac, sage, butter] }
 }
 
-enum AppBrand { static let name = "Tide English" }
+enum AppBrand { static let name = "Tide" }
 
 struct Brand: View {
     var body: some View {
         HStack(spacing: 9) {
             Image(systemName: "book.closed").font(.system(size: 21, weight: .regular)).foregroundStyle(TideEnglishColor.accent)
-            Text("Tide English").font(.system(size: 22, weight: .medium, design: .serif)).tracking(-0.6)
-        }.foregroundStyle(TideEnglishColor.ink).accessibilityElement(children: .ignore).accessibilityLabel(AppBrand.name)
+            Text(UI(AppBrand.name)).font(.system(size: 22, weight: .medium, design: .serif)).tracking(-0.6)
+        }.foregroundStyle(TideEnglishColor.ink).accessibilityElement(children: .ignore).accessibilityLabel(UI(AppBrand.name))
     }
 }
 

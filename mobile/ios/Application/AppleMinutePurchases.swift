@@ -78,7 +78,7 @@ final class AppleMinutePurchases {
     private func originalAccountRecoveryMessage(orderID: UUID?, owner: ManagedAccountSession) -> String? {
         guard let orderID, let saved = try? attempts(),
               saved.contains(where: { $0.orderID == orderID && $0.accountID != owner.accountID }) else { return nil }
-        return "This purchase belongs to another Tide English account. Sign in to that account and tap Check purchases to finish it."
+        return "This purchase belongs to another Tide account. Sign in to that account and tap Check purchases to finish it."
     }
     func start() {
         guard enabled, listener == nil, !ProcessInfo.processInfo.arguments.contains("--preview") else { return }
@@ -326,7 +326,7 @@ final class AppleMinutePurchases {
         } catch {
             if current(owner) {
                 message = originalAccountRecoveryMessage(orderID: orderID, owner: owner) ??
-                    "Your purchase is saved. We’ll check it again when Tide English can connect."
+                    "Your purchase is saved. We’ll check it again when Tide can connect."
             }
             return false
         }

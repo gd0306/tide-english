@@ -1,5 +1,7 @@
 # Tide English 工程重建执行计划
 
+> 历史记录：本文保留 2026-10-23 的工程重建方案。2026-11-06 对外品牌已更新为 Tide／潮语，GitHub 仓库改为 `gd0306/tide`；内部工程名、应用标识和学习数据路径继续沿用。当前约定见根目录 AGENTS.md。
+
 **目标**：交付独立、可构建的 Tide English 源码工程，而不是仅更换显示名。
 
 **设计**：[project-renewal.md](project-renewal.md)。iOS 与 Android 保持原生实现；源码迁移按工程边界分工，最后统一验证。

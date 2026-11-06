@@ -214,7 +214,7 @@ class CaptionParityTest {
         compose.onNodeWithTag("target-caption").assertTextEquals("Hei!")
         compose.onNodeWithTag("meaning-caption").assertTextEquals("Hi!")
         compose.onNodeWithTag("talk-guest-minutes").assertDoesNotExist()
-        compose.onNodeWithText("8 min 54 sec of Tide English minutes remaining").assertDoesNotExist()
+        compose.onNodeWithText("8 min 54 sec of Tide minutes remaining").assertDoesNotExist()
         compose.onNodeWithText("Microphone off").assertDoesNotExist()
         compose.onNodeWithText("Reply in whichever language comes to you.").assertDoesNotExist()
         compose.onNodeWithTag("start-conversation").assertContentDescriptionEquals("Start conversation")
@@ -229,7 +229,7 @@ class CaptionParityTest {
         assertTrue("Meaning overlaps microphone: meaning=$meaning microphone=$microphone", meaning.bottom <= microphone.top)
         assertTrue("Orb shrank below 120 dp", orb.width / compose.density.density >= 119f)
         compose.runOnIdle { state("hostedReadiness", HostedReadiness()) }
-        compose.onNodeWithText("Couldn’t check your Tide English minutes.").assertDoesNotExist()
+        compose.onNodeWithText("Couldn’t check your Tide minutes.").assertDoesNotExist()
         compose.runOnIdle {
             TideEnglishViewModel::class.java.getDeclaredField("voiceSession").apply { isAccessible = true }.setBoolean(vm, true)
             state("state", "active")
@@ -542,14 +542,14 @@ class CaptionParityTest {
 
     @Test fun longMandarinReplyKeepsBothCaptionsVisibleAndEveryReadingReachable() {
         val sentence = "你好！很高兴认识你。你的中文说得很好。今天我们可以聊一聊你的生活。你喜欢喝咖啡还是喝茶？如果你有时间，我们可以一起去附近的咖啡馆，然后去银行，再去商店买一点儿东西。你觉得怎么样？你也可以告诉我你最喜欢的食物，或者说说你明天想做什么。"
-        android.util.Log.i("Tide EnglishCaptionCheck", "Long caption: render")
+        android.util.Log.i("TideCaptionCheck", "Long caption: render")
         show("zh", sentence, "Hello! Nice to meet you. Your Chinese is good. We can go to a café, then the bank, and buy a few things. What do you think?")
         assertTextVisible("target-caption", false); assertTextVisible("meaning-caption", false)
         val orb = compose.onNodeWithTag("talk-orb").fetchSemanticsNode().boundsInRoot
         assertTrue("Orb shrank below 120 dp", orb.width / compose.density.density >= 119f)
-        android.util.Log.i("Tide EnglishCaptionCheck", "Long caption: capture")
+        android.util.Log.i("TideCaptionCheck", "Long caption: capture")
         capture("mandarin-long-caption")
-        android.util.Log.i("Tide EnglishCaptionCheck", "Long caption: scroll reading")
+        android.util.Log.i("TideCaptionCheck", "Long caption: scroll reading")
         val target = compose.onNodeWithTag("target-passage-scroll")
         val meaning = compose.onNodeWithTag("meaning-passage-scroll").fetchSemanticsNode().boundsInRoot
         val range = target.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
@@ -560,6 +560,6 @@ class CaptionParityTest {
         compose.onNodeWithTag("pinyin-reading").assertDoesNotExist()
         compose.onNodeWithTag("start-conversation").assertIsDisplayed()
         compose.onNodeWithTag("floating-navigation").assertIsDisplayed()
-        android.util.Log.i("Tide EnglishCaptionCheck", "Long caption: verified")
+        android.util.Log.i("TideCaptionCheck", "Long caption: verified")
     }
 }

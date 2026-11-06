@@ -1,6 +1,6 @@
 # Stripe and Play minute providers
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 The optional adapters implement provider verification and durable fulfillment for the minute ledger. They are not installed by `app.ts` or `main.ts`, and missing configuration leaves them unavailable. Production requires an explicit `allowLive: true` capability as well as the matching live environment. This is separate from enabling new checkout/purchase flows.
 

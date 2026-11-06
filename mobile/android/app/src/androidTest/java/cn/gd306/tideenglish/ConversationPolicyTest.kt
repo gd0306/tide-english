@@ -104,7 +104,7 @@ class ConversationPolicyTest {
         compose.onNodeWithTag("conversation-continuation-sheet").assertDoesNotExist()
         compose.onNodeWithContentDescription(compose.activity.getString(R.string.talk_mic_start_desc)).performClick()
         compose.onNodeWithText(compose.activity.getString(R.string.talk_continue_add_minutes)).assertIsEnabled().performClick()
-        compose.onNodeWithText("Tide English account").assertIsDisplayed()
+        compose.onNodeWithText("Tide account").assertIsDisplayed()
         compose.onNodeWithTag("account-google").assertDoesNotExist()
         compose.onNodeWithTag("account-minute-balance").assertDoesNotExist()
         compose.runOnIdle {

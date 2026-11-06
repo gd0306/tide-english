@@ -13,7 +13,7 @@
         <intent><action android:name="android.speech.RecognitionService" /></intent>
         <intent><action android:name="android.intent.action.TTS_SERVICE" /></intent>
     </queries>
-    <application android:label="Tide English" android:icon="@mipmap/ic_tideenglish" android:roundIcon="@mipmap/ic_tideenglish" android:theme="@style/Theme.TideEnglish"
+    <application android:label="@string/app_name" android:icon="@mipmap/ic_tideenglish" android:roundIcon="@mipmap/ic_tideenglish" android:theme="@style/Theme.TideEnglish"
         android:allowBackup="false" android:fullBackupContent="false" android:dataExtractionRules="@xml/data_extraction_rules"
         android:usesCleartextTraffic="false" android:supportsRtl="true">
         <service android:name=".VoiceConversationService" android:exported="false"

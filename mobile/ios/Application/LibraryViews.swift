@@ -284,7 +284,7 @@ struct TranscriptView: View {
                     if let session {
                         ForEach(session.passages) { passage in
                             VStack(alignment: .leading, spacing: 8) {
-                                Text(UI(passage.speaker == .assistant ? "TIDE ENGLISH" : "YOU")).font(.caption).tracking(1).foregroundStyle(TideEnglishColor.secondary)
+                                Text(UI(passage.speaker == .assistant ? "TIDE" : "YOU")).font(.caption).tracking(1).foregroundStyle(TideEnglishColor.secondary)
                                 Text(passage.text).font(.system(.title3, design: .rounded)).textSelection(.enabled)
                                     .accessibilityIdentifier(passage.speaker == .user ? "transcript-user-passage" : "transcript-assistant-passage")
                                 if session.languageID == "zh" { PinyinHelp(text: passage.text) }
@@ -353,7 +353,7 @@ struct EditableTranscriptView: View {
                     ForEach(session?.passages ?? []) { passage in
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
-                                Text(UI(passage.speaker == .user ? "YOU" : "TIDE_ENGLISH")).font(.caption).tracking(1)
+                                Text(UI(passage.speaker == .user ? "YOU" : "TIDE")).font(.caption).tracking(1)
                                 Spacer()
                                 if passage.speaker == .user && session?.endedAt != nil {
                                     Button(UI("Edit")) { editedText = passage.text; editingID = passage.id }.font(.caption)
@@ -488,7 +488,7 @@ struct SettingsView: View {
                         ForEach([5, 10, 15, 20, 30, 60], id: \.self) { Text(UI("\($0) minutes")).tag($0) }
                     }.pickerStyle(.menu).disabled(coordinator.isRunning)
                 } header: { Text(UI("Conversation")) } footer: {
-                    Text(UI(hostedAvailable ? "Ends one conversation after the selected time. Your available Tide English minutes are separate." : "Ends one conversation after the selected time."))
+                    Text(UI(hostedAvailable ? "Ends one conversation after the selected time. Your available Tide minutes are separate." : "Ends one conversation after the selected time."))
                 }
                 Section(UI("Your data")) {
                     NavigationLink(UI("Learning backup & data")) { LearningBackupView(coordinator: coordinator) }
@@ -496,7 +496,7 @@ struct SettingsView: View {
                 if hostedAvailable {
                     Section {
                         Picker(UI("Conversation access"), selection: Binding(get: { coordinator.conversationProvider }, set: chooseProvider)) {
-                            Text(UI("Tide English minutes")).tag(ConversationProvider.hosted)
+                            Text(UI("Tide minutes")).tag(ConversationProvider.hosted)
                             Text(UI("My API key")).tag(ConversationProvider.personalKey)
                         }.pickerStyle(.menu).disabled(coordinator.isRunning)
                             .accessibilityIdentifier("settings-conversation-access")
@@ -549,7 +549,7 @@ struct SettingsView: View {
         .confirmationDialog(UI("Use your API key?"), isPresented: $confirmingPersonalKey, titleVisibility: .visible) {
             Button(UI("Use my key")) { coordinator.selectConversationProvider(.personalKey) }
             Button(UI("Cancel"), role: .cancel) {}
-        } message: { Text(UI("\(supplier) bills your account for usage. Tide English minutes stay available if you switch back later.")) }
+        } message: { Text(UI("\(supplier) bills your account for usage. Tide minutes stay available if you switch back later.")) }
         .task { if accountAvailable { account.refresh() } }
     }
     private func chooseProvider(_ provider: ConversationProvider) {
@@ -619,10 +619,10 @@ private struct HostedAccessSwitchView: View {
                     else { Text(UI("Couldn’t check your minutes. Try again.")) }
                     if failed { Text(UI("Your minutes changed. Check again before switching.")).foregroundStyle(TideEnglishColor.secondary) }
                     if !checking && available == nil { Button(UI("Try again")) { Task { await check() } } }
-                } header: { Text(UI("Tide English minutes")) } footer: { Text(UI("Your saved \(coordinator.modelConfiguration.provider.displayName) key will remain on this iPhone. Switching changes the next conversation only.")) }
+                } header: { Text(UI("Tide minutes")) } footer: { Text(UI("Your saved \(coordinator.modelConfiguration.provider.displayName) key will remain on this iPhone. Switching changes the next conversation only.")) }
                 if let available, available.canStart, !checking {
                     Section {
-                        Button(UI("Use Tide English minutes")) {
+                        Button(UI("Use Tide minutes")) {
                             switchTask = Task {
                                 checking = true
                                 guard let latest = await coordinator.hostedBalanceForSwitch(), latest.canStart,
@@ -671,7 +671,7 @@ private struct LearningBackupView: View {
             } footer: { Text(UI("Backups include transcripts and learning evidence, never your API key. Import adds conversations with new IDs. Learning stays on this iPhone unless you export it.")) }
             if let message { Section { Text(UI(message)) } }
         }.scrollContentBackground(.hidden).background(TideEnglishColor.cream).navigationTitle(UI("Learning data"))
-            .fileExporter(isPresented: $exporting, document: backup, contentType: .json, defaultFilename: "Tide-English-learning-backup") { result in
+            .fileExporter(isPresented: $exporting, document: backup, contentType: .json, defaultFilename: "Tide-learning-backup") { result in
                 if case .failure(let error) = result { message = error.localizedDescription }
             }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
@@ -706,7 +706,7 @@ private struct AboutTideEnglishView: View {
             }
             Section {
                 if hostedAvailable {
-                    Text(UI("Tide English minutes send audio and selected text through Tide English’s server to OpenAI. With your own key, selected data goes directly to \(coordinator.modelConfiguration.provider.displayName). Raw audio is not saved by Tide English."))
+                    Text(UI("Tide minutes send audio and selected text through Tide’s server to OpenAI. With your own key, selected data goes directly to \(coordinator.modelConfiguration.provider.displayName). Raw audio is not saved by Tide."))
                 } else {
                     Text(UI("With your own key, selected conversation data goes directly to \(coordinator.modelConfiguration.provider.displayName). Voice processing depends on the selected provider. Raw audio is not saved by \(AppBrand.name)."))
                 }

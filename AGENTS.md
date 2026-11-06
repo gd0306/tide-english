@@ -1,7 +1,7 @@
-# Tide English engineering conventions
+# Tide engineering conventions
 
 - This is an independent repository. Do not modify neighboring projects or install/uninstall device apps unless the task calls for it.
-- Use Tide English for display text, TideEnglish for code/modules, cn.gd306.tideenglish for Kotlin namespace and TIDE_ENGLISH_* for build settings. Update project references, resources, fixtures and CI together.
+- Use Tide for English display text and 潮语 for Chinese display text. Retain TideEnglish for code/modules, cn.gd306.tideenglish for Kotlin namespace and TIDE_ENGLISH_* for build settings. Update project references, resources, fixtures and CI together. Keep existing app IDs, learning storage paths, archive formats and deployment identities stable when changing the public brand.
 - Never commit keys, SMTP secrets, tokens, signing material, local configuration, caches or learning archives. Use synthetic credentials in tests.
 - All in-app account sign-in (email, Google and Apple), hosted trials and purchases remain disabled by default. Enable accounts only when explicitly requested and a separate account service is configured. Email identity must not gate learning or enable learning sync.
 - Preserve licenses and third-party notices. Example store IDs, prices and deployment templates are not production configuration.

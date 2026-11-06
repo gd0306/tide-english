@@ -26,6 +26,11 @@ notices = add('notices','PBXFileReference',lastKnownFileType='text',path='Applic
 refs.append(notices)
 privacy = add('privacy','PBXFileReference',lastKnownFileType='text.xml',path='Application/PrivacyInfo.xcprivacy',sourceTree='<group>')
 refs.append(privacy)
+localizedInfo = []
+for locale in ['en', 'zh-Hans']:
+    localizedInfo.append(add('info-' + locale, 'PBXFileReference', lastKnownFileType='text.plist.strings', name=locale, path=f'Application/{locale}.lproj/InfoPlist.strings', sourceTree='<group>'))
+infoStrings = add('infoStrings', 'PBXVariantGroup', children=localizedInfo, name='InfoPlist.strings', sourceTree='<group>')
+refs.append(infoStrings)
 signing = add('signing','PBXFileReference',lastKnownFileType='text.xcconfig',path='Configuration/Signing.xcconfig',sourceTree='<group>')
 refs.append(signing)
 testSource = add('testSource','PBXFileReference',lastKnownFileType='sourcecode.swift',path='UITests/TideEnglishUITests.swift',sourceTree='<group>')
@@ -40,7 +45,7 @@ core = add('core','XCSwiftPackageProductDependency',package=corePackage,productN
 rtc = add('rtc','XCSwiftPackageProductDependency',package=rtcPackage,productName='WebRTC')
 frameworks = add('frameworks','PBXFrameworksBuildPhase',buildActionMask=2147483647,files=[add('coreBuild','PBXBuildFile',productRef=core),add('rtcBuild','PBXBuildFile',productRef=rtc)],runOnlyForDeploymentPostprocessing=0)
 sourcePhase = add('sources','PBXSourcesBuildPhase',buildActionMask=2147483647,files=sources,runOnlyForDeploymentPostprocessing=0)
-resources = add('resources','PBXResourcesBuildPhase',buildActionMask=2147483647,files=[add('assetsBuild','PBXBuildFile',fileRef=asset),add('noticesBuild','PBXBuildFile',fileRef=notices),add('privacyBuild','PBXBuildFile',fileRef=privacy)],runOnlyForDeploymentPostprocessing=0)
+resources = add('resources','PBXResourcesBuildPhase',buildActionMask=2147483647,files=[add('infoStringsBuild','PBXBuildFile',fileRef=infoStrings),add('assetsBuild','PBXBuildFile',fileRef=asset),add('noticesBuild','PBXBuildFile',fileRef=notices),add('privacyBuild','PBXBuildFile',fileRef=privacy)],runOnlyForDeploymentPostprocessing=0)
 common = {'SDKROOT':'iphoneos','IPHONEOS_DEPLOYMENT_TARGET':'26.1','SWIFT_VERSION':'5.0','CLANG_ENABLE_MODULES':'YES','CLANG_ENABLE_OBJC_ARC':'YES','SWIFT_STRICT_CONCURRENCY':'targeted'}
 targetSettings = {'PRODUCT_BUNDLE_IDENTIFIER':'cn.gd306.tideenglish.ios','PRODUCT_NAME':'$(TARGET_NAME)','TARGETED_DEVICE_FAMILY':'1','GENERATE_INFOPLIST_FILE':'NO','INFOPLIST_FILE':'Application/Info.plist','CODE_SIGN_STYLE':'Automatic','MARKETING_VERSION':'1.0','CURRENT_PROJECT_VERSION':'1','ASSETCATALOG_COMPILER_APPICON_NAME':'AppIcon','ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME':'AccentColor','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks'],'ENABLE_PREVIEWS':'YES','SUPPORTED_PLATFORMS':'iphoneos iphonesimulator'}
 targetSettings.update({'CODE_SIGN_ENTITLEMENTS':'$(TIDE_ENGLISH_APPLE_ENTITLEMENTS)',
@@ -61,7 +66,7 @@ testSources = add('testSources','PBXSourcesBuildPhase',buildActionMask=214748364
 proxy = add('testProxy','PBXContainerItemProxy',containerPortal=uid('project'),proxyType=1,remoteGlobalIDString=target,remoteInfo='TideEnglish')
 dependency=add('testDependency','PBXTargetDependency',target=target,targetProxy=proxy)
 testTarget=add('testTarget','PBXNativeTarget',buildConfigurationList=configs('tests',{'PRODUCT_BUNDLE_IDENTIFIER':'cn.gd306.tideenglish.ios.uitests','PRODUCT_NAME':'$(TARGET_NAME)','GENERATE_INFOPLIST_FILE':'YES','TEST_TARGET_NAME':'TideEnglish','TARGETED_DEVICE_FAMILY':'1','CODE_SIGN_STYLE':'Automatic'}),buildPhases=[testSources],buildRules=[],dependencies=[dependency],name='TideEnglishUITests',productName='TideEnglishUITests',productReference=testProduct,productType='com.apple.product-type.bundle.ui-testing')
-project=add('project','PBXProject',attributes={'BuildIndependentTargetsInParallel':'YES','LastUpgradeCheck':'2640','TargetAttributes':{target:{'CreatedOnToolsVersion':'26.4'},testTarget:{'CreatedOnToolsVersion':'26.4','TestTargetID':target}}},buildConfigurationList=configs('project',common),compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','nb','Base'],mainGroup=group,packageReferences=[corePackage,rtcPackage],productRefGroup=products,projectDirPath='',projectRoot='',targets=[target,testTarget])
+project=add('project','PBXProject',attributes={'BuildIndependentTargetsInParallel':'YES','LastUpgradeCheck':'2640','TargetAttributes':{target:{'CreatedOnToolsVersion':'26.4'},testTarget:{'CreatedOnToolsVersion':'26.4','TestTargetID':target}}},buildConfigurationList=configs('project',common),compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','zh-Hans','nb','Base'],mainGroup=group,packageReferences=[corePackage,rtcPackage],productRefGroup=products,projectDirPath='',projectRoot='',targets=[target,testTarget])
 folder=root/'TideEnglish.xcodeproj';folder.mkdir(exist_ok=True)
 folder.joinpath('project.pbxproj').write_text('// !$*UTF8*$!\n'+encode({'archiveVersion':1,'classes':{},'objectVersion':60,'objects':objects,'rootObject':project})+'\n')
 scheme=folder/'xcshareddata'/'xcschemes';scheme.mkdir(parents=True,exist_ok=True)

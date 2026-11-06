@@ -303,7 +303,7 @@ import TideEnglishCore
         case microphone, audio, consent, timeout, overloaded, service(GeminiLiveProtocol.Failure)
         var errorDescription: String? {
             switch self {
-            case .microphone: "Allow Tide English microphone access in Settings to use Gemini voice."
+            case .microphone: "Allow Tide microphone access in Settings to use Gemini voice."
             case .audio: "Gemini voice audio could not start or continue. Check your microphone and audio route."
             case .consent: "Gemini voice settings or consent changed. Start a new conversation."
             case .timeout: "Gemini voice did not confirm setup in time. Your conversation is saved; please start again."

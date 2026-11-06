@@ -16,7 +16,7 @@ class HanReadingsDeviceTest {
     private val reader = IcuHanReader()
 
     @Test fun platformSegmentationKeepsEveryCharacterAndLinksDictionaryWords() {
-        for (text in listOf("你好！", "  我想去银行，然后去旅行。\n", "你好，Tide English 2026！☕️\n再见", "銀行與音樂", "café e pão")) {
+        for (text in listOf("你好！", "  我想去银行，然后去旅行。\n", "你好，Tide 2026！☕️\n再见", "銀行與音樂", "café e pão")) {
             assertEquals(text, reader.words(text).joinToString(""))
             assertEquals(text, CaptionWords.segments(text, "zh", reader).joinToString("") { it.text })
         }
@@ -52,7 +52,7 @@ class HanReadingsDeviceTest {
         val sentence = MandarinPinyin.reading("我想去银行，然后去旅行。", reader)!!
         Log.i("HanReadingsDeviceTest", "sentence=$sentence")
         assertEquals("wǒ xiǎng qù yínháng，ránhòu qù lǚxíng。", sentence)
-        assertNull(MandarinPinyin.reading("Hello, Tide English 2026! ☕️", reader))
+        assertNull(MandarinPinyin.reading("Hello, Tide 2026! ☕️", reader))
         // Without a resolving word/phrase, common ambiguous characters retain their Han text.
         for (word in listOf("行", "重", "还", "教")) assertNull(word, reader.reading(word))
         assertEquals(listOf("教", "我", "中文"), CaptionWords.segments("教我中文", "zh", reader).mapNotNull { it.lookup })

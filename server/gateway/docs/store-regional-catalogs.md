@@ -1,6 +1,6 @@
 # Regional store catalogs
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 Google Play minute packs use a fixed USD AI allocation with a separate local checkout price. The shared `StoreMarketPrice` model can support Apple pricing later; this change leaves Apple's current storefront catalog and activation unchanged.
 

@@ -2,14 +2,26 @@ import XCTest
 @testable import TideEnglishCore
 
 final class InterfacePresentationTests: XCTestCase {
+    func testPublicBrandUsesInterfaceLanguage() {
+        XCTAssertEqual(InterfaceText.string("Tide", language: .english), "Tide")
+        XCTAssertEqual(InterfaceText.string("Tide", language: .chinese), "潮语")
+        XCTAssertEqual(InterfaceText.string("TIDE", language: .chinese), "潮语")
+        assertChinese([
+            ("Welcome to Tide", "欢迎使用 潮语"),
+            ("About Tide", "关于 潮语"),
+            ("Helps Tide suggest conversations that matter to you. Saved as you type on this iPhone.", "帮助 潮语 推荐你感兴趣的话题。输入时会自动保存在此 iPhone 上。"),
+            ("Current news search is unavailable with FutureProvider. Tide does not have a supported source-backed search for this connection.", "使用 FutureProvider 时无法搜索时事新闻。潮语 对此连接暂不支持带来源的搜索。")
+        ])
+    }
+
     func testKnownStorageAndStartupCopyUsesChinese() {
         assertChinese([
-            ("Tide English couldn’t delete the older learning backup. Your conversations are still here. Please try again.", "Tide English 无法删除旧的学习备份。你的对话仍然保留。请重试。"),
-            ("Tide English couldn’t save your progress. Please export a backup and try again.", "Tide English 无法保存你的进度。请导出备份后重试。"),
+            ("Tide couldn’t delete the older learning backup. Your conversations are still here. Please try again.", "潮语 无法删除旧的学习备份。你的对话仍然保留。请重试。"),
+            ("Tide couldn’t save your progress. Please export a backup and try again.", "潮语 无法保存你的进度。请导出备份后重试。"),
             ("Enter a valid API key.", "请输入有效的 API 密钥。"),
             ("The key couldn’t be saved to this device’s Keychain.", "无法将密钥保存到此设备的钥匙串。"),
             ("The key couldn’t be removed. Unlock this iPhone and try again.", "无法移除密钥。请解锁此 iPhone 后重试。"),
-            ("Tide English couldn’t open its learning record. Your existing data has not been replaced.", "Tide English 无法打开学习记录。你现有的数据未被替换。"),
+            ("Tide couldn’t open its learning record. Your existing data has not been replaced.", "潮语 无法打开学习记录。你现有的数据未被替换。"),
             ("The learning record is unavailable.", "学习记录暂不可用。"),
             ("Provider needs attention", "请检查提供方设置"),
             ("On", "开启")
@@ -21,7 +33,7 @@ final class InterfacePresentationTests: XCTestCase {
             ("GLM realtime is unavailable for this account. Using on-device turn-based voice with your selected GLM chat model.", "此账户无法使用 GLM 实时语音。将使用设备端轮流对话语音和你选择的 GLM 对话模型。"),
             ("Gemini native realtime is unavailable for this account. Using on-device turn-based voice with your selected Gemini chat model.", "此账户无法使用 Gemini 原生实时语音。将使用设备端轮流对话语音和你选择的 Gemini 对话模型。"),
             ("The network connection was lost. Tap to start a new conversation.", "网络连接已断开。轻点以开始新对话。"),
-            ("Allow microphone access in iPhone Settings → Tide English to start a conversation.", "请在 iPhone 设置 → Tide English 中允许麦克风访问，以开始对话。"),
+            ("Allow microphone access in iPhone Settings → Tide to start a conversation.", "请在 iPhone 设置 → 潮语 中允许麦克风访问，以开始对话。"),
             ("The voice connection couldn’t be established. Check your connection and try again.", "无法建立语音连接。请检查网络连接后重试。"),
             ("The voice connection took too long. Please try again.", "语音连接超时。请重试。"),
             ("The voice connection ended unexpectedly. Your conversation has been saved.", "语音连接意外结束。你的对话已保存。")
@@ -31,7 +43,7 @@ final class InterfacePresentationTests: XCTestCase {
     func testKnownGLMVoiceRecoveryCopyUsesChinese() {
         assertChinese([
             ("GLM native realtime is unavailable for this account.", "此账户无法使用 GLM 原生实时语音。"),
-            ("Allow Tide English microphone access in Settings to use GLM voice.", "请在设置中允许 Tide English 访问麦克风，以使用 GLM 语音。"),
+            ("Allow Tide microphone access in Settings to use GLM voice.", "请在设置中允许 潮语 访问麦克风，以使用 GLM 语音。"),
             ("GLM voice audio could not start or continue. Check your microphone and audio route.", "GLM 语音无法启动或继续。请检查麦克风和音频输出设备。"),
             ("GLM voice did not confirm setup in time. Please try again.", "GLM 语音未能及时确认连接设置。请重试。"),
             ("GLM voice could not keep up with this connection. Start a new conversation.", "GLM 语音无法跟上当前连接。请开始新对话。"),
@@ -48,7 +60,7 @@ final class InterfacePresentationTests: XCTestCase {
 
     func testKnownGeminiVoiceRecoveryCopyUsesChinese() {
         assertChinese([
-            ("Allow Tide English microphone access in Settings to use Gemini voice.", "请在设置中允许 Tide English 访问麦克风，以使用 Gemini 语音。"),
+            ("Allow Tide microphone access in Settings to use Gemini voice.", "请在设置中允许 潮语 访问麦克风，以使用 Gemini 语音。"),
             ("Gemini voice audio could not start or continue. Check your microphone and audio route.", "Gemini 语音无法启动或继续。请检查麦克风和音频输出设备。"),
             ("Gemini voice settings or consent changed. Start a new conversation.", "Gemini 语音设置或授权已更改。请开始新对话。"),
             ("Gemini voice did not confirm setup in time. Your conversation is saved; please start again.", "Gemini 语音未能及时确认连接设置。你的对话已保存，请重新开始。"),
@@ -137,7 +149,7 @@ final class InterfacePresentationTests: XCTestCase {
     }
 
     func testUnknownLearningAndProtocolContentRemainUntouched() {
-        for input in ["I like coffee.", "我喜欢喝咖啡。", "こんにちは", "Talk about Settings with me.", "My story: 15 minutes", "gpt-live-1", "deepseek-flash", "session.started", "https://api.deepseek.com", "en", "zh-Hans", "OpenAI", "Gemini", "Tide English"] {
+        for input in ["I like coffee.", "我喜欢喝咖啡。", "こんにちは", "Talk about Settings with me.", "My story: 15 minutes", "gpt-live-1", "deepseek-flash", "session.started", "https://api.deepseek.com", "en", "zh-Hans", "OpenAI", "Gemini", "Another app", "About FutureBrand"] {
             XCTAssertEqual(InterfaceText.string(input, language: .chinese), input)
         }
     }
@@ -186,8 +198,8 @@ final class InterfacePresentationTests: XCTestCase {
     }
 
     func testProviderConsentPreservesRecipientEndpointAndModelVoiceIdentity() {
-        let input = "With your permission, Tide English sends selected conversation text and learning context to DeepSeek at https://api.deepseek.com for conversations, meanings and learning assessment. Voice recognition stays on this iPhone; recognised text goes to the selected model and replies use system reading. Your own key connects directly. Provider retention and billing rules apply. You can withdraw permission in Settings → AI processing."
-        XCTAssertEqual(InterfaceText.string(input, language: .chinese), "经你授权，Tide English 会将选定的对话文本和学习上下文发送至 DeepSeek（https://api.deepseek.com），用于对话、释义和学习评估。语音识别在此 iPhone 上进行；识别后的文本会发送至所选模型，回复由系统朗读。你的密钥直接连接提供方。提供方的数据保留和计费规则适用。你可在设置 → AI 处理中撤回授权。")
+        let input = "With your permission, Tide sends selected conversation text and learning context to DeepSeek at https://api.deepseek.com for conversations, meanings and learning assessment. Voice recognition stays on this iPhone; recognised text goes to the selected model and replies use system reading. Your own key connects directly. Provider retention and billing rules apply. You can withdraw permission in Settings → AI processing."
+        XCTAssertEqual(InterfaceText.string(input, language: .chinese), "经你授权，潮语 会将选定的对话文本和学习上下文发送至 DeepSeek（https://api.deepseek.com），用于对话、释义和学习评估。语音识别在此 iPhone 上进行；识别后的文本会发送至所选模型，回复由系统朗读。你的密钥直接连接提供方。提供方的数据保留和计费规则适用。你可在设置 → AI 处理中撤回授权。")
         assertChinese([("Native live voice uses gpt-live-1.", "原生实时语音使用 gpt-live-1。")])
     }
 
@@ -215,7 +227,7 @@ final class InterfacePresentationTests: XCTestCase {
     func testCallStatusesAndAppAuthoredSpeechErrors() {
         assertChinese([
             ("Ready when you are", "准备好了就开始"), ("Getting comfortable…", "正在准备…"),
-            ("Tide English is speaking", "Tide English 正在说话"), ("I’m listening", "我在听"),
+            ("Tide is speaking", "潮语 正在说话"), ("I’m listening", "我在听"),
             ("Take your time", "慢慢来"), ("Saving our conversation…", "正在保存对话…"),
             ("Mute microphone", "麦克风静音"), ("Unmute microphone", "取消麦克风静音"),
             ("Type a reply", "输入回复"), ("Start a conversation before sending your reply.", "请先开始对话，再发送回复。"),
@@ -332,67 +344,67 @@ final class InterfacePresentationTests: XCTestCase {
             ("Little by little · Norwegian", "日积月累 · 挪威语"),
             ("Reply in Norwegian or another language", "用挪威语或其他语言回复"),
             ("Learning language, Norwegian · Bokmål", "学习语言，挪威语 · 书面挪威语"),
-            ("Tide English speaks Norwegian. Choose the language you read most easily for meanings.", "Tide English 使用挪威语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Norwegian. Choose the language you read most easily for meanings.", "潮语 使用挪威语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Norwegian word or English meaning.", "请尝试其他挪威语词汇或英文释义。"),
             ("Little by little · Spanish", "日积月累 · 西班牙语"),
             ("Reply in Spanish or another language", "用西班牙语或其他语言回复"),
             ("Learning language, Spanish · Spain", "学习语言，西班牙语 · 西班牙"),
-            ("Tide English speaks Spanish. Choose the language you read most easily for meanings.", "Tide English 使用西班牙语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Spanish. Choose the language you read most easily for meanings.", "潮语 使用西班牙语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Spanish word or English meaning.", "请尝试其他西班牙语词汇或英文释义。"),
             ("Little by little · English", "日积月累 · 英语"),
             ("Reply in English or another language", "用英语或其他语言回复"),
             ("Learning language, English · International", "学习语言，英语 · 国际通用"),
-            ("Tide English speaks English. Choose the language you read most easily for meanings.", "Tide English 使用英语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks English. Choose the language you read most easily for meanings.", "潮语 使用英语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another English word or English meaning.", "请尝试其他英语词汇或英文释义。"),
             ("Little by little · French", "日积月累 · 法语"),
             ("Reply in French or another language", "用法语或其他语言回复"),
             ("Learning language, French · France", "学习语言，法语 · 法国"),
-            ("Tide English speaks French. Choose the language you read most easily for meanings.", "Tide English 使用法语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks French. Choose the language you read most easily for meanings.", "潮语 使用法语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another French word or English meaning.", "请尝试其他法语词汇或英文释义。"),
             ("Little by little · German", "日积月累 · 德语"),
             ("Reply in German or another language", "用德语或其他语言回复"),
             ("Learning language, German · Germany", "学习语言，德语 · 德国"),
-            ("Tide English speaks German. Choose the language you read most easily for meanings.", "Tide English 使用德语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks German. Choose the language you read most easily for meanings.", "潮语 使用德语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another German word or English meaning.", "请尝试其他德语词汇或英文释义。"),
             ("Little by little · Italian", "日积月累 · 意大利语"),
             ("Reply in Italian or another language", "用意大利语或其他语言回复"),
             ("Learning language, Italian · Italy", "学习语言，意大利语 · 意大利"),
-            ("Tide English speaks Italian. Choose the language you read most easily for meanings.", "Tide English 使用意大利语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Italian. Choose the language you read most easily for meanings.", "潮语 使用意大利语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Italian word or English meaning.", "请尝试其他意大利语词汇或英文释义。"),
             ("Little by little · Portuguese", "日积月累 · 葡萄牙语"),
             ("Reply in Portuguese or another language", "用葡萄牙语或其他语言回复"),
             ("Learning language, Portuguese · Brazil", "学习语言，葡萄牙语 · 巴西"),
-            ("Tide English speaks Portuguese. Choose the language you read most easily for meanings.", "Tide English 使用葡萄牙语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Portuguese. Choose the language you read most easily for meanings.", "潮语 使用葡萄牙语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Portuguese word or English meaning.", "请尝试其他葡萄牙语词汇或英文释义。"),
             ("Little by little · Mandarin Chinese", "日积月累 · 汉语普通话"),
             ("Reply in Mandarin Chinese or another language", "用汉语普通话或其他语言回复"),
             ("Learning language, Mandarin Chinese · Mainland China", "学习语言，汉语普通话 · 中国大陆"),
-            ("Tide English speaks Mandarin Chinese. Choose the language you read most easily for meanings.", "Tide English 使用汉语普通话对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Mandarin Chinese. Choose the language you read most easily for meanings.", "潮语 使用汉语普通话对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Mandarin Chinese word or English meaning.", "请尝试其他汉语普通话词汇或英文释义。"),
             ("Little by little · Serbian", "日积月累 · 塞尔维亚语"),
             ("Reply in Serbian or another language", "用塞尔维亚语或其他语言回复"),
             ("Learning language, Serbian · Serbia", "学习语言，塞尔维亚语 · 塞尔维亚"),
-            ("Tide English speaks Serbian. Choose the language you read most easily for meanings.", "Tide English 使用塞尔维亚语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Serbian. Choose the language you read most easily for meanings.", "潮语 使用塞尔维亚语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Serbian word or English meaning.", "请尝试其他塞尔维亚语词汇或英文释义。"),
             ("Little by little · Greek", "日积月累 · 希腊语"),
             ("Reply in Greek or another language", "用希腊语或其他语言回复"),
             ("Learning language, Greek · Greece", "学习语言，希腊语 · 希腊"),
-            ("Tide English speaks Greek. Choose the language you read most easily for meanings.", "Tide English 使用希腊语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Greek. Choose the language you read most easily for meanings.", "潮语 使用希腊语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Greek word or English meaning.", "请尝试其他希腊语词汇或英文释义。"),
             ("Little by little · Tagalog (Filipino)", "日积月累 · 他加禄语（菲律宾语）"),
             ("Reply in Tagalog (Filipino) or another language", "用他加禄语（菲律宾语）或其他语言回复"),
             ("Learning language, Tagalog (Filipino) · Philippines", "学习语言，他加禄语（菲律宾语） · 菲律宾"),
-            ("Tide English speaks Tagalog (Filipino). Choose the language you read most easily for meanings.", "Tide English 使用他加禄语（菲律宾语）对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Tagalog (Filipino). Choose the language you read most easily for meanings.", "潮语 使用他加禄语（菲律宾语）对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Tagalog (Filipino) word or English meaning.", "请尝试其他他加禄语（菲律宾语）词汇或英文释义。"),
             ("Little by little · Dutch", "日积月累 · 荷兰语"),
             ("Reply in Dutch or another language", "用荷兰语或其他语言回复"),
             ("Learning language, Dutch · Netherlands", "学习语言，荷兰语 · 荷兰"),
-            ("Tide English speaks Dutch. Choose the language you read most easily for meanings.", "Tide English 使用荷兰语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Dutch. Choose the language you read most easily for meanings.", "潮语 使用荷兰语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Dutch word or English meaning.", "请尝试其他荷兰语词汇或英文释义。"),
             ("Little by little · Russian", "日积月累 · 俄语"),
             ("Reply in Russian or another language", "用俄语或其他语言回复"),
             ("Learning language, Russian · Standard", "学习语言，俄语 · 标准语"),
-            ("Tide English speaks Russian. Choose the language you read most easily for meanings.", "Tide English 使用俄语对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks Russian. Choose the language you read most easily for meanings.", "潮语 使用俄语对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another Russian word or English meaning.", "请尝试其他俄语词汇或英文释义。"),
         ])
     }
@@ -402,7 +414,7 @@ final class InterfacePresentationTests: XCTestCase {
             ("Reply in FutureLanguage-X or another language", "用 FutureLanguage-X 或其他语言回复"),
             ("Little by little · FutureLanguage-X", "日积月累 · FutureLanguage-X"),
             ("Learning language, FutureLanguage-X · Variant", "学习语言，FutureLanguage-X · Variant"),
-            ("Tide English speaks FutureLanguage-X. Choose the language you read most easily for meanings.", "Tide English 使用 FutureLanguage-X 对话。请选择你最容易阅读的语言来查看释义。"),
+            ("Tide speaks FutureLanguage-X. Choose the language you read most easily for meanings.", "潮语 使用 FutureLanguage-X 对话。请选择你最容易阅读的语言来查看释义。"),
             ("Try another FutureLanguage-X word or English meaning.", "请尝试其他 FutureLanguage-X 词汇或英文释义。")
         ])
         XCTAssertEqual(InterfaceText.string("A learner said: Reply in English or another language", language: .chinese), "A learner said: Reply in English or another language")

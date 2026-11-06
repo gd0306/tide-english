@@ -1,6 +1,6 @@
-# Tide English account deployment template
+# Tide account deployment template
 
-This directory contains a reproducible deployment template for the standalone email account service. No Tide English server was deployed or production-certified during this project. The existing mobile email client contract remains `https://api.gd306.cn`; using that contract does not establish that this source or image is running there.
+This directory contains a reproducible deployment template for the standalone email account service. No Tide server was deployed or production-certified during this project. The existing mobile email client contract remains `https://api.gd306.cn`; using that contract does not establish that this source or image is running there.
 
 ## Local verification
 

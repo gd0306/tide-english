@@ -1,6 +1,6 @@
 <resources>
     <string name="guest_unavailable_title">Los minutos gratuitos no están disponibles ahora</string>
-    <string name="guest_unavailable_detail">Cada conversación tiene un coste de IA. Estamos trabajando para financiar más minutos gratuitos y que más personas puedan aprender con Tide English.</string>
+    <string name="guest_unavailable_detail">Cada conversación tiene un coste de IA. Estamos trabajando para financiar más minutos gratuitos y que más personas puedan aprender con Tide.</string>
     <string name="guest_ready_title">Tu próxima conversación te espera</string>
     <string name="guest_ready_detail">Empieza a hablar. Puedes iniciar sesión cuando quieras para conservar los minutos que te quedan en tu cuenta.</string>
     <string name="guest_checking_title">Un momento para prepararnos</string>

@@ -24,6 +24,7 @@ import TideEnglishCore
     private let migrationBackupURL: URL?
     init(inMemory: Bool = false) throws {
         vocabularyCacheURL = inMemory ? nil : URL.applicationSupportDirectory
+            // Keep the original directory so a brand update preserves existing learning data.
             .appendingPathComponent("Tide English", isDirectory: true)
             .appendingPathComponent("vocabulary-definitions-v1.json")
         if let url = vocabularyCacheURL,
@@ -33,6 +34,7 @@ import TideEnglishCore
             vocabularyCache = cache
         }
         migrationBackupURL = inMemory ? nil : URL.applicationSupportDirectory
+            // Keep the original directory so a brand update preserves existing learning data.
             .appendingPathComponent("Tide English", isDirectory: true)
             .appendingPathComponent("before-language-modules.json")
         container = try ModelContainer(for: StoredArchive.self, configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory, cloudKitDatabase: .none))
@@ -87,7 +89,7 @@ import TideEnglishCore
             do { try FileManager.default.removeItem(at: migrationBackupURL) }
             catch CocoaError.fileNoSuchFile { /* Most installations have no migration backup. */ }
             catch {
-                self.error = "Tide English couldn’t delete the older learning backup. Your conversations are still here. Please try again."
+                self.error = "Tide couldn’t delete the older learning backup. Your conversations are still here. Please try again."
                 return
             }
         }
@@ -125,7 +127,7 @@ import TideEnglishCore
     private func persist() {
         onVocabularyContextChange?()
         do { document.payload = try archive.encoded(); try container.mainContext.save(); error = nil }
-        catch { self.error = "Tide English couldn’t save your progress. Please export a backup and try again." }
+        catch { self.error = "Tide couldn’t save your progress. Please export a backup and try again." }
     }
 }
 

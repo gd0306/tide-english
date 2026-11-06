@@ -297,7 +297,7 @@ import TideEnglishCore
         case microphone, audio, timeout, overloaded, service(GLMRealtimeProtocol.Failure)
         var errorDescription: String? {
             switch self {
-            case .microphone: "Allow Tide English microphone access in Settings to use GLM voice."
+            case .microphone: "Allow Tide microphone access in Settings to use GLM voice."
             case .audio: "GLM voice audio could not start or continue. Check your microphone and audio route."
             case .timeout: "GLM voice did not confirm setup in time. Please try again."
             case .overloaded: "GLM voice could not keep up with this connection. Start a new conversation."

@@ -131,7 +131,7 @@ import CoreMedia
                 #if DEBUG
                 diagnostics.assets = "failed"
                 #endif
-                setNotice("Local speech language resources could not be prepared. Use Type a reply; Tide English can still read its responses.")
+                setNotice("Local speech language resources could not be prepared. Use Type a reply; Tide can still read its responses.")
             }
         }
         try checkAttempt(token)
@@ -140,7 +140,7 @@ import CoreMedia
             try audio.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
         } else {
             try audio.setCategory(.playback, mode: .spokenAudio)
-            if notice == nil { setNotice("On-device speech is unavailable or not allowed for this language. Use Type a reply; Tide English can still read its responses.") }
+            if notice == nil { setNotice("On-device speech is unavailable or not allowed for this language. Use Type a reply; Tide can still read its responses.") }
         }
         try audio.setActive(true); ownsAudio = true
         try checkAttempt(token)

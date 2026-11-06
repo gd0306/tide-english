@@ -1,6 +1,6 @@
-Tide English for Android
+Tide for Android
 
-Tide English: MIT; see TideEnglish-LICENSE.txt.
+Tide: MIT; see TideEnglish-LICENSE.txt.
 Nunito font: SIL Open Font License 1.1; see Nunito-OFL.txt.
 https://github.com/google/fonts/tree/main/ofl/nunito
 Google sign-in button artwork: Google branding guidelines and trademark rights apply.

@@ -163,7 +163,7 @@ final class AdditionalLanguageTests: XCTestCase {
     }
 
     func testChineseWordLinksPreserveMixedScriptPunctuationAndWhitespace() {
-        for text in ["", "你好！", "  我想去银行，然后去旅行。\n", "你好，Tide English 2026！☕️\n再见", "𠀀和咖啡", "銀行與音樂", "咖", "café e pão"] {
+        for text in ["", "你好！", "  我想去银行，然后去旅行。\n", "你好，Tide 2026！☕️\n再见", "𠀀和咖啡", "銀行與音樂", "咖", "café e pão"] {
             XCTAssertEqual(MandarinPinyin.tokens(text).map(\.text).joined(), text)
             XCTAssertEqual(CaptionWords.segments(text, languageID: "zh").map(\.text).joined(), text)
         }
@@ -171,7 +171,7 @@ final class AdditionalLanguageTests: XCTestCase {
         XCTAssertTrue(links.contains("银行"))
         XCTAssertTrue(links.contains("旅行"))
         XCTAssertFalse(links.contains(where: { $0.contains("，") || $0.contains("。") }))
-        XCTAssertNil(MandarinPinyin.reading("Hello, Tide English 2026! ☕️"))
+        XCTAssertNil(MandarinPinyin.reading("Hello, Tide 2026! ☕️"))
     }
 
     func testSpacedLanguageWordLinksKeepAccentsApostrophesAndLineBreaks() {

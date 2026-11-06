@@ -1,12 +1,12 @@
 # Enable optional accounts
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 This procedure enables native Google sign-in independently of payments, free trials and hosted voice. Apple remains disabled until the new application has its own registration and reviewed revocation credentials. Account storage and HTTP contracts are in the [account reference](accounts-reference.md).
 
 ## Configure the identity provider
 
-Register a new Google **iOS** OAuth client for Tide English bundle ID `cn.gd306.tideenglish.ios`. Configure the resulting client ID as `GOOGLE_CLIENT_ID` on the optional gateway and as the native authorization audience. Do not reuse another application's OAuth client, project or branding approval. Client IDs are blank and account-provider activation remains off by default. The installed-app PKCE flow does not require a Google client secret on the backend. See [Google iOS backend authentication](https://developers.google.com/identity/sign-in/ios/backend-auth).
+Register a new Google **iOS** OAuth client for Tide bundle ID `cn.gd306.tideenglish.ios`. Configure the resulting client ID as `GOOGLE_CLIENT_ID` on the optional gateway and as the native authorization audience. Do not reuse another application's OAuth client, project or branding approval. Client IDs are blank and account-provider activation remains off by default. The installed-app PKCE flow does not require a Google client secret on the backend. See [Google iOS backend authentication](https://developers.google.com/identity/sign-in/ios/backend-auth).
 
 Configure and review the new project's consent screen, identity scopes and publication status independently. No Google project, published branding or successful real authorization is represented by this repository. Validate authorization and account deletion using a disposable test account before enabling the provider.
 

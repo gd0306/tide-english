@@ -1,8 +1,8 @@
 # Website purchases
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
-The optional website `/buy-minutes/` flow can sell configured Stripe packs to an existing Tide English account after separate activation and provider verification. The buyer verifies the email shown in TideEnglish’s Account screen. That address must identify exactly one active, non-guest account with a verified Google or Apple identity. Email matching does not create or merge accounts. Both Apple relay email domains are accepted.
+The optional website `/buy-minutes/` flow can sell configured Stripe packs to an existing Tide account after separate activation and provider verification. The buyer verifies the email shown in TideEnglish’s Account screen. That address must identify exactly one active, non-guest account with a verified Google or Apple identity. Email matching does not create or merge accounts. Both Apple relay email domains are accepted.
 
 ## API contract
 

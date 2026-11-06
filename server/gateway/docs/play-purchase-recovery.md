@@ -1,6 +1,6 @@
 # Play purchase recovery reference
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 Play recovery resolves an existing server order when a device has an unconsumed purchase token but has lost its local order ID. It never creates a new order or uses client purchase state to grant minutes.
 

@@ -636,6 +636,6 @@ export function createApp(services: Services) {
       return reply;
     }
   });
-  app.get('/payment-return', async (_request, reply) => reply.type('text/html').send('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tide English sandbox</title><body><h1>Return to Tide English</h1><p>This is a sandbox payment test. The app checks payment confirmation independently.</p></body></html>'));
+  app.get('/payment-return', async (_request, reply) => reply.type('text/html').send('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tide sandbox</title><body><h1>Return to Tide</h1><p>This is a sandbox payment test. The app checks payment confirmation independently.</p></body></html>'));
   return app;
 }

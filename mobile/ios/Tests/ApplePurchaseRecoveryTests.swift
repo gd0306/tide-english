@@ -44,7 +44,7 @@ final class ApplePurchaseRecoveryTests: XCTestCase, @unchecked Sendable {
         func deliver(_ purchase: Purchase) {
             guard let recorded = status(purchase.orderID), recorded.fulfillmentRecorded else {
                 recoveryRequests.append(purchase.orderID)
-                message = "Your purchase is saved. We’ll check it again when Tide English can connect."
+                message = "Your purchase is saved. We’ll check it again when Tide can connect."
                 return
             }
             finishedOrders.append(purchase.orderID)
@@ -115,7 +115,7 @@ final class ApplePurchaseRecoveryTests: XCTestCase, @unchecked Sendable {
         XCTAssertEqual(account.saved, [pending, unavailable])
         XCTAssertEqual(account.recoveryRequests, [unavailableOrder])
         XCTAssertTrue(account.finishedOrders.isEmpty)
-        XCTAssertEqual(account.message, "Your purchase is saved. We’ll check it again when Tide English can connect.")
+        XCTAssertEqual(account.message, "Your purchase is saved. We’ll check it again when Tide can connect.")
     }
     @MainActor func testAccountSwitchAfterSavedCheckStopsUnfinishedDelivery() async {
         let account = Account(), store = Store()

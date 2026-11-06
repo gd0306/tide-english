@@ -200,7 +200,7 @@ struct OnboardingView: View {
 
 enum AIProcessingConsent {
     static let version = 1
-    static let summary = "With your permission, \(AppBrand.name) sends audio and selected text to OpenAI for conversations and meanings. Tide English minutes pass through our server; your own key connects directly. Provider retention rules apply. You can withdraw permission in Settings → AI processing."
+    static let summary = "With your permission, \(AppBrand.name) sends audio and selected text to OpenAI for conversations and meanings. Tide minutes pass through our server; your own key connects directly. Provider retention rules apply. You can withdraw permission in Settings → AI processing."
     enum ConsentError: LocalizedError {
         case required
         var errorDescription: String? { "Before using AI features, open Talk and tap the microphone to review how your selected provider processes your audio and text." }

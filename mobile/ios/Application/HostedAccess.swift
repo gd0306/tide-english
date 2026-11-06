@@ -15,12 +15,12 @@ enum HostedError: LocalizedError {
     }
     var errorDescription: String? {
         return switch self {
-        case .unavailable: "Tide English conversations are unavailable right now. Try again later or use your own API key."
-        case .invalidResponse: "Tide English couldn’t verify the server response. Please try again."
-        case .secureStorage: "Tide English couldn’t read this iPhone’s secure trial record. Unlock your iPhone and try again."
-        case .signInRequired: "Sign in to continue using Tide English minutes, or use your own API key."
-        case .noMinutes: "No Tide English minutes are available for a new conversation. Check Account or use your own API key."
-        case .unconfirmed: "Tide English is checking an earlier conversation. Please try again shortly."
+        case .unavailable: "Tide conversations are unavailable right now. Try again later or use your own API key."
+        case .invalidResponse: "Tide couldn’t verify the server response. Please try again."
+        case .secureStorage: "Tide couldn’t read this iPhone’s secure trial record. Unlock your iPhone and try again."
+        case .signInRequired: "Sign in to continue using Tide minutes, or use your own API key."
+        case .noMinutes: "No Tide minutes are available for a new conversation. Check Account or use your own API key."
+        case .unconfirmed: "Tide is checking an earlier conversation. Please try again shortly."
         case .personalKeyRequired: "Current topics need your API key. Add one in Settings and switch to Your key."
         case .server(let code, _):
             switch code {
@@ -46,11 +46,11 @@ enum HostedError: LocalizedError {
         case .server("helper_session_funding_unavailable", _):
             return MeaningRequestFailure("Extra meanings aren’t available in this conversation.", canRetry: false)
         case .server("helper_output_refused", _):
-            return MeaningRequestFailure("Tide English couldn’t explain that passage. Try another one.", canRetry: false)
+            return MeaningRequestFailure("Tide couldn’t explain that passage. Try another one.", canRetry: false)
         case .server("helper_output_incomplete", _):
             return MeaningRequestFailure("That meaning was incomplete. Please try again.")
         case .signInRequired, .server("sign_in_required", _), .server("sign_in_to_continue", _):
-            return MeaningRequestFailure("Sign in to keep using Tide English meanings.", canRetry: false)
+            return MeaningRequestFailure("Sign in to keep using Tide meanings.", canRetry: false)
         default:
             return MeaningRequestFailure("Meaning is temporarily unavailable. You can keep talking and try again.")
         }

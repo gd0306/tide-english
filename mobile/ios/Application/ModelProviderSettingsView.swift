@@ -70,7 +70,7 @@ struct ModelProviderSettingsView: View {
                     Text(UI(failureMessage(failure)))
                         .foregroundStyle(TideEnglishColor.secondary)
                     if hostedAvailable && coordinator.conversationProvider == .personalKey {
-                        Button(UI("Use Tide English minutes")) {
+                        Button(UI("Use Tide minutes")) {
                             key = ""
                             dismiss()
                             coordinator.requestHostedSwitch = true

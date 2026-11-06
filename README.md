@@ -1,4 +1,6 @@
-# Tide English
+# Tide
+
+Chinese name: **潮语**. A multilingual learning companion.
 
 <p align="center">
   <strong>Native multiplatform AI language-learning companion — master language through natural conversation.</strong>
@@ -17,7 +19,7 @@
 
 ---
 
-Tide English is a native language-learning application designed to help you practice spoken expression, listening comprehension, and vocabulary acquisition through natural, real-time AI conversations.
+Tide is a native language-learning application designed to help you practice spoken expression, listening comprehension, and vocabulary acquisition through natural, real-time AI conversations.
 
 The repository includes a **SwiftUI** iOS client, a **Jetpack Compose** Android client, and an optional standalone email-code authentication backend.
 
@@ -76,7 +78,7 @@ The repository includes a **SwiftUI** iOS client, a **Jetpack Compose** Android 
 ## Project Structure
 
 ```text
-tide-english/
+tide/
 ├── mobile/
 │   ├── ios/                 # iOS client: SwiftUI, Swift core package and Xcode project
 │   │   ├── Application/     # Views, UI coordinators and native components
@@ -156,8 +158,8 @@ If you are using a coding assistant with access to your local files, terminal, a
 <summary>📋 <strong>Click to expand / copy the AI Agent prompt</strong></summary>
 
 ```text
-Help me build, install and launch Tide English on my iPhone or Android phone
-from https://github.com/gd0306/tide-english.
+Help me build, install and launch Tide on my iPhone or Android phone
+from https://github.com/gd0306/tide.
 
 Clone the repository into a new local folder, or use this checkout if already
 open. Read AGENTS.md, README.md, docs/development/build-and-test.md and the
@@ -219,7 +221,9 @@ For complete instructions, see [Build and test](docs/development/build-and-test.
 
 ## Independent Identity and Learning Data
 
-- **Complete Sandbox Isolation**: Tide English uses independent application identifiers (`cn.gd306.tideenglish.*`) and sandboxed storage. It operates independently and does not read or conflict with other app installations.
+Tide was previously named Tide English. The public repository is now [`gd0306/tide`](https://github.com/gd0306/tide). Internal `TideEnglish` project/module names, `TIDE_ENGLISH_*` build settings, application IDs and existing storage paths remain stable so a brand update preserves installed apps and learning data.
+
+- **Complete Sandbox Isolation**: Tide uses independent application identifiers (`cn.gd306.tideenglish.*`) and sandboxed storage. It operates independently and does not read or conflict with other app installations.
 - **Data Migration**: To migrate learning records from a previous device or build, export a JSON backup from the original app and manually import it via Settings, then re-enter your API keys. Avoid uninstalling existing apps to resolve code signing mismatches to prevent accidental data loss.
 - **Offline Autonomy**: Core learning capabilities (conversations, vocabulary, instant translation, and reviews) do not require hosted cloud services or user sign-in.
 
@@ -228,7 +232,7 @@ For complete instructions, see [Build and test](docs/development/build-and-test.
 ## Deployment and Production Notes
 
 - **Example Domains & Catalog**: Release templates, sample products, and `.example` URLs in this repository serve as structural examples. They are not deployed publicly and do not indicate a live published app.
-- **Self-Hosted Accounts (Optional)**: If you need multi-device sync or email sign-in, you can deploy `server/accounts` and explicitly enable it via environment configuration. See the [account service guide](docs/operations/accounts.md). Account services are strictly decoupled from local learning records.
+- **Self-Hosted Accounts (Optional)**: If you need optional email sign-in, you can deploy `server/accounts` and explicitly enable it via environment configuration. See the [account service guide](docs/operations/accounts.md). Account services are strictly decoupled from local learning records and do not sync learning data.
 
 ---
 

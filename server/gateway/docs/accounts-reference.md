@@ -1,6 +1,6 @@
 # Account API reference
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 Optional accounts use Google or Apple identity tokens to issue a TideEnglish session. Account creation does not grant credits, a trial, or hosted conversations. Learning data and the user's OpenAI key remain on the device. See [Enable accounts](enable-accounts.md) for deployment steps.
 

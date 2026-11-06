@@ -1,4 +1,6 @@
-# Tide English
+# 潮语 Tide
+
+多语言学习伙伴。
 
 <p align="center">
   <strong>原生多端 AI 语言学习应用，让自然对话成为最好的语言老师。</strong>
@@ -17,7 +19,7 @@
 
 ---
 
-Tide English 是一款专为提升外语表达、听力理解与词汇积累而设计的原生跨端语言学习应用。通过与大语言模型进行自然流利的实时对话，提供即时语法纠错、情境生词释义与个性化教学引导。
+潮语 Tide 是一款专为提升外语表达、听力理解与词汇积累而设计的原生跨端语言学习应用。通过与大语言模型进行自然流利的实时对话，提供即时语法纠错、情境生词释义与个性化教学引导。
 
 本项目包含基于 **SwiftUI** 的 iOS 客户端、基于 **Jetpack Compose** 的 Android 客户端，以及一个轻量独立的邮箱账户后端服务。
 
@@ -76,7 +78,7 @@ Tide English 是一款专为提升外语表达、听力理解与词汇积累而�
 ## 目录结构
 
 ```text
-tide-english/
+tide/
 ├── mobile/
 │   ├── ios/                 # iOS 客户端：SwiftUI、Swift 核心包与 Xcode 工程
 │   │   ├── Application/     # 视图、UI 协调器与原生组件
@@ -157,8 +159,8 @@ cd mobile/android
 <summary>📋 <strong>点击展开 / 复制 Agent 安装提示词（Prompt）</strong></summary>
 
 ```text
-Help me build, install and launch Tide English on my iPhone or Android phone
-from https://github.com/gd0306/tide-english.
+Help me build, install and launch Tide on my iPhone or Android phone
+from https://github.com/gd0306/tide.
 
 Clone the repository into a new local folder, or use this checkout if already
 open. Read AGENTS.md, README.md, docs/development/build-and-test.md and the
@@ -220,6 +222,8 @@ swift test --package-path mobile/ios
 
 ## 数据隔离与迁移
 
+应用已由 Tide English 更名为 **潮语 Tide**，仓库为 [`gd0306/tide`](https://github.com/gd0306/tide)。内部 `TideEnglish` 工程与模块名、`TIDE_ENGLISH_*` 构建设置、应用标识及既有存储路径保持稳定，避免品牌更新影响已安装的应用和学习数据。
+
 - **独立沙箱隔离**：本工程使用独立的应用标识（Bundle ID: `cn.gd306.tideenglish.*`），拥有完全隔离的本地沙箱存储，不会与其他应用或历史版本的本地数据、密钥发生冲突。
 - **数据迁移指引**：如需从历史版本或其他设备迁移学习数据，只需在原应用内导出本地学习备份（JSON 文件），并在本应用内通过手动导入功能恢复；模型 API Key 需在安装后重新填写。请勿通过卸载应用来解决签名冲突，以免丢失本地数据。
 - **离线自主运行**：核心学习功能（对话、词汇、翻译、复习）不依赖任何自建云端服务或用户登录体系，只需填写模型密钥即可完全离线自主运行。
@@ -229,7 +233,7 @@ swift test --package-path mobile/ios
 ## 发布与商用配置说明
 
 - **示例域名与商品**：仓库中的发布配置模板、`.example` 域名以及商品价格仅作为配置结构示例，并未在互联网公开部署，也不代表应用已上架商用。
-- **自建账户服务（可选）**：如果需要集中管理多设备或部署邮箱登录，可部署 `server/accounts` 并显式配置环境变量启用，详见 [账户服务指南](docs/operations/accounts.md)。登录服务与学习数据完全解耦，不进行学习记录的云端强绑定。
+- **自建账户服务（可选）**：如果需要可选的邮箱登录，可部署 `server/accounts` 并显式配置环境变量启用，详见 [账户服务指南](docs/operations/accounts.md)。登录服务与学习数据完全解耦，不同步学习记录。
 
 ---
 

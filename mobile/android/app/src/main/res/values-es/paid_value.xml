@@ -6,7 +6,7 @@
     <string name="paid_balance_free_first">Primero se usan tus minutos gratuitos.</string>
     <string name="paid_pack_estimate">Unos %1$s minutos</string>
     <string name="paid_ai_allocation">Para uso de la IA</string>
-    <string name="paid_tideenglish_fee">Comisión de Tide English (%1$s%%)</string>
+    <string name="paid_tideenglish_fee">Comisión de Tide (%1$s%%)</string>
     <string name="paid_processing_fee">Comisión de pago estimada</string>
     <string name="paid_processing_buffer">Margen para costes de pago</string>
     <string name="minute_balance_updating">Actualizando tus minutos…</string>

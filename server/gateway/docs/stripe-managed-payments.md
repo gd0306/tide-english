@@ -1,6 +1,6 @@
 # Stripe Managed Payments verification reference
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 TideEnglish supports standard Stripe Checkout and Stripe Managed Payments through the same receipt and fulfillment worker. The installed Stripe SDK is `22.6.2`, whose default API version is `2026-08-26.dahlia`. Google Play verification is separate and unchanged.
 
@@ -45,7 +45,7 @@ The existing entitlement ledger expects refunds in the original quote basis. Man
 normalizedRefund = ceil(originalBase × successfulGrossRefunds / verifiedGross)
 ```
 
-The ledger then reverses that proportion of the original AI allocation. Tax, payment fees and the Tide English fee never become spendable AI value. A full gross refund revokes the full original allocation; partial refunds round conservatively toward reversal. Replayed notifications cannot grant or reverse the same value twice. Existing dispute handling still voids the entitlement.
+The ledger then reverses that proportion of the original AI allocation. Tax, payment fees and the Tide fee never become spendable AI value. A full gross refund revokes the full original allocation; partial refunds round conservatively toward reversal. Replayed notifications cannot grant or reverse the same value twice. Existing dispute handling still voids the entitlement.
 
 Link can issue refunds, including without approval after a support escalation goes unanswered for 48 hours. Stripe's documented refund support includes certain transactions within 60 days. Managed refunds include tax; some jurisdictions still require the original tax to be remitted. [Managed Payments support and refunds](https://docs.stripe.com/payments/managed-payments/how-it-works)
 

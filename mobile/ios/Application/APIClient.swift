@@ -276,7 +276,7 @@ struct APIResult { var text: String; var sources: [SourceLink]; var usage: APIUs
             switch self {
             case .missingKey: "Add your OpenAI key in Settings to begin."
             case .invalidResponse, .incomplete: "OpenAI returned an incomplete response. Please try again."
-            case .refused: "Tide English couldn’t complete that request. Try a different topic."
+            case .refused: "Tide couldn’t complete that request. Try a different topic."
             case .http(401): "Your OpenAI key wasn’t accepted. Check it in Settings."
             case .http(403), .http(404): "This API key may not have access to the requested model. Check your OpenAI project."
             case .http(429): "OpenAI’s usage or rate limit was reached. Check your project’s billing and limits."

@@ -1,5 +1,5 @@
 <resources>
-    <string name="minute_purchases_title">Añadir minutos de Tide English</string>
+    <string name="minute_purchases_title">Añadir minutos de Tide</string>
     <string name="minute_purchases_intro">Sigue practicando, conversación a conversación.</string>
     <plurals name="minute_purchases_pack_minutes">
         <item quantity="one">%1$s minuto</item>
@@ -23,11 +23,11 @@
     <string name="minute_purchases_price_changed">El precio de este paquete ha cambiado. Revisa el nuevo precio antes de volver a elegirlo.</string>
     <string name="minute_purchases_added">Tus minutos están listos. Sigamos hablando.</string>
     <string name="minute_purchases_reversed">Se ha reembolsado o anulado una compra. Tu saldo se ha actualizado.</string>
-    <string name="minute_purchases_verification_failed">No hemos podido confirmar una compra. Vuelve a comprobarlo o inicia sesión con la cuenta de Tide English que usaste para comprarla.</string>
+    <string name="minute_purchases_verification_failed">No hemos podido confirmar una compra. Vuelve a comprobarlo o inicia sesión con la cuenta de Tide que usaste para comprarla.</string>
     <string name="minute_purchases_sign_in_again">Inicia sesión para confirmar tus compras y ver tus minutos.</string>
     <string name="minute_purchases_play_terms">Google Play muestra el total final antes de que confirmes.</string>
     <string name="minute_purchases_play_quantity">Puedes elegir el número de paquetes en Google Play.</string>
-    <string name="minute_purchases_stripe_terms">El pago se abre de forma segura en Stripe. Después de pagar, vuelve a Tide English y comprueba tus compras.</string>
+    <string name="minute_purchases_stripe_terms">El pago se abre de forma segura en Stripe. Después de pagar, vuelve a Tide y comprueba tus compras.</string>
     <string name="minute_quantity">Cantidad · %1$d</string>
     <string name="minute_continue_price">Continuar · %1$s</string>
 </resources>

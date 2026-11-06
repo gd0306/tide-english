@@ -1,6 +1,6 @@
 # Hosted voice startup recovery
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 A rejected startup must not leave a learner permanently waiting for a previous conversation. The provider adapter treats an explicit HTTP 4xx response, except 408, as a rejected create. The controller settles the reservation at zero, releases the helper allowance, and keeps rejection status and a sanitized request ID as evidence. Reusing the same idempotency key never creates another provider session; a new attempt requires a new key.
 

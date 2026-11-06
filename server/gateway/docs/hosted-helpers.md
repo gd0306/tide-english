@@ -1,6 +1,6 @@
 # Hosted teaching helpers
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 `HostedHelpers` is an experimental gateway for an explicitly allowed account's minute-funded voice session. It accepts the Android teaching prompts transiently, fixes the model and tools, reserves provider funding, then returns a normalized result. Public hosted activation and final consumer prices remain pending.
 

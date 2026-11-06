@@ -1,6 +1,6 @@
 <resources>
     <string name="guest_unavailable_title">Free minutes currently unavailable</string>
-    <string name="guest_unavailable_detail">Every conversation has an AI cost. We’re working to fund more free minutes so more people can learn with Tide English.</string>
+    <string name="guest_unavailable_detail">Every conversation has an AI cost. We’re working to fund more free minutes so more people can learn with Tide.</string>
     <string name="guest_ready_title">Your next conversation awaits</string>
     <string name="guest_ready_detail">Start talking. You can sign in whenever you like to keep your remaining minutes with your account.</string>
     <string name="guest_checking_title">A moment to get ready</string>

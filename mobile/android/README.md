@@ -1,6 +1,6 @@
-# Tide English for Android
+# Tide for Android
 
-Native Kotlin and Jetpack Compose client for Android 8.0 or later. The personal Tide English build includes the customized iOS provider selection, theme and interface-language settings, bilingual vocabulary definitions, local learning/history, compatible JSON backups and optional email-code accounts.
+Native Kotlin and Jetpack Compose client for Android 8.0 or later. The personal Tide build includes the customized iOS provider selection, theme and interface-language settings, bilingual vocabulary definitions, local learning/history, compatible JSON backups and optional email-code accounts.
 
 Settings has one **Model & API key** entry for OpenAI, DeepSeek, GLM, Gemini and Custom HTTPS services. Each provider and Custom endpoint has a separate encrypted key. All conversation text, meanings, explanations and assessments use the selected provider and chat model. Changing the model or recipient requires renewed AI consent. Enter keys inside the app only; they never belong in Gradle, source files, logs or learning exports.
 

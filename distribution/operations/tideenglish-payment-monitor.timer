@@ -1,5 +1,5 @@
 [Unit]
-Description=Inspect Tide English payment operations every five minutes
+Description=Inspect Tide payment operations every five minutes
 
 [Timer]
 OnBootSec=2min

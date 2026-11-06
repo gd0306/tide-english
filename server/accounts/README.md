@@ -1,6 +1,6 @@
-# Tide English standalone email accounts
+# Tide standalone email accounts
 
-> New Tide English source/template only. This repository has not deployed or verified this service in production. Existing account clients retain https://api.gd306.cn. Any commercial store IDs in tests are synthetic; configure newly registered app credentials before activation.
+> New Tide source/template only. This repository has not deployed or verified this service in production. Existing account clients retain https://api.gd306.cn. Any commercial store IDs in tests are synthetic; configure newly registered app credentials before activation.
 
 Node 22+, PostgreSQL 17+, Fastify and Nodemailer. This service has its own database and
 `email_*` tables. It does not read or write commercial accounts, learning records,

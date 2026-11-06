@@ -1,6 +1,6 @@
 # Optional AI-output reports
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 TideEnglish accepts a short excerpt that a learner deliberately reports from the app. The report contains only the selected text and report metadata. Relevant conversation context still goes to the AI provider for teaching; learning archives stay on the device. Reporting is disabled by default in self-hosted deployments. No production reporting service is represented by this repository.
 

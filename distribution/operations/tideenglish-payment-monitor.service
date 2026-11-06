@@ -1,5 +1,5 @@
 [Unit]
-Description=Tide English payment and settlement alerts
+Description=Tide payment and settlement alerts
 After=docker.service network-online.target
 Wants=network-online.target
 Requires=docker.service

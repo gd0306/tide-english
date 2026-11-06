@@ -15,7 +15,7 @@ public enum ChatCompletion {
         public var errorDescription: String? {
             switch self {
             case .malformed, .incomplete: "The selected provider returned an incomplete response. Please try again."
-            case .refused: "Tide English couldn’t complete that request. Try a different topic."
+            case .refused: "Tide couldn’t complete that request. Try a different topic."
             case .tooLarge: "The selected provider’s response exceeded the safe size limit. Try a shorter request."
             case .searchUnavailable: "This provider does not support current-topic search. Select OpenAI or GLM in Settings to search."
             }

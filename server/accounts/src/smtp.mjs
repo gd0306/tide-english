@@ -27,15 +27,15 @@ export class SMTPMailer {
     if (!validCode(code)) throw new Error("Invalid code");
     return this.send(
       email,
-      "Your Tide English code",
-      `Your Tide English sign-in code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
+      "Your Tide code",
+      `Your Tide sign-in code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
     );
   }
   async sendTest(email) {
     return this.send(
       email,
-      "Tide English email delivery check",
-      "Tide English account email delivery is configured. This message contains no login code.",
+      "Tide email delivery check",
+      "Tide account email delivery is configured. This message contains no login code.",
     );
   }
   async send(email, subject, text) {

@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 onOpenAppSettings = if (microphonePermanentlyDenied) ({ openAppSettings() }) else null,
-                onExport = { exportLauncher.launch("Tide-English-learning-backup.json") },
+                onExport = { exportLauncher.launch("Tide-learning-backup.json") },
                 onImport = { importLauncher.launch(arrayOf("application/json", "text/plain")) },
                 account = account,
                 onGoogleSignIn = ::signInWithGoogle,

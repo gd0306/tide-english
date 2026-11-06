@@ -1,6 +1,6 @@
 # Apple purchase and funding scope reference
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 The public API records Apple production and sandbox purchases on the same account. Each order, receipt, entitlement, reservation and hosted paid session retains its own environment. Sandbox value is stored in `sandbox_balance_nano`; production value is the combined balance minus that sandbox amount. Public conversations use verified real account funds and reconciled free or manually granted minutes. Apple sandbox purchase value does not fund new public voice sessions or helper requests.
 

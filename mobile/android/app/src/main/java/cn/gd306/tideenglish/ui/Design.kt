@@ -122,11 +122,12 @@ fun TideEnglishTheme(content: @Composable () -> Unit) {
 
 @Composable
 fun Brand(modifier: Modifier = Modifier) {
-    Row(modifier = modifier.semantics(mergeDescendants = true) { contentDescription = "Tide English" },
+    val brandName = uiText("Tide", "潮语")
+    Row(modifier = modifier.semantics(mergeDescendants = true) { contentDescription = brandName },
         horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(17.dp).background(Brush.radialGradient(
             listOf(TideEnglishColors.Butter, TideEnglishColors.Orange), center = Offset.Zero, radius = 48f), CircleShape))
-        Text("Tide English", style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 24.sp, fontWeight = FontWeight.Medium, letterSpacing = (-.6).sp), color = TideEnglishColors.Ink)
+        Text(brandName, style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 24.sp, fontWeight = FontWeight.Medium, letterSpacing = (-.6).sp), color = TideEnglishColors.Ink)
     }
 }
 

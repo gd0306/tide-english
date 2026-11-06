@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Tide</string>
     <!-- Common -->
     <string name="common_ok">Entendido</string>
     <string name="common_cancel">Cancelar</string>
@@ -30,22 +31,22 @@
     <string name="error_lookup_word_failed">No se pudo consultar la palabra.</string>
     <string name="error_find_topic_failed">No se pudo buscar el tema.</string>
     <string name="error_topic_unsourced">La búsqueda no devolvió fuentes verificables. Prueba un tema más específico.</string>
-    <string name="error_import_failed">No se pudo importar: verifica el formato de Tide English, los idiomas y el límite de 30 MB.</string>
+    <string name="error_import_failed">No se pudo importar: verifica el formato de Tide, los idiomas y el límite de 30 MB.</string>
     <string name="error_incomplete_response">OpenAI devolvió una respuesta incompleta. Inténtalo de nuevo.</string>
-    <string name="error_request_refused">Tide English no pudo completar esa solicitud. Prueba con otro tema.</string>
+    <string name="error_request_refused">Tide no pudo completar esa solicitud. Prueba con otro tema.</string>
     <string name="error_http_401">Tu clave de OpenAI no fue aceptada. Revísala en Ajustes.</string>
     <string name="error_http_403_404">Esta clave de API puede no tener acceso al modelo solicitado. Revisa tu proyecto de OpenAI.</string>
     <string name="error_http_429">OpenAI está limitando las solicitudes. Espera un momento e inténtalo de nuevo. Si el problema continúa, revisa la facturación y los límites de tu proyecto.</string>
-    <string name="error_provider_credit_exhausted">Se agotaron los créditos de OpenAI. Revisa la facturación de OpenAI o usa los minutos de Tide English.</string>
-    <string name="error_provider_spend_limit">Se alcanzó el límite de gasto de OpenAI. Revisa el límite del proyecto o de la organización, o usa los minutos de Tide English.</string>
-    <string name="error_provider_usage_limit">Se alcanzó el límite de uso de OpenAI. Revisa el límite de tu organización o usa los minutos de Tide English.</string>
+    <string name="error_provider_credit_exhausted">Se agotaron los créditos de OpenAI. Revisa la facturación de OpenAI o usa los minutos de Tide.</string>
+    <string name="error_provider_spend_limit">Se alcanzó el límite de gasto de OpenAI. Revisa el límite del proyecto o de la organización, o usa los minutos de Tide.</string>
+    <string name="error_provider_usage_limit">Se alcanzó el límite de uso de OpenAI. Revisa el límite de tu organización o usa los minutos de Tide.</string>
     <string name="error_http_generic">OpenAI no pudo completar la solicitud (HTTP %1$d). Inténtalo de nuevo.</string>
     <string name="error_backup_too_large">La copia supera el límite de 30 MB.</string>
     <string name="error_file_open_failed">No se pudo abrir el archivo elegido.</string>
     <string name="error_transport_microphone">Permite el acceso al micrófono en los ajustes de Android para iniciar una conversación.</string>
     <string name="error_transport_connection">No se pudo establecer la conexión de voz. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="error_transport_timeout">La conexión de voz tardó demasiado. Inténtalo de nuevo.</string>
-    <string name="error_transport_audio_focus">Tide English no pudo usar el audio porque otra aplicación tiene el control. Inténtalo de nuevo.</string>
+    <string name="error_transport_audio_focus">Tide no pudo usar el audio porque otra aplicación tiene el control. Inténtalo de nuevo.</string>
     <string name="error_transport_network_lost">Se perdió la conexión de red. Toca para iniciar una nueva conversación.</string>
     <string name="error_transport_channel_closed">La conexión de voz terminó de forma inesperada. Tu conversación se ha guardado.</string>
     <string name="error_transport_invalid_event">La conexión de voz recibió un evento no válido. Tu conversación se ha guardado.</string>
@@ -62,7 +63,7 @@
     <string name="notice_ended_inactivity">Terminamos la sesión por inactividad.</string>
     <string name="notice_topic_ready">Tema listo. Pulsa Hablar o escribe para comenzar.</string>
     <string name="notice_backup_imported">Respaldo importado. Se conservaron tus ajustes y las conversaciones existentes.</string>
-    <string name="notice_microphone_blocked">El micrófono está bloqueado para Tide English. Puedes habilitarlo en los ajustes del teléfono o seguir escribiendo.</string>
+    <string name="notice_microphone_blocked">El micrófono está bloqueado para Tide. Puedes habilitarlo en los ajustes del teléfono o seguir escribiendo.</string>
     <string name="notice_microphone_permission_needed">Necesito permiso para escuchar tu voz. También puedes conversar por escrito.</string>
 
     <!-- Talk screen -->
@@ -168,7 +169,7 @@
     <string name="settings_section_ai_permission">Permiso para IA</string>
     <string name="settings_ai_consent_accepted">Aceptado para esta versión</string>
     <string name="settings_ai_consent_not_accepted">No aceptado</string>
-    <string name="settings_ai_permission_summary">Con permiso, Tide English envía audio y el texto elegido a OpenAI. Puedes usar el historial y las palabras sin concederlo.</string>
+    <string name="settings_ai_permission_summary">Con permiso, Tide envía audio y el texto elegido a OpenAI. Puedes usar el historial y las palabras sin concederlo.</string>
     <string name="settings_revoke_consent_button">Retirar permiso</string>
     <string name="settings_review_consent_button">Revisar y aceptar</string>
     <string name="settings_export_backup">Exportar copia de aprendizaje</string>
@@ -178,8 +179,8 @@
     <string name="settings_section_help_privacy">Ayuda y privacidad</string>
     <string name="settings_openai_data_controls">Controles de datos de IA</string>
     <string name="settings_open_source_notices">Avisos de código abierto</string>
-    <string name="settings_data_use_footer">El audio y el texto elegido se envían a OpenAI durante la práctica. Tide English no guarda audio sin procesar.</string>
-    <string name="settings_app_version_footer">Tide English %1$s · Android</string>
+    <string name="settings_data_use_footer">El audio y el texto elegido se envían a OpenAI durante la práctica. Tide no guarda audio sin procesar.</string>
+    <string name="settings_app_version_footer">Tide %1$s · Android</string>
     <string name="settings_open_api_keys">Administrar claves de API</string>
     <string name="settings_delete_key_confirm_title">¿Eliminar la clave guardada?</string>
     <string name="settings_delete_key_confirm_message">Necesitarás otra clave para volver a usar las funciones de IA.</string>
@@ -199,7 +200,7 @@
     <string name="history_empty">Tus conversaciones aparecerán aquí.</string>
     <string name="history_delete_session_confirm_title">¿Eliminar esta conversación?</string>
     <string name="history_speaker_you">TÚ</string>
-    <string name="history_speaker_tideenglish">TIDE_ENGLISH</string>
+    <string name="history_speaker_tideenglish">TIDE</string>
     <string name="history_edit_passage_button">Corregir transcripción</string>
     <string name="history_saved_sources">Fuentes guardadas</string>
     <string name="history_correction_dialog_title">Corregir transcripción</string>
@@ -212,7 +213,7 @@
     <string name="onboarding_back">Atrás</string>
     <string name="onboarding_language_title">¿Qué te gustaría hablar?</string>
     <string name="onboarding_meaning_title">Una pequeña ayuda,\nen tu idioma.</string>
-    <string name="onboarding_meaning_subtitle">Tide English habla %1$s. Elige el idioma en el que lees con más comodidad.</string>
+    <string name="onboarding_meaning_subtitle">Tide habla %1$s. Elige el idioma en el que lees con más comodidad.</string>
     <string name="onboarding_continue_button">Continuar</string>
     <string name="onboarding_choose_continue_button">Elegir y continuar</string>
     <string name="onboarding_pace_note_step0">Encontraremos tu ritmo conversando.</string>
@@ -220,13 +221,13 @@
 
     <!-- AI consent -->
     <string name="consent_title">Antes de conversar.</string>
-    <string name="consent_ai_summary">Con tu permiso, Tide English envía audio y el texto que elijas a OpenAI para ofrecer conversaciones, explicaciones y temas actuales.</string>
-    <string name="consent_local_storage_note">Tu historial de aprendizaje se guarda en este dispositivo. Tide English no guarda audio sin procesar. Puedes consultar tus palabras y conversaciones sin aceptar.</string>
+    <string name="consent_ai_summary">Con tu permiso, Tide envía audio y el texto que elijas a OpenAI para ofrecer conversaciones, explicaciones y temas actuales.</string>
+    <string name="consent_local_storage_note">Tu historial de aprendizaje se guarda en este dispositivo. Tide no guarda audio sin procesar. Puedes consultar tus palabras y conversaciones sin aceptar.</string>
     <string name="consent_privacy_policy_link">Ver política de privacidad</string>
     <string name="consent_agree_button">Aceptar y continuar</string>
     <string name="consent_decline_button">Ahora no</string>
-    <string name="error_guest_secure_storage_unavailable">Tide English no pudo restaurar los datos guardados de tu prueba gratuita. Tu historial de aprendizaje sigue disponible. Reinicia la aplicación para intentarlo de nuevo.</string>
-    <string name="error_sign_in_finishing_startup">Tide English aún está guardando tu conversación. Intenta iniciar sesión de nuevo dentro de unos instantes.</string>
+    <string name="error_guest_secure_storage_unavailable">Tide no pudo restaurar los datos guardados de tu prueba gratuita. Tu historial de aprendizaje sigue disponible. Reinicia la aplicación para intentarlo de nuevo.</string>
+    <string name="error_sign_in_finishing_startup">Tide aún está guardando tu conversación. Intenta iniciar sesión de nuevo dentro de unos instantes.</string>
 
     <string name="flashcards_open">Practicar con tarjetas</string>
     <string name="flashcards_previous">Palabra anterior</string>

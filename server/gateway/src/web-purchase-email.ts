@@ -6,8 +6,8 @@ export interface PurchaseEmailSender { send(message: PurchaseEmail): Promise<str
 
 export function purchaseEmailContent(code: string): { subject: string; text: string } {
   if (!/^[0-9]{6}$/.test(code)) throw new Error('Invalid purchase verification code.');
-  const subject = 'Verify your Tide English minutes purchase';
-  const text = `Use this code to buy minutes for your existing Tide English account:\n\n${code}\n\nThis code expires in 10 minutes and works once. It only gives access to checkout.\n\nIf you didn’t request it, ignore this email. For help, reply to 1215742191@qq.com.\n\nTide English`;
+  const subject = 'Verify your Tide minutes purchase';
+  const text = `Use this code to buy minutes for your existing Tide account:\n\n${code}\n\nThis code expires in 10 minutes and works once. It only gives access to checkout.\n\nIf you didn’t request it, ignore this email. For help, reply to 1215742191@qq.com.\n\nTide`;
   return { subject, text };
 }
 

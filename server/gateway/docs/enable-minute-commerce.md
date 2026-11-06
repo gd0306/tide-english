@@ -1,8 +1,8 @@
 # Enable actual-cost purchases
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
-Purchases add an AI-value balance. The app presents estimated minutes and separates the AI allocation, Tide English fee, estimated processing cost and payment buffer. Existing free minutes remain usable and are spent first. Historical fixed-minute catalogs are reconciliation-only.
+Purchases add an AI-value balance. The app presents estimated minutes and separates the AI allocation, Tide fee, estimated processing cost and payment buffer. Existing free minutes remain usable and are spent first. Historical fixed-minute catalogs are reconciliation-only.
 
 ## Prepare one verified channel
 

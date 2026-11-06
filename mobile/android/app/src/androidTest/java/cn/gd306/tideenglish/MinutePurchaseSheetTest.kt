@@ -59,7 +59,7 @@ class MinutePurchaseSheetTest {
                 true, { purchases += it }, {}, {}, {})
         } }
         compose.onNodeWithTag("minute-purchase-total").assertTextEquals("About 20 minutes")
-        for (label in listOf("For AI usage", "Tide English fee (15%)", "Estimated payment fee", "Payment cost buffer")) {
+        for (label in listOf("For AI usage", "Tide fee (15%)", "Estimated payment fee", "Payment cost buffer")) {
             compose.onNodeWithText(label, useUnmergedTree = true).assertDoesNotExist()
         }
         compose.onNodeWithTag("minute-purchase-pack-synthetic-value").performScrollTo().performClick()
@@ -171,7 +171,7 @@ class MinutePurchaseSheetTest {
             MinutePurchaseSheet(ready.copy(balance = MinuteBalance("milliseconds", "connected-conversation-time", 5_000, 0, 5_000)),
                 true, {}, {}, { refreshed++ }, {})
         } } }
-        compose.onNodeWithText("Añadir minutos de Tide English").assertExists()
+        compose.onNodeWithText("Añadir minutos de Tide").assertExists()
         capture("minute-packs-spanish.png")
         compose.onNodeWithTag("paid-minute-estimate").performScrollTo().assertTextEquals("0 min 5 s")
         compose.onNodeWithTag("minute-purchase-pack-test-30").performScrollTo().assertIsEnabled()

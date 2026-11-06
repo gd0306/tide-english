@@ -1,6 +1,6 @@
 # Minute commerce configuration reference
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 `configuredMinuteCommerce(db, env, dependencies)` constructs optional AI-value payment services and historical minute reconciliation. It returns `undefined` when disabled. Construction reads only explicitly named files and saved receipt scopes; it makes no provider requests and starts no timers.
 

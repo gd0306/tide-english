@@ -1,6 +1,6 @@
 # Minute purchase accounting
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 `MinutePurchases` records fixed conversation-minute entitlements in the existing minute wallet. It currently has no HTTP routes, default products or launch prices. Optional Stripe/Play adapters and the delivery worker are documented in [provider integration](minute-provider-integration.md). New sales default to disabled. Configuring this module alone does not make Stripe or Play purchases available.
 

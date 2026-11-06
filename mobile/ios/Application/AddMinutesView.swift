@@ -73,7 +73,7 @@ struct AddMinutesView: View {
                 }.padding(.horizontal, 24).padding(.vertical, 12)
                     .frame(maxWidth: 568).frame(maxWidth: .infinity).background(TideEnglishColor.cream).foregroundStyle(TideEnglishColor.ink)
             }
-            .navigationTitle("Add Tide English minutes").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Add Tide minutes").navigationBarTitleDisplayMode(.inline)
             .task {
                 await purchases.load()
                 if let resume = purchases.resumeSKU { selected = resume; quantity = min(purchases.resumeQuantity, purchases.maximumQuantity) }
@@ -90,7 +90,7 @@ struct ApplePurchaseHistoryView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Text("Recent Apple purchases").font(.title2.weight(.semibold))
-                Text("Purchases belong to the Tide English account used at checkout. Apple reviews refund requests; minutes update after a refund is confirmed.")
+                Text("Purchases belong to the Tide account used at checkout. Apple reviews refund requests; minutes update after a refund is confirmed.")
                     .font(.subheadline).foregroundStyle(TideEnglishColor.secondary)
                 if purchases.loadingHistory { ProgressView("Checking purchases…") }
                 ForEach(purchases.recentPurchases.filter { $0.accountID == account.session?.accountID }) { purchase in

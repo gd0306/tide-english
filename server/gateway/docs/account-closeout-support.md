@@ -1,6 +1,6 @@
 # Manual refund and account-deletion support
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 Users can ask `1215742191@qq.com` to delete their TideEnglish account. Support must verify the account, resolve its financial obligations and then remove identifying account data. This is a manual request path; it does not waive refund rights, prove that an unpaid-looking order cannot charge later, or authorize forfeiting prepaid value. Google permits a customer-service email as part of an accessible external deletion path; the linked page must clearly identify TideEnglish and explain how to make the request. An in-app path is also required. [Google account-deletion requirements](https://support.google.com/googleplay/android-developer/answer/13327111?hl=en)
 

@@ -1,6 +1,8 @@
 # README screenshots
 
-Captured from Tide English iOS simulator builds, version 1.0 (1), using dedicated iPhone 17 simulators running iOS 27.0. English and Chinese themes and vocabulary screenshots were refreshed on 4 November 2026 to show the tighter paper layout and compact translation input. Settings were refreshed on 2 November with account sign-in disabled. Conversation screenshots were captured on 23 October; individual capture dates are recorded in the manifest.
+The images retain their original capture state and may show the previous Tide English brand. The current app is Tide (潮语); no historical screenshot has been relabeled or presented as a new device verification.
+
+Captured from Tide iOS simulator builds, version 1.0 (1), using dedicated iPhone 17 simulators running iOS 27.0. English and Chinese themes and vocabulary screenshots were refreshed on 4 November 2026 to show the tighter paper layout and compact translation input. Settings were refreshed on 2 November with account sign-in disabled. Conversation screenshots were captured on 23 October; individual capture dates are recorded in the manifest.
 
 | Directory | Interface | Theme | Screens |
 | --- | --- | --- | --- |

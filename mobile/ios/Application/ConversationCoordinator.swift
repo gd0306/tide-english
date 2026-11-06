@@ -523,7 +523,7 @@ import TideEnglishCore
         conversationPace.askForHelp(after: userPassage)
         append("instructions", conversationPace.instruction)
         append("instructions", TeachingPolicy.help(language: language))
-        notice = "Tide English will make that a little simpler."
+        notice = "Tide will make that a little simpler."
     }
     func end(reason: String = "Ended by you") {
         guard state == .active || state == .connecting else { return }
@@ -553,7 +553,7 @@ import TideEnglishCore
     }
     private func beginBackgroundWork() {
         guard backgroundTask == .invalid else { return }
-        backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "Finish Tide English conversation") { [weak self] in
+        backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "Finish Tide conversation") { [weak self] in
             Task { @MainActor in self?.finish(final: false); self?.releaseBackgroundWork() }
         }
     }
@@ -589,7 +589,7 @@ import TideEnglishCore
             cancelReset(); notice = "Your free minutes have ended. Updating your minutes before you continue."
             Task { await refreshContinuation() }
         } else if continuationSession == nil { scheduleReset() }
-        let endNotices = ["You’ve reached your conversation time limit.", "Tide English ended this quiet session to avoid running up usage."]
+        let endNotices = ["You’ve reached your conversation time limit.", "Tide ended this quiet session to avoid running up usage."]
         if boundary == nil && !endNotices.contains(notice ?? "") {
             notice = !final && session?.providerID != nil ? "Conversation saved. Final voice usage is unconfirmed." : nil
         }
@@ -704,7 +704,7 @@ import TideEnglishCore
                 fail(failure.localizedDescription)
                 return
             }
-            notice = "A voice update was rejected. If Tide English stops responding, end this conversation and start again."
+            notice = "A voice update was rejected. If Tide stops responding, end this conversation and start again."
         default:
             if type.hasSuffix(".appended"), let id = event["client_event_id"] as? String { pendingCommands.removeValue(forKey: id) }
         }
@@ -725,7 +725,7 @@ import TideEnglishCore
                 case .checkIn: self.append("instructions", TeachingPolicy.checkIn(language: self.language))
                 case .warning(let seconds): self.inactivitySeconds = seconds
                 case .end:
-                    self.notice = "Tide English ended this quiet session to avoid running up usage."; self.end(reason: "Inactivity"); return
+                    self.notice = "Tide ended this quiet session to avoid running up usage."; self.end(reason: "Inactivity"); return
                 case .wait: break
                 }
                 self.pendingCommands = self.pendingCommands.filter { Date().timeIntervalSince($0.value) <= 20 }
@@ -807,7 +807,7 @@ import TideEnglishCore
         let checkNotice = arguments.contains("--test-end-notice")
         if checkNotice {
             record.providerID = "fixture-only"
-            notice = arguments.contains("--test-inactivity") ? "Tide English ended this quiet session to avoid running up usage." : "Tide English will make that a little simpler."
+            notice = arguments.contains("--test-inactivity") ? "Tide ended this quiet session to avoid running up usage." : "Tide will make that a little simpler."
         }
         session = record
         if active { state = .active; scheduleTranslation() }

@@ -72,7 +72,7 @@ export class SandboxPayments {
       adaptive_pricing: { enabled: false },
       success_url: `${this.origin}/payment-return?status=success`, cancel_url: `${this.origin}/payment-return?status=cancelled`,
       metadata: { tideenglish_order_id: order.id }, allow_promotion_codes: false,
-      custom_text: { submit: { message: `AI usage: $${(aiMinor / 100).toFixed(2)}. Tide English fee (15%): $${(serviceFeeMinor / 100).toFixed(2)}. Payment fee: $${(paymentFeeMinor / 100).toFixed(2)}. USD. Sandbox only.` } }
+      custom_text: { submit: { message: `AI usage: $${(aiMinor / 100).toFixed(2)}. Tide fee (15%): $${(serviceFeeMinor / 100).toFixed(2)}. Payment fee: $${(paymentFeeMinor / 100).toFixed(2)}. USD. Sandbox only.` } }
     }, { idempotencyKey: `tideenglish-checkout-${order.id}` });
     try {
       const response = result(session);

@@ -16,7 +16,7 @@ struct ManagedAccountView: View {
                 HStack(alignment: .center, spacing: 16) {
                     TideEnglishOrb(active: false).frame(width: 64, height: 64).accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(store.session == nil ? "Welcome to Tide English" : "Your account")
+                        Text(store.session == nil ? "Welcome to Tide" : "Your account")
                             .font(.system(.title2, design: .rounded, weight: .semibold))
                         if let email = store.profile?.email {
                             Text(email).font(.subheadline).textSelection(.enabled)
@@ -31,7 +31,7 @@ struct ManagedAccountView: View {
                 Text("Your conversations and learning history stay on this iPhone.")
                     .font(.subheadline).foregroundStyle(TideEnglishColor.secondary)
                 if HostedCloseRecovery.shared.needsSignIn {
-                    Text("Sign in to the account used for your last conversation so Tide English can finish updating its minutes.")
+                    Text("Sign in to the account used for your last conversation so Tide can finish updating its minutes.")
                         .font(.callout).foregroundStyle(TideEnglishColor.secondary)
                         .accessibilityIdentifier("conversation-settlement-sign-in")
                 }
@@ -43,7 +43,7 @@ struct ManagedAccountView: View {
                 } else if store.session != nil {
                     if coordinator.conversationProvider == .hosted {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Tide English minutes").font(.headline)
+                            Text("Tide minutes").font(.headline)
                             if let balance = store.hostedBalance {
                                 Text(balance.displayText)
                                     .font(.system(.largeTitle, design: .rounded, weight: .semibold))
@@ -94,7 +94,7 @@ struct ManagedAccountView: View {
                     .disabled(store.isBusy || coordinator.isRunning)
                 } else {
                     VStack(alignment: .leading, spacing: 18) {
-                        Text("Sign in to keep eligible Tide English minutes with your account.")
+                        Text("Sign in to keep eligible Tide minutes with your account.")
                             .foregroundStyle(TideEnglishColor.secondary)
                         if store.configuration?.providers.contains(.google) == true {
                             Button { store.signIn(.google) } label: {
@@ -135,17 +135,17 @@ struct ManagedAccountView: View {
         .onChange(of: AppleMinutePurchases.shared.balanceRevision) { _, _ in store.refresh() }
         .onChange(of: HostedCloseRecovery.shared.revision) { _, _ in store.refresh() }
         .onDisappear { store.cancelSignIn() }
-        .confirmationDialog("Connect Google to this Tide English account?", isPresented: $confirmGoogleConnection, titleVisibility: .visible) {
+        .confirmationDialog("Connect Google to this Tide account?", isPresented: $confirmGoogleConnection, titleVisibility: .visible) {
             Button("Verify Apple and connect Google") { store.connectGoogle() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Verify your Apple account, then choose Google. You can use that Google sign-in to access these Tide English minutes on Android. Your learning history stays on this iPhone.")
+            Text("Verify your Apple account, then choose Google. You can use that Google sign-in to access these Tide minutes on Android. Your learning history stays on this iPhone.")
         }
         .confirmationDialog("Sign out on all devices?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign out") { store.signOut() }
             Button("Stay signed in", role: .cancel) {}
-        } message: { Text("Your learning history stays on this iPhone. If Tide English can’t reach the server, sign-out on other devices may take up to 24 hours.") }
-        .confirmationDialog("Delete your Tide English account?", isPresented: $confirmDeletion, titleVisibility: .visible) {
+        } message: { Text("Your learning history stays on this iPhone. If Tide can’t reach the server, sign-out on other devices may take up to 24 hours.") }
+        .confirmationDialog("Delete your Tide account?", isPresented: $confirmDeletion, titleVisibility: .visible) {
             Button("Delete account", role: .destructive) {
                 if store.session == nil { store.deleteGuestAccount() } else { store.deleteAccount() }
             }

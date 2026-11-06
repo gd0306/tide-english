@@ -200,7 +200,7 @@ class APIClient private constructor(
         data object MissingKey : APIException("Add your OpenAI key in Settings to begin.")
         data object InvalidResponse : APIException("OpenAI returned an incomplete response. Please try again.")
         data object Incomplete : APIException("OpenAI returned an incomplete response. Please try again.")
-        data object Refused : APIException("Tide English couldn't complete that request. Try a different topic.")
+        data object Refused : APIException("Tide couldn't complete that request. Try a different topic.")
         class Http(val status: Int, code: String? = null, reference: String? = null) : APIException(messageFor(status)) {
             val code = ProviderFailureKind.safeCode(code)
             val reference = ProviderFailureKind.safeReference(reference)

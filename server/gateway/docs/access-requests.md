@@ -1,6 +1,6 @@
 # Website access requests
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 This endpoint stores a request to hear when TideEnglish is available. It sends no email, creates no account, and grants no trial or paid usage. Auth, billing, and hosted-voice gates remain separate.
 

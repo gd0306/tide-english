@@ -511,7 +511,7 @@ final class TideEnglishUITests: XCTestCase {
         }
         XCTAssertTrue(app.buttons["Learning backup & data"].exists)
         XCTAssertTrue(app.buttons["settings-ai-processing"].exists)
-        XCTAssertTrue(app.buttons["About Tide English"].exists)
+        XCTAssertTrue(app.buttons["About Tide"].exists)
     }
 
     func testInterfacePreferencesSurviveNormalRelaunch() {
@@ -888,9 +888,9 @@ final class TideEnglishUITests: XCTestCase {
             let app = XCUIApplication()
             app.launchArguments = ["--preview", "--ended-conversation", "--test-end-notice"] + (inactivity ? ["--test-inactivity"] : [])
             app.launch()
-            let expected = inactivity ? "Tide English ended this quiet session to avoid running up usage." : "Conversation saved. Final voice usage is unconfirmed."
+            let expected = inactivity ? "Tide ended this quiet session to avoid running up usage." : "Conversation saved. Final voice usage is unconfirmed."
             XCTAssertTrue(app.staticTexts[expected].waitForExistence(timeout: 10))
-            XCTAssertFalse(app.staticTexts["Tide English will make that a little simpler."].exists)
+            XCTAssertFalse(app.staticTexts["Tide will make that a little simpler."].exists)
         }
     }
 
@@ -1110,7 +1110,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Done"].exists)
         app.navigationBars["Model provider"].buttons["Done"].tap()
         XCTAssertFalse(app.buttons["advanced-api-key"].exists)
-        XCTAssertTrue(app.staticTexts["Tide English minutes"].exists)
+        XCTAssertTrue(app.staticTexts["Tide minutes"].exists)
         app.buttons["Learning backup & data"].tap()
         XCTAssertTrue(app.buttons["Export learning backup"].exists)
         app.navigationBars["Learning data"].buttons.element(boundBy: 0).tap()
@@ -1136,7 +1136,7 @@ final class TideEnglishUITests: XCTestCase {
         app.buttons["Settings"].tap()
         XCTAssertFalse(app.buttons["managed-account-settings"].exists)
         XCTAssertFalse(app.buttons["settings-conversation-access"].exists)
-        XCTAssertFalse(app.staticTexts["Tide English minutes"].exists)
+        XCTAssertFalse(app.staticTexts["Tide minutes"].exists)
         XCTAssertTrue(app.buttons["settings-model-provider"].waitForExistence(timeout: 5))
         app.buttons["settings-model-provider"].tap()
         XCTAssertTrue(app.navigationBars["Model provider"].waitForExistence(timeout: 5))
@@ -1203,7 +1203,7 @@ final class TideEnglishUITests: XCTestCase {
         let microphone = app.buttons["start-conversation"]
         XCTAssertTrue(microphone.isHittable)
         let screen = XCTAttachment(screenshot: app.screenshot())
-        screen.name = "Tide English - subtitle clearance"; screen.lifetime = .keepAlways; add(screen)
+        screen.name = "Tide - subtitle clearance"; screen.lifetime = .keepAlways; add(screen)
         XCTAssertLessThanOrEqual(userSubtitle.frame.maxY + 8, microphone.frame.minY, "Keep the last user subtitle fully above the microphone")
     }
 
@@ -1227,7 +1227,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Unmute microphone"].isHittable)
         XCTAssertTrue(app.buttons["End conversation"].isHittable)
         let screen = XCTAttachment(screenshot: app.screenshot())
-        screen.name = "Tide English - active navigation"; screen.lifetime = .keepAlways; add(screen)
+        screen.name = "Tide - active navigation"; screen.lifetime = .keepAlways; add(screen)
     }
 
     func testOceanThemePreservesNavigationAcrossMainScreens() {
@@ -1264,10 +1264,10 @@ final class TideEnglishUITests: XCTestCase {
             for identifier in ["settings-model-provider", "advanced-api-key", "advanced-provider-issue"] {
                 if app.buttons[identifier].exists { editorEntries.insert(identifier) }
             }
-            if app.buttons["About Tide English"].isHittable { break }
+            if app.buttons["About Tide"].isHittable { break }
             app.swipeUp()
         }
-        XCTAssertTrue(app.buttons["About Tide English"].isHittable, "Inspect the whole Settings form for duplicate entries")
+        XCTAssertTrue(app.buttons["About Tide"].isHittable, "Inspect the whole Settings form for duplicate entries")
         XCTAssertEqual(editorEntries, ["settings-model-provider"], "Settings must offer one place to edit the model and key")
         let entry = app.buttons["settings-model-provider"]
         for _ in 0..<7 {
@@ -1338,7 +1338,7 @@ final class TideEnglishUITests: XCTestCase {
         app.buttons["Settings"].tap()
         XCTAssertFalse(app.buttons["managed-account-settings"].exists)
         XCTAssertFalse(app.buttons["settings-conversation-access"].exists)
-        XCTAssertFalse(app.staticTexts["Tide English minutes"].exists)
+        XCTAssertFalse(app.staticTexts["Tide minutes"].exists)
         XCTAssertTrue(app.buttons["settings-model-provider"].label.contains("Gemini"))
         app.buttons["settings-model-provider"].tap()
         XCTAssertTrue(app.navigationBars["Model provider"].waitForExistence(timeout: 5))
@@ -1365,7 +1365,7 @@ final class TideEnglishUITests: XCTestCase {
         for _ in 0..<5 { if timeout.exists { break }; app.swipeUp() }
         XCTAssertTrue(timeout.exists)
         XCTAssertTrue(app.staticTexts["Live learning-plan updates apply at your next conversation."].exists)
-        XCTAssertTrue(app.staticTexts["Current news search is unavailable with Gemini in Tide English."].exists)
+        XCTAssertTrue(app.staticTexts["Current news search is unavailable with Gemini in Tide."].exists)
         let console = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Google AI Studio")).firstMatch
         for _ in 0..<5 { if console.exists { break }; app.swipeUp() }
         XCTAssertTrue(console.exists)
@@ -1619,7 +1619,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertEqual(balance.label, "About 41 min")
         XCTAssertTrue(app.staticTexts["estimated conversation time remaining"].exists)
         let screen = XCTAttachment(screenshot: app.screenshot())
-        screen.name = "Account with mixed Tide English minutes"; screen.lifetime = .keepAlways; add(screen)
+        screen.name = "Account with mixed Tide minutes"; screen.lifetime = .keepAlways; add(screen)
     }
 
     func testPaidOnlyTideEnglishMinutesStayAvailable() {
@@ -1632,7 +1632,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(balance.waitForExistence(timeout: 5))
         XCTAssertEqual(balance.label, "About 36 min")
         let screen = XCTAttachment(screenshot: app.screenshot())
-        screen.name = "Account with paid Tide English minutes"; screen.lifetime = .keepAlways; add(screen)
+        screen.name = "Account with paid Tide minutes"; screen.lifetime = .keepAlways; add(screen)
     }
 
     func testPaidOnlyBalanceCanSwitchFromPersonalKey() {
@@ -1643,11 +1643,11 @@ final class TideEnglishUITests: XCTestCase {
         let access = app.buttons["settings-conversation-access"]
         XCTAssertTrue(access.waitForExistence(timeout: 5))
         access.tap()
-        app.buttons["Tide English minutes"].tap()
+        app.buttons["Tide minutes"].tap()
         let balance = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "About 36 min")).firstMatch
         XCTAssertTrue(balance.waitForExistence(timeout: 5))
-        app.buttons["Use Tide English minutes"].tap()
-        XCTAssertTrue(access.label.contains("Tide English minutes"))
+        app.buttons["Use Tide minutes"].tap()
+        XCTAssertTrue(access.label.contains("Tide minutes"))
     }
 
     func testReservedPaidMinutesAreNotShownAsSpendable() {
@@ -1672,16 +1672,16 @@ final class TideEnglishUITests: XCTestCase {
         let key = app.buttons["settings-model-provider"]
         XCTAssertTrue(key.waitForExistence(timeout: 5))
         key.tap()
-        app.buttons["Use Tide English minutes"].tap()
+        app.buttons["Use Tide minutes"].tap()
         XCTAssertTrue(app.navigationBars["Conversation access"].waitForExistence(timeout: 5))
-        let confirm = app.buttons["Use Tide English minutes"]
+        let confirm = app.buttons["Use Tide minutes"]
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         let balance = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "8 min 54 sec")).firstMatch
         XCTAssertTrue(balance.waitForExistence(timeout: 5))
         confirm.tap()
         let access = app.buttons["settings-conversation-access"]
         XCTAssertTrue(access.waitForExistence(timeout: 5))
-        XCTAssertTrue(access.label.contains("Tide English minutes"))
+        XCTAssertTrue(access.label.contains("Tide minutes"))
         app.buttons["Done"].tap()
         XCTAssertTrue(app.buttons["start-conversation"].exists)
     }
@@ -1696,26 +1696,26 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(access.label.contains("My API key"))
 
         access.tap()
-        app.buttons["Tide English minutes"].tap()
-        XCTAssertTrue(app.buttons["Use Tide English minutes"].waitForExistence(timeout: 5))
+        app.buttons["Tide minutes"].tap()
+        XCTAssertTrue(app.buttons["Use Tide minutes"].waitForExistence(timeout: 5))
         app.buttons["Cancel"].tap()
         XCTAssertTrue(access.label.contains("My API key"))
 
         access.tap()
-        app.buttons["Tide English minutes"].tap()
-        XCTAssertTrue(app.buttons["Use Tide English minutes"].waitForExistence(timeout: 5))
-        app.buttons["Use Tide English minutes"].tap()
-        XCTAssertTrue(access.label.contains("Tide English minutes"))
+        app.buttons["Tide minutes"].tap()
+        XCTAssertTrue(app.buttons["Use Tide minutes"].waitForExistence(timeout: 5))
+        app.buttons["Use Tide minutes"].tap()
+        XCTAssertTrue(access.label.contains("Tide minutes"))
     }
 
     func testSettingsKeepLicensesInNoticesWithoutTransportDetails() {
         let app = launch()
         app.buttons["Settings"].tap()
         for _ in 0..<6 {
-            if app.buttons["About Tide English"].isHittable { break }
+            if app.buttons["About Tide"].isHittable { break }
             app.swipeUp()
         }
-        app.buttons["About Tide English"].tap()
+        app.buttons["About Tide"].tap()
         for _ in 0..<6 {
             if app.buttons["Open-source notices"].isHittable { break }
             app.swipeUp()
@@ -1835,7 +1835,7 @@ final class TideEnglishUITests: XCTestCase {
         XCTAssertTrue(languagePicker.label.contains("French · France"))
         app.buttons["onboarding-continue"].tap()
         XCTAssertTrue(app.buttons["onboarding-meaning-picker"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Tide English speaks French")).firstMatch.exists)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Tide speaks French")).firstMatch.exists)
         XCTAssertTrue(app.staticTexts["onboarding-ai-consent"].exists)
         XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "onboarding-privacy-policy").firstMatch.exists)
         XCTAssertEqual(app.buttons["onboarding-continue"].label, "Agree and continue")
@@ -1986,7 +1986,7 @@ final class TideEnglishUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["--preview", "--preview-inactivity-timer"]
         app.launch()
-        let ended = app.staticTexts["Tide English ended this quiet session to avoid running up usage."]
+        let ended = app.staticTexts["Tide ended this quiet session to avoid running up usage."]
         XCTAssertTrue(ended.waitForExistence(timeout: 16))
         XCTAssertFalse(app.staticTexts["microphone-status"].exists)
     }
@@ -2010,7 +2010,7 @@ final class TideEnglishUITests: XCTestCase {
         app.launch()
         let alert = app.alerts.firstMatch
         XCTAssertTrue(alert.waitForExistence(timeout: 10))
-        XCTAssertTrue(alert.staticTexts["No Tide English minutes are available for a new conversation. Check Account or use your own API key."].exists)
+        XCTAssertTrue(alert.staticTexts["No Tide minutes are available for a new conversation. Check Account or use your own API key."].exists)
         XCTAssertTrue(alert.buttons["Check minutes"].exists)
         alert.buttons["Use my API key"].tap()
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
@@ -2024,7 +2024,7 @@ final class TideEnglishUITests: XCTestCase {
         let alert = app.alerts.firstMatch
         XCTAssertTrue(alert.waitForExistence(timeout: 10))
         alert.buttons["Sign in"].tap()
-        XCTAssertTrue(app.staticTexts["Welcome to Tide English"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Welcome to Tide"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["managed-apple-sign-in"].exists)
     }
 

@@ -8,7 +8,7 @@ import SwiftUI
     #endif
     init() {
         do { _store = State(initialValue: try LearningStore(inMemory: ProcessInfo.processInfo.arguments.contains("--preview") || AudioVerification.requested)) }
-        catch { _startupError = State(initialValue: "Tide English couldn’t open its learning record. Your existing data has not been replaced.") }
+        catch { _startupError = State(initialValue: "Tide couldn’t open its learning record. Your existing data has not been replaced.") }
     }
     var body: some Scene {
         WindowGroup {

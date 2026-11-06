@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
  LaunchedEffect(Unit){viewModel.restore();while(true){now=System.currentTimeMillis()/1000;delay(1000)}}
  fun t(en:String,zh:String)=if(chinese)zh else en
  ModalBottomSheet(onDismissRequest=onDismiss){Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=24.dp).padding(bottom=32.dp),verticalArrangement=Arrangement.spacedBy(16.dp)){
-  Text(t("Tide English account","Tide English 账号"),style=MaterialTheme.typography.headlineSmall)
+  Text(t("Tide account","潮语账号"),style=MaterialTheme.typography.headlineSmall)
   Text(t("Optional email sign-in. Learning records and model keys stay on this device. This does not sync learning records.","邮箱登录为可选功能。学习记录和模型密钥保留在本机，不会同步学习记录。"),style=MaterialTheme.typography.bodyMedium)
   state.email?.let {Text(it,style=MaterialTheme.typography.titleMedium)}
   if(state.email==null)OutlinedTextField(value=email,onValueChange={email=it;code="";viewModel.invalidateChallenge()},enabled=!state.busy,label={Text(t("Email","邮箱"))},singleLine=true,keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Email),modifier=Modifier.fillMaxWidth())

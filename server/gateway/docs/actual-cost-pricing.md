@@ -1,6 +1,6 @@
 # Why paid minutes are estimates
 
-> Tide English implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
+> Tide implementation guide and deployment template. This new application has no production deployment or registered commercial credentials represented here. Numeric store identities shown in examples are synthetic. Hosted and purchase features are disabled by default.
 
 TideEnglish's approved pricing formula uses exact AI cost, a 15% TideEnglish service fee, and separately quoted payment costs and buffer. Purchased balances fund actual provider charges; the app shows estimated conversation minutes. A purchase does not guarantee a fixed duration. The $5.99 offer was not approved.
 

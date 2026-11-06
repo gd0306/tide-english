@@ -1,7 +1,5 @@
 # Tide
 
-Chinese name: **潮语**. A multilingual learning companion.
-
 <p align="center">
   <strong>Native multiplatform AI language-learning companion — master language through natural conversation.</strong>
 </p>
